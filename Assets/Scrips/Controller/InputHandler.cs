@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace SA
 {
@@ -10,6 +12,7 @@ namespace SA
         bool a_input;
         bool rolls_input;
         bool y_input;
+        bool x_input;
 
         bool rb_input;
         bool rt_input;
@@ -34,6 +37,8 @@ namespace SA
 
             camManager = CameraManager.singleton;
             camManager.Init(states);
+
+            
         }
 
         void FixedUpdate()
@@ -61,6 +66,7 @@ namespace SA
             a_input = Input.GetKeyDown(KeyCode.Space);
             //rolls_input = Input.GetKeyDown(KeyCode.LeftControl);
             y_input = Input.GetKeyDown(KeyCode.T);//two handed
+            x_input = Input.GetKeyDown(KeyCode.X); //using item
             lockon_input = Input.GetKeyDown(KeyCode.Tab);
 
             // rt_axis = Input.GetAxis("RT");
@@ -75,55 +81,57 @@ namespace SA
                 b_timer += delta;
         }
 
-         void UpdateStates()
-         {
-             states.vertical = vertical;
-             states.horizontal = horizontal;
-             
-            Vector3 v = vertical * camManager.transform.forward;
-			Vector3 h = horizontal * camManager.transform.right;
-             states.moveDir = (v + h).normalized;
-             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
-             states.moveAmount = Mathf.Clamp01(m);
+          void UpdateStates()
+          {
+              states.vertical = vertical;
+              states.horizontal = horizontal;
+
+             Vector3 v = vertical * camManager.transform.forward;
+             Vector3 h = horizontal * camManager.transform.right;
+              states.moveDir = (v + h).normalized;
+              float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
+              states.moveAmount = Mathf.Clamp01(m);
+
+             if (x_input)
+                 b_input = false;
 
 
-             if (b_input && b_timer > 0.5f)
-                 {
-                     states.run = (states.moveAmount > 0);
-                 }
+              if (b_input && b_timer > 0.5f)
+                  {
+                      states.run = (states.moveAmount > 0);
+                  }
 
-             if (b_input == false && b_timer > 0 && b_timer < 0.5f)
-                 states.rollInput = true;
+              if (b_input == false && b_timer > 0 && b_timer < 0.5f)
+                  states.rollInput = true;
 
-             states.rt = rt_input;
-             states.lt = lt_input;
-             states.rb = rb_input;
-             states.lb = lb_input;
+             states.itemInput = x_input;
+              states.rt = rt_input;
+              states.lt = lt_input;
+              states.rb = rb_input;
+              states.lb = lb_input;
 
 
 
              if (y_input)
-             {
-                states.istwoHanded = !states.istwoHanded;
-                 states.HandleTwoHanded();
-             }
+              {
+                 states.isTwoHanded = !states.isTwoHanded;
+               //   states.HandleTwoHanded();
+              }
 
-             if (lockon_input)
-             {
-                 states.lockOn = !states.lockOn;
+              if (lockon_input)
+              {
+                  states.lockOn = !states.lockOn;
 
-                 if (states.lockOnTarget == null)
-                     states.lockOn = false;
+                  if (states.lockOnTarget == null)
+                      states.lockOn = false;
 
-                 camManager.lockonTarget = states.lockOnTarget;
-                 states.lockOnTransform = camManager.lockonTransform;
-                 camManager.lockon = states.lockOn;
+                  camManager.lockonTarget = states.lockOnTarget;
+                  states.lockOnTransform = camManager.lockonTransform;
+                  camManager.lockon = states.lockOn;
 
-             }
-
-
-        }
-
+              }
+         } 
+        
         void ResetInputNStates()
         {
             
@@ -135,8 +143,6 @@ namespace SA
 
             if (states.run)
                 states.run = false;
-
-
         }
     }
 }

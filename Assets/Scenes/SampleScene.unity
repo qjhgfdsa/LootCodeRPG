@@ -508,6 +508,8 @@ GameObject:
   - component: {fileID: 459074579}
   - component: {fileID: 459074578}
   - component: {fileID: 459074577}
+  - component: {fileID: 459074584}
+  - component: {fileID: 459074585}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -537,6 +539,7 @@ MonoBehaviour:
   lt: 0
   lb: 0
   rollInput: 0
+  itemInput: 0
   moveSpeed: 3.5
   runSpeed: 5.5
   rotateSpeed: 9
@@ -547,7 +550,8 @@ MonoBehaviour:
   lockOn: 0
   inAction: 0
   canMove: 0
-  istwoHanded: 0
+  isTwoHanded: 0
+  usingItem: 0
   lockOnTarget: {fileID: 2071064717}
   lockOnTransform: {fileID: 0}
   roll_curve:
@@ -604,6 +608,8 @@ MonoBehaviour:
   anim: {fileID: 0}
   rigid: {fileID: 0}
   a_hook: {fileID: 0}
+  actionManager: {fileID: 0}
+  inventoryManager: {fileID: 0}
   delta: 0
   ignoreLayers:
     serializedVersion: 2
@@ -739,6 +745,46 @@ Transform:
   - {fileID: 1932919186}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &459074584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459074576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79dea885d11d67548b4b5e177653b097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionSlots:
+  - input: 0
+    targetAnim: 
+  - input: 1
+    targetAnim: 
+  - input: 2
+    targetAnim: 
+  - input: 3
+    targetAnim: 
+  consumableItem:
+    targetAnim: 
+    item_id: 
+--- !u!114 &459074585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459074576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f842fab3281e247b942df80d40bef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curWeapon:
+    actions: []
+    two_handedActions: []
+    weaponModel: {fileID: 0}
 --- !u!4 &460392556 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -979,7 +1025,7 @@ MonoBehaviour:
   lockon: 0
   followSpeed: 3
   mouseSeed: 2
-  target: {fileID: 0}
+  target: {fileID: 459074583}
   lockonTarget: {fileID: 0}
   lockonTransform: {fileID: 0}
   pivot: {fileID: 0}

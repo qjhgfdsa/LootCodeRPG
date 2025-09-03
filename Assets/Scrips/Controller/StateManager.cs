@@ -1,6 +1,7 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SA
 {
@@ -17,6 +18,7 @@ namespace SA
         public Vector3 moveDir;
         public bool rt, rb, lt, lb;
         public bool rollInput;
+        public bool itemInput;
 
 
 
@@ -33,7 +35,9 @@ namespace SA
         public bool lockOn;
         public bool inAction;
         public bool canMove;
-        public bool istwoHanded;
+        public bool isTwoHanded;
+        public bool usingItem;
+
 
 
         [Header("Other")]
@@ -48,6 +52,12 @@ namespace SA
         public Rigidbody rigid;
         [HideInInspector]
         public AnimatorHook a_hook;
+        [HideInInspector]
+        public ActionManager actionManager;
+        [HideInInspector]
+        public InventoryManager inventoryManager;
+
+
 
         [HideInInspector]
         public float delta;
@@ -65,6 +75,13 @@ namespace SA
             rigid.linearDamping = 4;
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
+
+            inventoryManager = GetComponent<InventoryManager>();
+            inventoryManager.Init();
+
+            actionManager = GetComponent<ActionManager>();
+           // actionManager.Init(this);
+
             a_hook = activeModel.AddComponent<AnimatorHook>();
             a_hook.Init(this);
 
@@ -72,11 +89,6 @@ namespace SA
             ignoreLayers = ~(1 << 9);
 
             anim.SetBool("onGround", true);
-
-
-
-
-
         }
 
         void SetupAnimator()
@@ -102,11 +114,13 @@ namespace SA
         {
             delta = d;
 
-            DetectAction();
+            usingItem = anim.GetBool("interacting");
+
+           // DetectItemAction();
+          //  DetectAction();
 
             if (inAction)
             {
-
                 anim.applyRootMotion = true;
 
                 actionDelay += delta;
@@ -136,6 +150,13 @@ namespace SA
             rigid.linearDamping = (moveAmount > 0 || onGround == false) ? 0 : 4;
 
             float targetSpeed = moveSpeed;
+            if (usingItem)
+            {
+                run = false;
+                moveAmount = Mathf.Clamp(moveAmount, 0, 0.45f);
+                
+            }
+            
             if (run)
                 targetSpeed = runSpeed;
 
@@ -170,46 +191,56 @@ namespace SA
 
         }
 
-        public void DetectAction()
+      /*  public void DetectItemAction()
         {
-            if (canMove == false)
+            if (!canMove || usingItem)
                 return;
 
-            if (rb == false && rt == false && lt == false && lb == false)
+            if (!itemInput)
                 return;
 
-            string targetAnim = null;
-
-            if (rb)
-                targetAnim = "oh_attack_1";
-            if (rt)
-                targetAnim = "oh_attack_2";
-            if (lt)
-                targetAnim = "oh_attack_3";
-            if (lb)
-                targetAnim = "th_attack_1";
+            ItemAction slot = actionManager.consumableItem;
+            string targetAnim = slot.targetAnim;
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
-            inAction = true;
-            canMove = false;
+            usingItem = true;
+            anim.Play(targetAnim);
+        }*/
 
+       /* public void DetectAction()
+        {
+            if (!canMove || usingItem)
+                return;
+            if (rb == false && rt == false && lt == false && lb == false)
+                return;
+            string targetAnim = null;
+
+            Action slot = actionManager.GetActionSlot(this);
+            if (slot == null)
+                return;
+            targetAnim = slot.targetAnim;
+
+
+            if (string.IsNullOrEmpty(targetAnim))
+                return;
+
+            canMove = false;
+            inAction = true;
             anim.CrossFade(targetAnim, 0.2f);
-            //rigid.linearVelocity = Vector3.zero;
-        }
+        }*/
 
         public void Tick(float d)
         {
             delta = d;
             onGround = OnGround();
-
             anim.SetBool("onGround", onGround);
         }
 
         void HandleRolls()
         {
-            if (!rollInput)
+            if (!rollInput || usingItem)
                 return;
 
             float v = vertical;
@@ -298,9 +329,13 @@ namespace SA
             return r;
         }
 
-        public void HandleTwoHanded()
+       /* public void HandleTwoHanded()
         {
-            anim.SetBool("two_handed", istwoHanded);
-        }
+            anim.SetBool("two_handed", isTwoHanded);
+            if (isTwoHanded)
+                actionManager.UpdateActionsTwoHanded();
+            else
+                actionManager.UpdateActionsOneHanded();
+        }*/
     }
 }
