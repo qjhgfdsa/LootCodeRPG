@@ -11,7 +11,7 @@ namespace SA
         bool b_input;
         bool a_input;
         bool rolls_input;
-        bool y_input;
+        bool t_input;
         bool x_input;
 
         bool rb_input;
@@ -65,7 +65,7 @@ namespace SA
             b_input = Input.GetKey(KeyCode.LeftShift);//run
             a_input = Input.GetKeyDown(KeyCode.Space);
             //rolls_input = Input.GetKeyDown(KeyCode.LeftControl);
-            y_input = Input.GetKeyDown(KeyCode.T);//two handed
+            t_input = Input.GetKeyDown(KeyCode.T);//two handed
             x_input = Input.GetKeyDown(KeyCode.X); //using item
             lockon_input = Input.GetKeyDown(KeyCode.Tab);
 
@@ -112,10 +112,10 @@ namespace SA
 
 
 
-             if (y_input)
+             if (t_input)
               {
                  states.isTwoHanded = !states.isTwoHanded;
-               //   states.HandleTwoHanded();
+                  states.HandleTwoHanded();
               }
 
               if (lockon_input)

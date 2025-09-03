@@ -116,8 +116,8 @@ namespace SA
 
             usingItem = anim.GetBool("interacting");
 
-           // DetectItemAction();
-          //  DetectAction();
+            DetectItemAction();
+            DetectAction();
 
             if (inAction)
             {
@@ -191,7 +191,7 @@ namespace SA
 
         }
 
-      /*  public void DetectItemAction()
+        public void DetectItemAction()
         {
             if (!canMove || usingItem)
                 return;
@@ -207,13 +207,14 @@ namespace SA
 
             usingItem = true;
             anim.Play(targetAnim);
-        }*/
-
-       /* public void DetectAction()
+        }
+              
+        
+		public void DetectAction()
         {
             if (!canMove || usingItem)
                 return;
-            if (rb == false && rt == false && lt == false && lb == false)
+            if (!rb && !rt && !lb && !lt)
                 return;
             string targetAnim = null;
 
@@ -222,14 +223,14 @@ namespace SA
                 return;
             targetAnim = slot.targetAnim;
 
-
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
             canMove = false;
             inAction = true;
             anim.CrossFade(targetAnim, 0.2f);
-        }*/
+        }
+
 
         public void Tick(float d)
         {
@@ -329,13 +330,13 @@ namespace SA
             return r;
         }
 
-       /* public void HandleTwoHanded()
+        public void HandleTwoHanded()
         {
             anim.SetBool("two_handed", isTwoHanded);
             if (isTwoHanded)
                 actionManager.UpdateActionsTwoHanded();
             else
                 actionManager.UpdateActionsOneHanded();
-        }*/
+        }
     }
 }
