@@ -8,13 +8,16 @@ namespace SA
         public int index;
         public List<Transform> targets = new List<Transform>();
         public List<HumanBodyBones> h_bones = new List<HumanBodyBones>();
+        public EnemyStates eStates;
 
 
         Animator anim;
 
-       public void Init(Animator a)
+
+       public void Init(EnemyStates st)
         {
-            anim = a;
+            eStates = st;
+            anim = eStates.anim;
             if (anim.isHuman == false)
                 return;
 

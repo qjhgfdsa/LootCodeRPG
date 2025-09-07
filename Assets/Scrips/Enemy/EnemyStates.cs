@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 
 namespace SA
@@ -7,25 +9,103 @@ namespace SA
     {
         public float health;
         public bool isInvicible;
+        public bool canMove;
+        public bool isDead;
 
-        Animator anim;
+        public Animator anim;
         EnemyTarget enTarget;
+        AnimatorHook a_hook;
+        public Rigidbody rigid;
+        public float delta;
+
+        List<Rigidbody> ragdollRigids = new List<Rigidbody>();
+        List<Collider> ragdollColliders = new List<Collider>();
+
 
         void Start()
         {
+            health = 100;
             anim = GetComponentInChildren<Animator>();
             enTarget = GetComponent<EnemyTarget>();
-            enTarget.Init(anim);
+            enTarget.Init(this);
+
+            rigid = GetComponent<Rigidbody>();
+
+            a_hook = anim.GetComponent<AnimatorHook>();
+            if (a_hook == null)
+                a_hook = anim.gameObject.AddComponent<AnimatorHook>();
+            a_hook.Init(null, this);
+            
+            InitRagdoll();
+        }
+
+        void InitRagdoll()
+        {
+            Rigidbody[] rigs = GetComponentsInChildren<Rigidbody>();
+            for (int i = 0; i < rigs.Length; i++)
+            {
+                if (rigs[i] == rigid)
+                {
+                    continue;
+                }
+                ragdollRigids.Add(rigs[i]);
+                rigs[i].isKinematic = true;
+
+                Collider col = rigs[i].gameObject.GetComponent<Collider>();
+                col.isTrigger = true;
+                ragdollColliders.Add(col);
+            }
+        
+        }
+
+        public void EnableRagdoll()
+        {
+
+            for (int i = 0; i < ragdollRigids.Count; i++)
+            {
+                ragdollRigids[i].isKinematic = false;
+                ragdollColliders[i].isTrigger = false;
+            }
+
+            Collider controllerCollider = rigid.gameObject.GetComponent<Collider>();
+            controllerCollider.enabled = false;
+            rigid.isKinematic = true;
+            
+            StartCoroutine(CloseAnimator());
+        }
+
+        IEnumerator CloseAnimator()
+        {
+            yield return new WaitForSeconds(0.1f);
+            anim.enabled = false;
+            this.enabled = false;
         }
 
         void Update()
         {
-            if (isInvicible)
-            {
-                 isInvicible = !anim.GetBool("canMove"); 
-            }
-           
+            delta = Time.deltaTime;
+            canMove = anim.GetBool("canMove");
 
+            if (health <= 0)
+            {
+                if (!isDead)
+                {
+                    isDead = true;
+                    EnableRagdoll();
+                }
+         
+            }
+
+            if (isInvicible)
+                {
+                    isInvicible = !canMove;
+                }
+
+            if(canMove)
+            {
+                anim.applyRootMotion = false;
+            }
+            
         }
 
 
@@ -38,6 +118,8 @@ namespace SA
             health -= v;
             isInvicible = true;
             anim.Play("damage_01");
+            anim.applyRootMotion = true;
+            anim.SetBool("canMove", false);
             Debug.Log("Enemy Health: " + health);
         }
 

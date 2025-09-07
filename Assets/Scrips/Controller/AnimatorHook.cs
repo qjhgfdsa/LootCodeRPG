@@ -7,20 +7,41 @@ namespace SA
     {
         StateManager states;
         Animator anim;
+        Rigidbody rigid;
+        EnemyStates eStates;
 
+  
         public float rm_Mutil;
         bool rolling;
         float roll_t;
+        float delta;
         public AnimationCurve rollCurve;
 
 
-        public void Init(StateManager st)
+        public void Init(StateManager st, EnemyStates eSt)
         {
             states = st;
-            anim = states.anim;
-            rollCurve = states.roll_curve;
+            eStates = eSt;
 
+            if (st != null)
+            {
+                anim = states.anim;
+                rigid = st.rigid;
+                rollCurve = states.roll_curve;
+                delta = st.delta;
+            }
+
+            if (eSt != null)
+            {
+                anim = eStates.anim;
+                rigid = eSt.rigid;
+                delta = eSt.delta;
+            }
+
+           // rollCurve = states.roll_curve;
         }
+
+        
 
         public void InitForRoll()
         {
@@ -39,36 +60,61 @@ namespace SA
 
         void OnAnimatorMove()
         {
-            if (states == null)
+            if (states == null && eStates == null)
                 return;
                 
-            if (states.canMove)
+            if (rigid == null)
                 return;
 
-            states.rigid.linearDamping = 0;
+
+            if (states != null)
+            {
+                if (states.canMove)
+                    return;
+                    
+                 delta = states.delta;
+
+            }
+
+            if (eStates != null)
+            {
+                if (eStates.canMove)
+                    return;
+
+                delta = eStates.delta;
+            }
+
+             rigid.linearDamping = 0;
 
             if (rm_Mutil == 0)
                 rm_Mutil = 1;
 
             if (rolling == false)
             {
-                Vector3 delta = anim.deltaPosition;
-                delta.y = 0;
-                Vector3 v = (delta * rm_Mutil) / states.delta;
-                states.rigid.linearVelocity = v;
+                Vector3 delta2 = anim.deltaPosition;
+                delta2.y = 0;
+                Vector3 v = (delta2 * rm_Mutil) / delta;
+
+                if(!rigid.isKinematic)
+                rigid.linearVelocity = v; 
             }
             else
             {
-                roll_t += Time.deltaTime / 0.6f;
+                roll_t += delta / 0.6f;
+
                 if (roll_t > 1)
+                {
                     roll_t = 1;
+                }
+
+                if (states == null)
+                    return;
 
                 float zValue = rollCurve.Evaluate(roll_t);
                 Vector3 v1 = Vector3.forward * zValue;
                 Vector3 relative = transform.TransformDirection(v1);
                 Vector3 v2 = (relative * rm_Mutil);
-                states.rigid.linearVelocity = v2;
-
+                rigid.linearVelocity = v2;
             }
 
         }

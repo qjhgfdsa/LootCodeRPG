@@ -80,10 +80,12 @@ namespace SA
             inventoryManager.Init();
 
             actionManager = GetComponent<ActionManager>();
-           // actionManager.Init(this);
+      
 
-            a_hook = activeModel.AddComponent<AnimatorHook>();
-            a_hook.Init(this);
+            a_hook = activeModel.GetComponent<AnimatorHook>();
+            if (a_hook == null)
+                 a_hook = activeModel.AddComponent<AnimatorHook>();
+            a_hook.Init(this, null);
 
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);

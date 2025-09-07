@@ -118,18 +118,30 @@ namespace SA
                   states.HandleTwoHanded();
               }
 
+            if (states.lockOnTarget != null)
+            {
+                if (states.lockOnTarget.eStates.isDead)
+                {
+                    states.lockOn = false;
+                    states.lockOnTarget = null;
+                    states.lockOnTransform = null;
+                    camManager.lockon = states.lockOn;
+                    camManager.lockonTarget = null;
+                }
+            }
+
               if (lockon_input)
-              {
-                  states.lockOn = !states.lockOn;
+                {
+                    states.lockOn = !states.lockOn;
 
-                  if (states.lockOnTarget == null)
-                      states.lockOn = false;
+                    if (states.lockOnTarget == null)
+                        states.lockOn = false;
 
-                  camManager.lockonTarget = states.lockOnTarget;
-                  states.lockOnTransform = camManager.lockonTransform;
-                  camManager.lockon = states.lockOn;
+                    camManager.lockonTarget = states.lockOnTarget;
+                    states.lockOnTransform = camManager.lockonTransform;
+                    camManager.lockon = states.lockOn;
 
-              }
+                }
          } 
         
         void ResetInputNStates()

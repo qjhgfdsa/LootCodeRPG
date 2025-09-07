@@ -12,7 +12,7 @@ namespace SA
             if (eStates == null)
                 return;
             
-           eStates.DoDamage(10);
+           eStates.DoDamage(50);
             
         }
     }
