@@ -235,6 +235,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
   m_PrefabInstance: {fileID: 209644251}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &290650444 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4421c3c2ad02dc64497959fb17c50ca6, type: 3}
+  m_PrefabInstance: {fileID: 1401216932}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +772,7 @@ MonoBehaviour:
   - input: 3
     targetAnim: 
   consumableItem:
-    targetAnim: 
+    targetAnim: bestus
     item_id: 
 --- !u!114 &459074585
 MonoBehaviour:
@@ -784,7 +789,7 @@ MonoBehaviour:
   curWeapon:
     actions: []
     two_handedActions: []
-    weaponModel: {fileID: 0}
+    weaponModel: {fileID: 290650444}
 --- !u!4 &460392556 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -1025,7 +1030,7 @@ MonoBehaviour:
   lockon: 0
   followSpeed: 3
   mouseSeed: 2
-  target: {fileID: 459074583}
+  target: {fileID: 0}
   lockonTarget: {fileID: 0}
   lockonTransform: {fileID: 0}
   pivot: {fileID: 0}

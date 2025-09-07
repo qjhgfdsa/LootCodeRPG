@@ -12,9 +12,9 @@ namespace SA
 
         Animator anim;
 
-        void Start()
+       public void Init(Animator a)
         {
-            anim = GetComponent<Animator>();
+            anim = a;
             if (anim.isHuman == false)
                 return;
 

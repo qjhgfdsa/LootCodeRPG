@@ -115,9 +115,9 @@ namespace SA
             delta = d;
 
             usingItem = anim.GetBool("interacting");
-
             DetectItemAction();
             DetectAction();
+            inventoryManager.curWeapon.weaponModel.SetActive(!usingItem);
 
             if (inAction)
             {
@@ -205,6 +205,7 @@ namespace SA
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
+            //inventoryManager.curWeapon.weaponModel.SetActive(false);
             usingItem = true;
             anim.Play(targetAnim);
         }

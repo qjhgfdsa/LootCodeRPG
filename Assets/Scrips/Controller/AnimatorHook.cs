@@ -39,6 +39,9 @@ namespace SA
 
         void OnAnimatorMove()
         {
+            if (states == null)
+                return;
+                
             if (states.canMove)
                 return;
 
@@ -57,18 +60,33 @@ namespace SA
             else
             {
                 roll_t += Time.deltaTime / 0.6f;
-				if (roll_t > 1)
-					roll_t = 1;
+                if (roll_t > 1)
+                    roll_t = 1;
 
-				float zValue = rollCurve.Evaluate (roll_t);
-				Vector3 v1 = Vector3.forward * zValue;
-				Vector3 relative = transform.TransformDirection (v1);
+                float zValue = rollCurve.Evaluate(roll_t);
+                Vector3 v1 = Vector3.forward * zValue;
+                Vector3 relative = transform.TransformDirection(v1);
                 Vector3 v2 = (relative * rm_Mutil);
                 states.rigid.linearVelocity = v2;
-            
+
             }
 
         }
 
+        public void OpenDamageColliders()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.curWeapon.w_Hook.OpenDamageColliders();
+
+        }
+
+        public void CloseDamageColliders()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.curWeapon.w_Hook.CloseDamageColliders();
+
+        }
     }
 }
