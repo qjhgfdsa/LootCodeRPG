@@ -11,18 +11,59 @@ namespace SA
         public Weapon rightHandWeapon;
         public bool hasLeftHandWeapon = true;
         public Weapon leftHandWeapon;
-        public void Init()
+
+        StateManager states;
+
+        public void Init(StateManager st)
         {
+            states = st;
+            EquipRightWeapon();
+            EquipLeftWeapon();
             CloseAllDamageColliders();
         }
+
+        public void EquipRightWeapon()
+        {
+            string targetIdle = rightHandWeapon.oh_idle;
+            targetIdle += "_r";
+
+            states.anim.SetBool("mirror", false);
+            states.anim.Play("changeWeapon");
+            states.anim.Play(targetIdle);
+        }
+        public void EquipLeftWeapon()
+        {
+            if (hasLeftHandWeapon == false)
+                return;
+
+            string targetIdle = leftHandWeapon.oh_idle;
+            targetIdle += "_l";
+
+            states.anim.SetBool("mirror", true);
+            states.anim.Play("changeWeapon");
+            states.anim.Play(targetIdle);
+        }
+
+        public void OpenAllDamageColliders()
+        {
+            if (rightHandWeapon.w_Hook != null)
+                rightHandWeapon.w_Hook.OpenDamageColliders();
+
+
+            if (leftHandWeapon.w_Hook != null)
+                leftHandWeapon.w_Hook.OpenDamageColliders();
+
+        }
+        
+          
 
         public void CloseAllDamageColliders()
         {
 
             if (rightHandWeapon.w_Hook != null)
                 rightHandWeapon.w_Hook.CloseDamageColliders();
-                
-                
+
+
             if (leftHandWeapon.w_Hook != null)
                 leftHandWeapon.w_Hook.CloseDamageColliders();
         }
@@ -31,6 +72,8 @@ namespace SA
     [System.Serializable]
     public class Weapon
     {
+        public string oh_idle;
+        public string th_idle;
         public List<Action> actions;
         public List<Action> two_handedActions;
         public bool LeftHandmirror;

@@ -123,7 +123,7 @@ namespace SA
         {
             if (states == null)
                 return;
-            states.inventoryManager.CloseAllDamageColliders();
+            states.inventoryManager.OpenAllDamageColliders();
 
         }
 

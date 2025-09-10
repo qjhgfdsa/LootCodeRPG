@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -97,6 +98,12 @@ namespace SA
 
             if (leftLB != null) lb.targetAnim = leftLB.targetAnim;
             if (leftLT != null) lt.targetAnim = leftLT.targetAnim;
+            
+            if (l_w.LeftHandmirror)
+            {
+                lb.mirror = true;
+                lt.mirror = true;
+            }
 }
 
         public void UpdateActionsTwoHanded()
@@ -120,10 +127,11 @@ namespace SA
 
          void EmptyAllSlot()
          {
-             for (int i = 0; i < 4; i++)
-             {
-                 Action a = GetAction((ActionInput)i);
-                 a.targetAnim = null;
+            for (int i = 0; i < 4; i++)
+            {
+                Action a = GetAction((ActionInput)i);
+                a.targetAnim = null;
+                a.mirror = false;
              }
          }
 
@@ -185,12 +193,12 @@ namespace SA
 
 
 
-     [System.Serializable]
-     public class Action
-     {
-
-         public ActionInput input;
-         public string targetAnim;
+    [System.Serializable]
+    public class Action
+    {
+        public ActionInput input;
+        public string targetAnim;
+        public bool mirror = false;
      }
 
      [System.Serializable]
