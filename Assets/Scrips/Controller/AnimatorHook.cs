@@ -123,7 +123,7 @@ namespace SA
         {
             if (states == null)
                 return;
-            states.inventoryManager.curWeapon.w_Hook.OpenDamageColliders();
+            states.inventoryManager.CloseAllDamageColliders();
 
         }
 
@@ -131,7 +131,7 @@ namespace SA
         {
             if (states == null)
                 return;
-            states.inventoryManager.curWeapon.w_Hook.CloseDamageColliders();
+            states.inventoryManager.CloseAllDamageColliders();
 
         }
     }

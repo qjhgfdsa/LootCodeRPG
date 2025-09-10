@@ -119,7 +119,7 @@ namespace SA
             usingItem = anim.GetBool("interacting");
             DetectItemAction();
             DetectAction();
-            inventoryManager.curWeapon.weaponModel.SetActive(!usingItem);
+            inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
 
             if (inAction)
             {
