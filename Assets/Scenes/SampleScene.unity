@@ -1397,11 +1397,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionSlots:
   - input: 0
-    targetAnim: oh_attack_1
-  - input: 1
-    targetAnim: oh_attack_2
+    targetAnim: 
   - input: 2
-    targetAnim: oh_attack_3
+    targetAnim: 
+  - input: 1
+    targetAnim: 
   - input: 3
     targetAnim: 
   consumableItem:
@@ -1420,13 +1420,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rightHandWeapon:
-    actions: []
+    actions:
+    - input: 0
+      targetAnim: oh_attack_1
+    - input: 2
+      targetAnim: oh_attack_2
     two_handedActions: []
     LeftHandmirror: 0
     weaponModel: {fileID: 290650444}
     w_Hook: {fileID: 1474964301}
+  hasLeftHandWeapon: 1
   leftHandWeapon:
-    actions: []
+    actions:
+    - input: 1
+      targetAnim: oh_attack_3
+    - input: 3
+      targetAnim: GVHJK
     two_handedActions: []
     LeftHandmirror: 0
     weaponModel: {fileID: 1416862130}

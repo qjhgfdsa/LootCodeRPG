@@ -23,26 +23,41 @@ namespace SA
              UpdateActionsOneHanded();
          }
 
-         public void UpdateActionsOneHanded()
-         {
-             EmptyAllSlot();
+        public void UpdateActionsOneHanded()
+        {
+            EmptyAllSlot();
 
             if (states.inventoryManager.hasLeftHandWeapon)
             {
                 UpdateActionsWithLeftHand();
-                return;  
+                return;
             }
-                
-             Weapon w = states.inventoryManager.rightHandWeapon;
+            Weapon w = states.inventoryManager.rightHandWeapon;
 
-             for (int i = 0; i < w.actions.Count; i++)
-             {
-                 Action a = GetAction(w.actions[i].input);
-                 a.targetAnim = w.actions[i].targetAnim;
-             }
-         }
+            for (int i = 0; i < w.actions.Count; i++)
+            {
+                Action a = GetAction(w.actions[i].input);
+                a.targetAnim = w.actions[i].targetAnim;
+            }
+        }
+        /*   public void UpdateActionsWithLeftHand()
+           {
+               Weapon r_w = states.inventoryManager.rightHandWeapon;
+               Weapon l_w = states.inventoryManager.leftHandWeapon;
 
-         public void UpdateActionsTwoHanded()
+               Action rb = GetAction(ActionInput.rb);
+               Action rt = GetAction(ActionInput.rt);
+               rb.targetAnim = r_w.GetAction(r_w.actions, ActionInput.rb).targetAnim;
+               rt.targetAnim = r_w.GetAction(r_w.actions, ActionInput.rt).targetAnim;
+
+               Action lb = GetAction(ActionInput.rb);
+               Action lt = GetAction(ActionInput.lt);
+               lb.targetAnim = l_w.GetAction(l_w.actions, ActionInput.rb).targetAnim;
+               lt.targetAnim = l_w.GetAction(l_w.actions, ActionInput.rt).targetAnim;
+
+           }*/
+
+        /*  public void UpdateActionsTwoHanded()
          {
              EmptyAllSlot();
              Weapon w = states.inventoryManager.rightHandWeapon;
@@ -52,23 +67,56 @@ namespace SA
                  Action a = GetAction(w.actions[i].input);
                  a.targetAnim = w.two_handedActions[i].targetAnim;
              }
-         }
+         }*/
 
         public void UpdateActionsWithLeftHand()
         {
-              Weapon r_w = states.inventoryManager.rightHandWeapon;
-              Weapon l_w = states.inventoryManager.leftHandWeapon;
 
-              Action rb = GetAction(ActionInput.rb);
-              Action rt = GetAction(ActionInput.rt);
-              rb.targetAnim = r_w.GetAction(r_w.actions, ActionInput.rb).targetAnim;
-              rt.targetAnim = r_w.GetAction(r_w.actions, ActionInput.rt).targetAnim;
+            Weapon r_w = states.inventoryManager.rightHandWeapon;
+            Weapon l_w = states.inventoryManager.leftHandWeapon;
 
-              Action lb = GetAction(ActionInput.lb);
-              Action lt = GetAction(ActionInput.lt);
-              lb.targetAnim = l_w.GetAction(l_w.actions, ActionInput.rb).targetAnim;
-              lt.targetAnim = l_w.GetAction(l_w.actions, ActionInput.rt).targetAnim;
+            // ตรวจสอบว่า weapon ไม่เป็น null
+            if (r_w == null || l_w == null) return;
+
+            // Right hand actions
+            Action rb = GetAction(ActionInput.rb);
+            Action rt = GetAction(ActionInput.rt);
+
+            var rightRB = r_w.GetAction(r_w.actions, ActionInput.rb);
+            var rightRT = r_w.GetAction(r_w.actions, ActionInput.rt);
+
+            if (rightRB != null) rb.targetAnim = rightRB.targetAnim;
+            if (rightRT != null) rt.targetAnim = rightRT.targetAnim;
+
+            // Left hand actions - แก้ไขตรงนี้
+            Action lb = GetAction(ActionInput.lb);
+            Action lt = GetAction(ActionInput.lt);
+
+            var leftLB = l_w.GetAction(l_w.actions, ActionInput.lb); // เปลี่ยนจาก rb เป็น lb
+            var leftLT = l_w.GetAction(l_w.actions, ActionInput.lt); // เปลี่ยนจาก rt เป็น lt
+
+            if (leftLB != null) lb.targetAnim = leftLB.targetAnim;
+            if (leftLT != null) lt.targetAnim = leftLT.targetAnim;
+}
+
+        public void UpdateActionsTwoHanded()
+        {
+
+            EmptyAllSlot();
+            Weapon w = states.inventoryManager.rightHandWeapon;
+
+            if (w == null || w.two_handedActions == null) return;
+
+            for (int i = 0; i < w.two_handedActions.Count; i++)
+            {
+                Action a = GetAction(w.two_handedActions[i].input); // แก้ไขตรงนี้
+                if (a != null)
+                    a.targetAnim = w.two_handedActions[i].targetAnim;
+            }
         }
+
+
+     
 
          void EmptyAllSlot()
          {
