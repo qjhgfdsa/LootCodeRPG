@@ -83,23 +83,37 @@ namespace SA
             Action rb = GetAction(ActionInput.rb);
             Action rt = GetAction(ActionInput.rt);
 
+         
+
             var rightRB = r_w.GetAction(r_w.actions, ActionInput.rb);
             var rightRT = r_w.GetAction(r_w.actions, ActionInput.rt);
 
-            if (rightRB != null) rb.targetAnim = rightRB.targetAnim;
-            if (rightRT != null) rt.targetAnim = rightRT.targetAnim;
-
+            Action w_rb = r_w.GetAction(r_w.actions, ActionInput.rb);
+            if (rightRB != null) rb.targetAnim = w_rb.targetAnim;
+            rb.actionType = w_rb.actionType;
+              
+            Action w_rt = r_w.GetAction(r_w.actions, ActionInput.rt);
+            if (rightRT != null) rt.targetAnim = w_rt.targetAnim;
+            rt.actionType = w_rt.actionType;
+          
             // Left hand actions - แก้ไขตรงนี้
             Action lb = GetAction(ActionInput.lb);
             Action lt = GetAction(ActionInput.lt);
 
+          
+
             var leftLB = l_w.GetAction(l_w.actions, ActionInput.lb); // เปลี่ยนจาก rb เป็น lb
             var leftLT = l_w.GetAction(l_w.actions, ActionInput.lt); // เปลี่ยนจาก rt เป็น lt
 
-            if (leftLB != null) lb.targetAnim = leftLB.targetAnim;
-            if (leftLT != null) lt.targetAnim = leftLT.targetAnim;
+            Action w_lb = l_w.GetAction(l_w.actions, ActionInput.lb);
+            if (leftLB != null) lb.targetAnim = w_lb.targetAnim;
+            lb.actionType = w_lb.actionType;
+
+            Action w_lt = l_w.GetAction(l_w.actions, ActionInput.lt);
+            if (leftLT != null) lt.targetAnim = w_lt.targetAnim;
+            lt.actionType = w_lt.actionType;
             
-            if (l_w.LeftHandmirror)
+            if (l_w.LeftHandMirror)
             {
                 lb.mirror = true;
                 lt.mirror = true;
@@ -119,6 +133,7 @@ namespace SA
                 Action a = GetAction(w.two_handedActions[i].input); // แก้ไขตรงนี้
                 if (a != null)
                     a.targetAnim = w.two_handedActions[i].targetAnim;
+                    a.actionType = w.two_handedActions[i].actionType;
             }
         }
 
@@ -132,6 +147,8 @@ namespace SA
                 Action a = GetAction((ActionInput)i);
                 a.targetAnim = null;
                 a.mirror = false;
+                a.actionType = ActionType.attack;
+
              }
          }
 
@@ -191,12 +208,17 @@ namespace SA
          rb, lb, rt, lt,
      }
 
+    public enum ActionType
+    {
+        attack,block,spells,parry
+    }
 
 
     [System.Serializable]
     public class Action
     {
         public ActionInput input;
+        public ActionType actionType;
         public string targetAnim;
         public bool mirror = false;
      }

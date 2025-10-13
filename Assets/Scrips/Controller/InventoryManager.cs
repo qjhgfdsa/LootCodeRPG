@@ -17,29 +17,17 @@ namespace SA
         public void Init(StateManager st)
         {
             states = st;
-            EquipRightWeapon();
-            EquipLeftWeapon();
+            EquipWeapon(rightHandWeapon, false);
+            EquipWeapon(leftHandWeapon, true);
+        
             CloseAllDamageColliders();
         }
 
-        public void EquipRightWeapon()
+        public void EquipWeapon(Weapon w, bool isLeft = false)
         {
-            string targetIdle = rightHandWeapon.oh_idle;
-            targetIdle += "_r";
-
-            states.anim.SetBool("mirror", false);
-            states.anim.Play("changeWeapon");
-            states.anim.Play(targetIdle);
-        }
-        public void EquipLeftWeapon()
-        {
-            if (hasLeftHandWeapon == false)
-                return;
-
-            string targetIdle = leftHandWeapon.oh_idle;
-            targetIdle += "_l";
-
-            states.anim.SetBool("mirror", true);
+            String targetIdle = w.oh_idle;
+            targetIdle += isLeft ? "_l" : "_r";
+            states.anim.SetBool("mirror", isLeft);
             states.anim.Play("changeWeapon");
             states.anim.Play(targetIdle);
         }
@@ -76,7 +64,7 @@ namespace SA
         public string th_idle;
         public List<Action> actions;
         public List<Action> two_handedActions;
-        public bool LeftHandmirror;
+        public bool LeftHandMirror;
         public GameObject weaponModel;
         public WeaponHook w_Hook;
 
