@@ -8,6 +8,8 @@ namespace SA
     public class EnemyStates : MonoBehaviour
     {
         public float health;
+        public bool canBeParried = true;
+        public bool parryIsOn = true;
         public bool isInvicible;
         public bool canMove;
         public bool isDead;
@@ -20,6 +22,8 @@ namespace SA
 
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
+
+        float timer;
 
 
         void Start()
@@ -35,8 +39,9 @@ namespace SA
             if (a_hook == null)
                 a_hook = anim.gameObject.AddComponent<AnimatorHook>();
             a_hook.Init(null, this);
-            
+
             InitRagdoll();
+            parryIsOn = false;
         }
 
         void InitRagdoll()
@@ -55,7 +60,7 @@ namespace SA
                 col.isTrigger = true;
                 ragdollColliders.Add(col);
             }
-        
+
         }
 
         public void EnableRagdoll()
@@ -70,7 +75,7 @@ namespace SA
             Collider controllerCollider = rigid.gameObject.GetComponent<Collider>();
             controllerCollider.enabled = false;
             rigid.isKinematic = true;
-            
+
             StartCoroutine(CloseAnimator());
         }
 
@@ -93,21 +98,35 @@ namespace SA
                     isDead = true;
                     EnableRagdoll();
                 }
-         
+
             }
 
             if (isInvicible)
-                {
-                    isInvicible = !canMove;
-                }
+            {
+                isInvicible = !canMove;
+            }
 
-            if(canMove)
+            if (canMove)
             {
                 anim.applyRootMotion = false;
+
+                timer += Time.deltaTime;
+                if (timer > 3)
+                {
+                    DoAction();
+                    timer = 0;
+                }
             }
-            
+
         }
 
+        void DoAction()
+        {
+            anim.applyRootMotion = true;
+            anim.Play("oh_attack_1");
+            anim.SetBool("canMove", false);
+
+        }
 
 
         public void DoDamage(float v)
@@ -123,8 +142,22 @@ namespace SA
             Debug.Log("Enemy Health: " + health);
         }
 
+        public void CheckForParry(Transform target)
+        {
+           if (canBeParried == false || isInvicible)
+                return;
 
+            Vector3 dir = transform.position - target.position;
+            dir.Normalize();
+            float dot = Vector3.Dot(target.forward, dir);
+            if (dot < 0f)
+                return;
 
-
+            isInvicible = true;
+            anim.Play("attack_interrupt");
+            anim.applyRootMotion = true;
+            anim.SetBool("canMove", false);
+            Debug.Log("Enemy Parried!");
+        }
     }
 }

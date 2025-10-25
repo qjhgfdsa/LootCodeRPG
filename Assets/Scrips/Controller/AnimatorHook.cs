@@ -10,7 +10,7 @@ namespace SA
         Rigidbody rigid;
         EnemyStates eStates;
 
-  
+
         public float rm_Mutil;
         bool rolling;
         float roll_t;
@@ -38,10 +38,10 @@ namespace SA
                 delta = eSt.delta;
             }
 
-           // rollCurve = states.roll_curve;
+            // rollCurve = states.roll_curve;
         }
 
-        
+
 
         public void InitForRoll()
         {
@@ -62,7 +62,7 @@ namespace SA
         {
             if (states == null && eStates == null)
                 return;
-                
+
             if (rigid == null)
                 return;
 
@@ -71,8 +71,8 @@ namespace SA
             {
                 if (states.canMove)
                     return;
-                    
-                 delta = states.delta;
+
+                delta = states.delta;
 
             }
 
@@ -84,7 +84,7 @@ namespace SA
                 delta = eStates.delta;
             }
 
-             rigid.linearDamping = 0;
+            rigid.linearDamping = 0;
 
             if (rm_Mutil == 0)
                 rm_Mutil = 1;
@@ -95,8 +95,8 @@ namespace SA
                 delta2.y = 0;
                 Vector3 v = (delta2 * rm_Mutil) / delta;
 
-                if(!rigid.isKinematic)
-                rigid.linearVelocity = v; 
+                if (!rigid.isKinematic)
+                    rigid.linearVelocity = v;
             }
             else
             {
@@ -121,18 +121,60 @@ namespace SA
 
         public void OpenDamageColliders()
         {
-            if (states == null)
-                return;
-            states.inventoryManager.OpenAllDamageColliders();
+            if (states)
+            {
+                states.inventoryManager.OpenAllDamageColliders();
+            }
+            OpenParryFlag();
 
         }
 
         public void CloseDamageColliders()
         {
+            if (states)
+            {
+                states.inventoryManager.CloseAllDamageColliders();
+            }
+            CloseParryFlag();
+        }
+
+        public void OpenParryCollider()
+        {
             if (states == null)
                 return;
-            states.inventoryManager.CloseAllDamageColliders();
-
+            states.inventoryManager.OpenParryCollider();
         }
+        public void CloseParryCollider()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.CloseParryCollider();
+        }
+        public void OpenParryFlag()
+        {
+            if (states)
+            {
+                states.parryIsOn = true;
+
+            }
+            if (eStates)
+            {
+                eStates.parryIsOn = true;
+            }
+        }
+
+        public void CloseParryFlag()
+        {
+             if (states)
+            {
+                states.parryIsOn = false;
+
+            }
+            if (eStates)
+            {
+                eStates.parryIsOn = false;
+            }
+
+        } 
     }
 }

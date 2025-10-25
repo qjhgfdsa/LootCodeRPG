@@ -39,6 +39,8 @@ namespace SA
         public bool usingItem;
         public bool isBlocking;
         public bool isLeftHand;
+        public bool canBeParried;
+        public bool parryIsOn;
 
 
 
@@ -282,7 +284,7 @@ namespace SA
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
-
+            canBeParried = slot.canBeParried;
             canMove = false;
             inAction = true;
             anim.SetBool("mirror", slot.mirror);

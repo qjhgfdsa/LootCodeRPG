@@ -91,10 +91,12 @@ namespace SA
             Action w_rb = r_w.GetAction(r_w.actions, ActionInput.rb);
             if (rightRB != null) rb.targetAnim = w_rb.targetAnim;
             rb.actionType = w_rb.actionType;
+            rb.canBeParried = w_rb.canBeParried;
               
             Action w_rt = r_w.GetAction(r_w.actions, ActionInput.rt);
             if (rightRT != null) rt.targetAnim = w_rt.targetAnim;
             rt.actionType = w_rt.actionType;
+            rt.canBeParried = w_rt.canBeParried;
           
             // Left hand actions - แก้ไขตรงนี้
             Action lb = GetAction(ActionInput.lb);
@@ -108,10 +110,12 @@ namespace SA
             Action w_lb = l_w.GetAction(l_w.actions, ActionInput.lb);
             if (leftLB != null) lb.targetAnim = w_lb.targetAnim;
             lb.actionType = w_lb.actionType;
+            lb.canBeParried = w_lb.canBeParried;
 
             Action w_lt = l_w.GetAction(l_w.actions, ActionInput.lt);
             if (leftLT != null) lt.targetAnim = w_lt.targetAnim;
             lt.actionType = w_lt.actionType;
+            lt.canBeParried = w_lt.canBeParried;
             
             if (l_w.LeftHandMirror)
             {
@@ -221,6 +225,7 @@ namespace SA
         public ActionType actionType;
         public string targetAnim;
         public bool mirror = false;
+        public bool canBeParried ;
      }
 
      [System.Serializable]
