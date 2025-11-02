@@ -225,7 +225,7 @@ namespace SA
         public ActionType actionType;
         public string targetAnim;
         public bool mirror = false;
-        public bool canBeParried ;
+        public bool canBeParried = true;
      }
 
      [System.Serializable]

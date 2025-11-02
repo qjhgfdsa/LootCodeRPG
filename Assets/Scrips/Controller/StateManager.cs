@@ -48,6 +48,7 @@ namespace SA
         public EnemyTarget lockOnTarget;
         public Transform lockOnTransform;
         public AnimationCurve roll_curve;
+        public EnemyStates parryTarget;
 
 
         [HideInInspector]

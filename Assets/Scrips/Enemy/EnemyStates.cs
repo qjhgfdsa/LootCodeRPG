@@ -10,9 +10,11 @@ namespace SA
         public float health;
         public bool canBeParried = true;
         public bool parryIsOn = true;
+        public bool doParry = false;
         public bool isInvicible;
         public bool canMove;
         public bool isDead;
+        StateManager parriedBy;
 
         public Animator anim;
         EnemyTarget enTarget;
@@ -106,8 +108,16 @@ namespace SA
                 isInvicible = !canMove;
             }
 
+            if(parriedBy !=null && parryIsOn == false)
+            {
+                parriedBy.parryTarget = null;
+                parriedBy = null;
+                
+            }
+
             if (canMove)
             {
+                parryIsOn = false;
                 anim.applyRootMotion = false;
 
                 timer += Time.deltaTime;
@@ -142,7 +152,7 @@ namespace SA
             Debug.Log("Enemy Health: " + health);
         }
 
-        public void CheckForParry(Transform target)
+        public void CheckForParry(Transform target, StateManager states)
         {
            if (canBeParried == false || isInvicible)
                 return;
@@ -158,6 +168,11 @@ namespace SA
             anim.applyRootMotion = true;
             anim.SetBool("canMove", false);
             Debug.Log("Enemy Parried!");
+            states.parryTarget = this;
+            parriedBy = states;
+            doParry = true;
+
+            return;
         }
     }
 }
