@@ -21,8 +21,10 @@ namespace SA
             states = st;
             EquipWeapon(rightHandWeapon, false);
             EquipWeapon(leftHandWeapon, true);
-            
+
             CloseAllDamageColliders();
+            ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
+            pr.InitPlayer(st);
             CloseParryCollider();
         }
 

@@ -12,6 +12,7 @@ namespace SA
         public bool parryIsOn = true;
         public bool doParry = false;
         public bool isInvicible;
+        public bool dontDoAnything;
         public bool canMove;
         public bool isDead;
         StateManager parriedBy;
@@ -93,6 +94,12 @@ namespace SA
             delta = Time.deltaTime;
             canMove = anim.GetBool("canMove");
 
+            if (dontDoAnything)
+            {
+                dontDoAnything = !canMove;
+                return;
+            } 
+
             if (health <= 0)
             {
                 if (!isDead)
@@ -154,7 +161,7 @@ namespace SA
 
         public void CheckForParry(Transform target, StateManager states)
         {
-           if (canBeParried == false || isInvicible)
+            if (canBeParried == false || isInvicible)
                 return;
 
             Vector3 dir = transform.position - target.position;
@@ -173,6 +180,13 @@ namespace SA
             doParry = true;
 
             return;
+        }
+        public void IsGettingParried()
+        {
+            health -= 500;
+            dontDoAnything = true;
+            anim.SetBool("canMove", false);
+            anim.Play("parry_recieved");
         }
     }
 }

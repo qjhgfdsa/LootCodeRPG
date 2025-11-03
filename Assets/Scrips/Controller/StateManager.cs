@@ -28,6 +28,7 @@ namespace SA
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
         public float rollSpeed = 1;
+        public float parryOffset = 1.4f;
 
         [Header("States")]
         public bool run;
@@ -80,7 +81,7 @@ namespace SA
             rigid.linearDamping = 4;
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
-          
+
             inventoryManager = GetComponent<InventoryManager>();
             inventoryManager.Init(this);
 
@@ -168,9 +169,9 @@ namespace SA
             {
                 run = false;
                 moveAmount = Mathf.Clamp(moveAmount, 0, 0.45f);
-                
+
             }
-            
+
             if (run)
                 targetSpeed = runSpeed;
 
@@ -180,11 +181,11 @@ namespace SA
             if (run)
                 lockOn = false;
 
-            Vector3 targetDir = (!lockOn) ? moveDir 
+            Vector3 targetDir = (!lockOn) ? moveDir
             : (lockOnTransform != null) ?
             lockOnTransform.transform.position - transform.position :
              moveDir;
-           
+
             targetDir.y = 0;
             if (targetDir == Vector3.zero)
                 targetDir = transform.forward;
@@ -207,7 +208,7 @@ namespace SA
 
         public void DetectItemAction()
         {
-            if (!canMove || usingItem  || isBlocking)
+            if (!canMove || usingItem || isBlocking)
                 return;
 
             if (!itemInput)
@@ -236,11 +237,11 @@ namespace SA
             Action slot = actionManager.GetActionSlot(this);
             if (slot == null)
                 return;
-            
+
             switch (slot.actionType)
             {
                 case ActionType.attack:
-                  AttackAction(slot);
+                    AttackAction(slot);
                     break;
                 case ActionType.block:
                     BlockAction(slot);
@@ -254,22 +255,66 @@ namespace SA
                     break;
             }
         }
-        
-        void AttackAction (Action slot)
+
+        void AttackAction(Action slot)
         {
-               string targetAnim = null;
+            if (CheckForParry(slot))
+                return;
+
+            string targetAnim = null;
             targetAnim = slot.targetAnim;
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
-            canMove = false;
+            /*canMove = false;
             inAction = true;
             anim.SetBool("mirror", slot.mirror);
-            anim.CrossFade(targetAnim, 0.2f);
-            
+            anim.CrossFade(targetAnim, 0.2f);*/
+
         }
 
+        bool CheckForParry(Action slot)
+        {
+            if (parryTarget == null)
+                return false;
+
+            float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
+
+            if (dis > 3)
+                return false;
+
+            Vector3 dir = parryTarget.transform.position - transform.position;
+            dir.Normalize();
+            dir.y = 0;
+            float angle = Vector3.Angle(dir, transform.forward);
+
+            if (angle > 60)
+            {
+                Vector3 targetPosition = -dir * parryOffset;
+                targetPosition += parryTarget.transform.position;
+                transform.position = targetPosition;
+
+                if (dir == Vector3.zero)
+                    dir = -parryTarget.transform.forward;
+
+                Quaternion eRotation = Quaternion.LookRotation(-dir);
+                Quaternion ourRot = Quaternion.LookRotation(dir);
+                
+                parryTarget.transform.rotation = eRotation;
+                transform.rotation = ourRot;
+                parryTarget.IsGettingParried();
+
+                canMove = false;
+                inAction = true;
+                anim.SetBool("mirror", slot.mirror);
+                anim.CrossFade("parry_attack", 0.2f);
+                return true;
+            }
+
+            return false;
+
+        }
         void BlockAction(Action slot)
         {
             isBlocking = true;
@@ -388,7 +433,6 @@ namespace SA
 
             return r;
         }
-
         public void HandleTwoHanded()
         {
             anim.SetBool("two_handed", isTwoHanded);
@@ -396,6 +440,11 @@ namespace SA
                 actionManager.UpdateActionsTwoHanded();
             else
                 actionManager.UpdateActionsOneHanded();
+        }
+
+        public void IsGettingParried()
+        {
+
         }
     }
 }
