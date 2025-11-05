@@ -267,10 +267,20 @@ namespace SA
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
-            /*canMove = false;
+            canMove = false;
             inAction = true;
+
+            float targetSpeed = 1;
+            if (slot.changeSpeed)
+            {
+                targetSpeed = slot.animSpeed;
+                if (targetSpeed == 0)
+                    targetSpeed = 1;
+            }
+
+            anim.SetFloat("animSpeed", targetSpeed);
             anim.SetBool("mirror", slot.mirror);
-            anim.CrossFade(targetAnim, 0.2f);*/
+            anim.CrossFade(targetAnim, 0.2f);
 
         }
 
@@ -330,6 +340,17 @@ namespace SA
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
+            
+             float targetSpeed = 1;
+            if (slot.changeSpeed)
+            {
+                targetSpeed = slot.animSpeed;
+                if (targetSpeed == 0)
+                    targetSpeed = 1;
+            }
+
+            anim.SetFloat("animSpeed", targetSpeed);
+
             canBeParried = slot.canBeParried;
             canMove = false;
             inAction = true;

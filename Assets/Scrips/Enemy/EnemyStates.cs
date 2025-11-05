@@ -10,7 +10,7 @@ namespace SA
         public float health;
         public bool canBeParried = true;
         public bool parryIsOn = true;
-        public bool doParry = false;
+       // public bool doParry = false;
         public bool isInvicible;
         public bool dontDoAnything;
         public bool canMove;
@@ -161,7 +161,7 @@ namespace SA
 
         public void CheckForParry(Transform target, StateManager states)
         {
-            if (canBeParried == false || isInvicible)
+            if (canBeParried == false || parryIsOn==false || isInvicible)
                 return;
 
             Vector3 dir = transform.position - target.position;
@@ -177,7 +177,7 @@ namespace SA
             Debug.Log("Enemy Parried!");
             states.parryTarget = this;
             parriedBy = states;
-            doParry = true;
+           
 
             return;
         }

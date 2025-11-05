@@ -92,11 +92,15 @@ namespace SA
             if (rightRB != null) rb.targetAnim = w_rb.targetAnim;
             rb.actionType = w_rb.actionType;
             rb.canBeParried = w_rb.canBeParried;
+            rb.changeSpeed = w_rb.changeSpeed;
+            rb.animSpeed = w_rb.animSpeed;
               
             Action w_rt = r_w.GetAction(r_w.actions, ActionInput.rt);
             if (rightRT != null) rt.targetAnim = w_rt.targetAnim;
             rt.actionType = w_rt.actionType;
             rt.canBeParried = w_rt.canBeParried;
+            rt.changeSpeed = w_rt.changeSpeed;
+            rt.animSpeed = w_rt.animSpeed;
           
             // Left hand actions - แก้ไขตรงนี้
             Action lb = GetAction(ActionInput.lb);
@@ -111,11 +115,15 @@ namespace SA
             if (leftLB != null) lb.targetAnim = w_lb.targetAnim;
             lb.actionType = w_lb.actionType;
             lb.canBeParried = w_lb.canBeParried;
+            lb.changeSpeed = w_lb.changeSpeed;
+            lb.animSpeed = w_lb.animSpeed;  
 
             Action w_lt = l_w.GetAction(l_w.actions, ActionInput.lt);
             if (leftLT != null) lt.targetAnim = w_lt.targetAnim;
             lt.actionType = w_lt.actionType;
             lt.canBeParried = w_lt.canBeParried;
+            lt.changeSpeed = w_lt.changeSpeed;
+            lt.animSpeed = w_lt.animSpeed;
             
             if (l_w.LeftHandMirror)
             {
@@ -226,6 +234,8 @@ namespace SA
         public string targetAnim;
         public bool mirror = false;
         public bool canBeParried = true;
+        public bool changeSpeed = false;
+        public float animSpeed = 1;
      }
 
      [System.Serializable]
