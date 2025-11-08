@@ -117,7 +117,7 @@ namespace SA
 
             if(parriedBy !=null && parryIsOn == false)
             {
-                parriedBy.parryTarget = null;
+                //parriedBy.parryTarget = null;
                 parriedBy = null;
                 
             }
@@ -174,7 +174,7 @@ namespace SA
             anim.Play("attack_interrupt");
             anim.applyRootMotion = true;
             anim.SetBool("canMove", false);
-            states.parryTarget = this;
+            //states.parryTarget = this;
             parriedBy = states;
             return;
         }

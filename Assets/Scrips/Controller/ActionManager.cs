@@ -69,7 +69,10 @@ namespace SA
                  a.targetAnim = w.two_handedActions[i].targetAnim;
              }
          }*/
-
+        public void DeepCopyAction()
+        {
+            
+        }
         public void UpdateActionsWithLeftHand()
         {
 

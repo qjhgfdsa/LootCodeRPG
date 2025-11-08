@@ -341,10 +341,12 @@ MonoBehaviour:
   health: 0
   canBeParried: 1
   parryIsOn: 1
+  doParry: 0
   isInvicible: 0
   dontDoAnything: 0
   canMove: 0
   isDead: 0
+  parriedBy: {fileID: 0}
   anim: {fileID: 0}
   rigid: {fileID: 0}
   delta: 0
@@ -1793,7 +1795,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  parryTarget: {fileID: 0}
   anim: {fileID: 0}
   rigid: {fileID: 0}
   a_hook: {fileID: 0}
@@ -4963,10 +4964,12 @@ MonoBehaviour:
   health: 0
   canBeParried: 1
   parryIsOn: 1
+  doParry: 0
   isInvicible: 0
   dontDoAnything: 0
   canMove: 0
   isDead: 0
+  parriedBy: {fileID: 0}
   anim: {fileID: 0}
   rigid: {fileID: 0}
   delta: 0

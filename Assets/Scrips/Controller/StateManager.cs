@@ -50,7 +50,7 @@ namespace SA
         public EnemyTarget lockOnTarget;
         public Transform lockOnTransform;
         public AnimationCurve roll_curve;
-        public EnemyStates parryTarget;
+        //public EnemyStates parryTarget;
 
 
         [HideInInspector]
@@ -262,8 +262,8 @@ namespace SA
             if (CheckForParry(slot))
                 return;
             
-            /*if (CheckForBackstab(slot))
-                return;*/
+            if (CheckForBackstab(slot))
+                return;
 
             string targetAnim = null;
             targetAnim = slot.targetAnim;
@@ -290,30 +290,32 @@ namespace SA
 
         bool CheckForParry(Action slot)
         {
-           /* EnemyStates parryTarget = null;
+            EnemyStates parryTarget = null;
             Vector3 origin = transform.position;
             origin.y += 1;
             Vector3 rayDir = transform.forward;
             RaycastHit hit;
-            if (Physics.Raycast(origin, rayDir, out hit, 3, ignoreLayers))
+            if (Physics.Raycast(origin, rayDir, out hit, 3,  ~ignoreLayers))
             {
                 parryTarget = hit.transform.GetComponentInParent<EnemyStates>();
             }
+
+            Debug.DrawRay(origin, rayDir * 3, Color.red, 0.5f);
 
             if (parryTarget == null)
                 return false;
 
             if(parryTarget.parriedBy == null)
-                return false;*/
+                return false;
             
-             if (parryTarget == null)
+             /*if (parryTarget == null)
                 return false;
                 
 
             float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
 
             if (dis > 3)
-                return false;
+                return false;*/
 
             Vector3 dir = parryTarget.transform.position - transform.position;
             dir.Normalize();
@@ -349,14 +351,14 @@ namespace SA
 
         }
       
-      /*bool CheckForBackstab(Action slot)
+      bool CheckForBackstab(Action slot)
         {
             EnemyStates backstab = null;
             Vector3 origin = transform.position;
             origin.y += 1;
             Vector3 rayDir = transform.forward;
             RaycastHit hit;
-            if (Physics.Raycast(origin, rayDir, out hit, 1, ignoreLayers))
+            if (Physics.Raycast(origin, rayDir, out hit, 1, ~ignoreLayers))
             {
                 backstab = hit.transform.GetComponentInParent<EnemyStates>();
             }
@@ -368,7 +370,7 @@ namespace SA
             dir.Normalize();
             dir.y = 0;
             float angle = Vector3.Angle(backstab.transform.forward, dir);
-            Debug.Log("Backstab Angle: " + angle);
+            Debug.Log("Backstab Angle: ");
             
             if (angle > 150)
             {
@@ -388,7 +390,7 @@ namespace SA
 
             }
             return false;
-        }*/
+        }
         void BlockAction(Action slot)
         {
             isBlocking = true;
