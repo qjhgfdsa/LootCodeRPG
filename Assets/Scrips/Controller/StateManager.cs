@@ -262,8 +262,8 @@ namespace SA
             if (CheckForParry(slot))
                 return;
             
-            if (CheckForBackstab(slot))
-                return;
+            /*if (CheckForBackstab(slot))
+                return;*/
 
             string targetAnim = null;
             targetAnim = slot.targetAnim;
@@ -290,12 +290,7 @@ namespace SA
 
         bool CheckForParry(Action slot)
         {
-            if (parryTarget == null)
-                return false;
-                
-              
            /* EnemyStates parryTarget = null;
-            Debug.Log("Checking for parry...");
             Vector3 origin = transform.position;
             origin.y += 1;
             Vector3 rayDir = transform.forward;
@@ -310,6 +305,10 @@ namespace SA
 
             if(parryTarget.parriedBy == null)
                 return false;*/
+            
+             if (parryTarget == null)
+                return false;
+                
 
             float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
 
@@ -350,9 +349,9 @@ namespace SA
 
         }
       
-      bool CheckForBackstab(Action slot)
+      /*bool CheckForBackstab(Action slot)
         {
-              EnemyStates backstab = null;
+            EnemyStates backstab = null;
             Vector3 origin = transform.position;
             origin.y += 1;
             Vector3 rayDir = transform.forward;
@@ -369,7 +368,8 @@ namespace SA
             dir.Normalize();
             dir.y = 0;
             float angle = Vector3.Angle(backstab.transform.forward, dir);
-
+            Debug.Log("Backstab Angle: " + angle);
+            
             if (angle > 150)
             {
                 Vector3 targetPosition = dir * parryOffset;
@@ -388,7 +388,7 @@ namespace SA
 
             }
             return false;
-        }
+        }*/
         void BlockAction(Action slot)
         {
             isBlocking = true;

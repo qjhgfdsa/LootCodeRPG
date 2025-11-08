@@ -10,7 +10,7 @@ namespace SA
         public float health;
         public bool canBeParried = true;
         public bool parryIsOn = true;
-       // public bool doParry = false;
+        public bool doParry = false;
         public bool isInvicible;
         public bool dontDoAnything;
         public bool canMove;
@@ -117,7 +117,7 @@ namespace SA
 
             if(parriedBy !=null && parryIsOn == false)
             {
-                //parriedBy.parryTarget = null;
+                parriedBy.parryTarget = null;
                 parriedBy = null;
                 
             }
@@ -174,11 +174,8 @@ namespace SA
             anim.Play("attack_interrupt");
             anim.applyRootMotion = true;
             anim.SetBool("canMove", false);
-            Debug.Log("Enemy Parried!");
             states.parryTarget = this;
             parriedBy = states;
-           
-
             return;
         }
         public void IsGettingParried()
