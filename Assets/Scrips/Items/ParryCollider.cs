@@ -50,7 +50,7 @@ namespace SA
             {
                 EnemyStates e_st = other.transform.GetComponentInParent<EnemyStates>();
 
-                if (e_st != null)
+                if (e_st == null)
                 {
                      e_st.CheckForParry(transform.root, states);
                 }

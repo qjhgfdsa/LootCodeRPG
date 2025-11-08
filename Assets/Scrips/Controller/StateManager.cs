@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace SA
 {
     public class StateManager : MonoBehaviour
@@ -260,6 +261,9 @@ namespace SA
         {
             if (CheckForParry(slot))
                 return;
+            
+            if (CheckForBackstab(slot))
+                return;
 
             string targetAnim = null;
             targetAnim = slot.targetAnim;
@@ -288,6 +292,24 @@ namespace SA
         {
             if (parryTarget == null)
                 return false;
+                
+              
+           /* EnemyStates parryTarget = null;
+            Debug.Log("Checking for parry...");
+            Vector3 origin = transform.position;
+            origin.y += 1;
+            Vector3 rayDir = transform.forward;
+            RaycastHit hit;
+            if (Physics.Raycast(origin, rayDir, out hit, 3, ignoreLayers))
+            {
+                parryTarget = hit.transform.GetComponentInParent<EnemyStates>();
+            }
+
+            if (parryTarget == null)
+                return false;
+
+            if(parryTarget.parriedBy == null)
+                return false;*/
 
             float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
 
@@ -297,10 +319,12 @@ namespace SA
             Vector3 dir = parryTarget.transform.position - transform.position;
             dir.Normalize();
             dir.y = 0;
-            float angle = Vector3.Angle(dir, transform.forward);
+            float angle = Vector3.Angle(transform.forward,dir);
 
-            if (angle > 60)
+            if (angle < 60)
             {
+                  Debug.Log("Checking for parry...");
+
                 Vector3 targetPosition = -dir * parryOffset;
                 targetPosition += parryTarget.transform.position;
                 transform.position = targetPosition;
@@ -310,7 +334,7 @@ namespace SA
 
                 Quaternion eRotation = Quaternion.LookRotation(-dir);
                 Quaternion ourRot = Quaternion.LookRotation(dir);
-                
+
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = ourRot;
                 parryTarget.IsGettingParried();
@@ -324,6 +348,46 @@ namespace SA
 
             return false;
 
+        }
+      
+      bool CheckForBackstab(Action slot)
+        {
+              EnemyStates backstab = null;
+            Vector3 origin = transform.position;
+            origin.y += 1;
+            Vector3 rayDir = transform.forward;
+            RaycastHit hit;
+            if (Physics.Raycast(origin, rayDir, out hit, 1, ignoreLayers))
+            {
+                backstab = hit.transform.GetComponentInParent<EnemyStates>();
+            }
+
+            if (backstab == null)
+                return false;
+                
+            Vector3 dir = transform.position - backstab.transform.position;
+            dir.Normalize();
+            dir.y = 0;
+            float angle = Vector3.Angle(backstab.transform.forward, dir);
+
+            if (angle > 150)
+            {
+                Vector3 targetPosition = dir * parryOffset;
+                targetPosition += backstab.transform.position;
+                transform.position = targetPosition;
+
+
+                backstab.transform.rotation = transform.rotation;
+                backstab.IsGettingParried();
+
+                canMove = false;
+                inAction = true;
+                anim.SetBool("mirror", slot.mirror);
+                anim.CrossFade("parry_attack", 0.2f);
+                return true;
+
+            }
+            return false;
         }
         void BlockAction(Action slot)
         {

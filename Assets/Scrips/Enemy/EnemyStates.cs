@@ -15,7 +15,7 @@ namespace SA
         public bool dontDoAnything;
         public bool canMove;
         public bool isDead;
-        StateManager parriedBy;
+        public StateManager parriedBy;
 
         public Animator anim;
         EnemyTarget enTarget;
@@ -117,7 +117,7 @@ namespace SA
 
             if(parriedBy !=null && parryIsOn == false)
             {
-                parriedBy.parryTarget = null;
+                //parriedBy.parryTarget = null;
                 parriedBy = null;
                 
             }
@@ -167,7 +167,7 @@ namespace SA
             Vector3 dir = transform.position - target.position;
             dir.Normalize();
             float dot = Vector3.Dot(target.forward, dir);
-            if (dot < 0f)
+            if (dot < 0)
                 return;
 
             isInvicible = true;
@@ -187,6 +187,7 @@ namespace SA
             dontDoAnything = true;
             anim.SetBool("canMove", false);
             anim.Play("parry_recieved");
+            Debug.Log("Enemy Got Parried!");
         }
     }
 }
