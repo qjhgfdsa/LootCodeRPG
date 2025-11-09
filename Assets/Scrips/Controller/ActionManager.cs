@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 
@@ -28,17 +29,18 @@ namespace SA
         {
             EmptyAllSlot();
 
+            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rb, ActionInput.rb);
+            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rt, ActionInput.rt);
+
             if (states.inventoryManager.hasLeftHandWeapon)
             {
-                UpdateActionsWithLeftHand();
-                return;
+                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rb, ActionInput.lb, true);
+                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rt, ActionInput.lt, true);
             }
-            Weapon w = states.inventoryManager.rightHandWeapon;
-
-            for (int i = 0; i < w.actions.Count; i++)
+            else
             {
-                Action a = GetAction(w.actions[i].input);
-                a.targetAnim = w.actions[i].targetAnim;
+                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lb, ActionInput.lb);
+                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lt, ActionInput.lt);
             }
         }
         /*   public void UpdateActionsWithLeftHand()
@@ -69,71 +71,24 @@ namespace SA
                  a.targetAnim = w.two_handedActions[i].targetAnim;
              }
          }*/
-        public void DeepCopyAction()
+        public void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, bool isLeftHand = false)
         {
-            
-        }
-        public void UpdateActionsWithLeftHand()
-        {
+            Action a = GetAction(assing);
+            Action w_a = w.GetAction(w.actions, inp);
+            if (w_a == null)
+             return;
+            a.targetAnim = w_a.targetAnim;
+            a.actionType = w_a.actionType;
+            a.canBeParried = w_a.canBeParried;
+            a.changeSpeed = w_a.changeSpeed;
+            a.animSpeed = w_a.animSpeed;
+            a.canBackStab = w_a.canBackStab;
 
-            Weapon r_w = states.inventoryManager.rightHandWeapon;
-            Weapon l_w = states.inventoryManager.leftHandWeapon;
-
-            // ตรวจสอบว่า weapon ไม่เป็น null
-            if (r_w == null || l_w == null) return;
-
-            // Right hand actions
-            Action rb = GetAction(ActionInput.rb);
-            Action rt = GetAction(ActionInput.rt);
-
-         
-
-            var rightRB = r_w.GetAction(r_w.actions, ActionInput.rb);
-            var rightRT = r_w.GetAction(r_w.actions, ActionInput.rt);
-
-            Action w_rb = r_w.GetAction(r_w.actions, ActionInput.rb);
-            if (rightRB != null) rb.targetAnim = w_rb.targetAnim;
-            rb.actionType = w_rb.actionType;
-            rb.canBeParried = w_rb.canBeParried;
-            rb.changeSpeed = w_rb.changeSpeed;
-            rb.animSpeed = w_rb.animSpeed;
-              
-            Action w_rt = r_w.GetAction(r_w.actions, ActionInput.rt);
-            if (rightRT != null) rt.targetAnim = w_rt.targetAnim;
-            rt.actionType = w_rt.actionType;
-            rt.canBeParried = w_rt.canBeParried;
-            rt.changeSpeed = w_rt.changeSpeed;
-            rt.animSpeed = w_rt.animSpeed;
-          
-            // Left hand actions - แก้ไขตรงนี้
-            Action lb = GetAction(ActionInput.lb);
-            Action lt = GetAction(ActionInput.lt);
-
-          
-
-            var leftLB = l_w.GetAction(l_w.actions, ActionInput.lb); // เปลี่ยนจาก rb เป็น lb
-            var leftLT = l_w.GetAction(l_w.actions, ActionInput.lt); // เปลี่ยนจาก rt เป็น lt
-
-            Action w_lb = l_w.GetAction(l_w.actions, ActionInput.lb);
-            if (leftLB != null) lb.targetAnim = w_lb.targetAnim;
-            lb.actionType = w_lb.actionType;
-            lb.canBeParried = w_lb.canBeParried;
-            lb.changeSpeed = w_lb.changeSpeed;
-            lb.animSpeed = w_lb.animSpeed;  
-
-            Action w_lt = l_w.GetAction(l_w.actions, ActionInput.lt);
-            if (leftLT != null) lt.targetAnim = w_lt.targetAnim;
-            lt.actionType = w_lt.actionType;
-            lt.canBeParried = w_lt.canBeParried;
-            lt.changeSpeed = w_lt.changeSpeed;
-            lt.animSpeed = w_lt.animSpeed;
-            
-            if (l_w.LeftHandMirror)
-            {
-                lb.mirror = true;
-                lt.mirror = true;
+            if(isLeftHand)
+            {      
+                a.mirror = true;
             }
-}
+        }
 
         public void UpdateActionsTwoHanded()
         {
@@ -239,6 +194,7 @@ namespace SA
         public bool canBeParried = true;
         public bool changeSpeed = false;
         public float animSpeed = 1;
+        public bool canBackStab = false;
      }
 
      [System.Serializable]

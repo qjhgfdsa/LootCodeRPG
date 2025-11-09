@@ -353,6 +353,9 @@ namespace SA
       
       bool CheckForBackstab(Action slot)
         {
+            if (slot.canBackStab == false)
+                return false;
+                
             EnemyStates backstab = null;
             Vector3 origin = transform.position;
             origin.y += 1;

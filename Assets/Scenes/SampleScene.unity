@@ -1956,6 +1956,7 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canBackStab: 0
   - input: 2
     actionType: 0
     targetAnim: 
@@ -1963,6 +1964,7 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canBackStab: 0
   - input: 1
     actionType: 0
     targetAnim: 
@@ -1970,6 +1972,7 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canBackStab: 0
   - input: 3
     actionType: 0
     targetAnim: 
@@ -1977,6 +1980,7 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canBackStab: 0
   consumableItem:
     targetAnim: bestus
     item_id: 
@@ -2003,6 +2007,7 @@ MonoBehaviour:
       canBeParried: 1
       changeSpeed: 0
       animSpeed: 1
+      canBackStab: 1
     - input: 2
       actionType: 0
       targetAnim: oh_attack_3
@@ -2010,6 +2015,7 @@ MonoBehaviour:
       canBeParried: 1
       changeSpeed: 0
       animSpeed: 1
+      canBackStab: 1
     two_handedActions: []
     LeftHandMirror: 0
     weaponModel: {fileID: 290650444}
@@ -2019,20 +2025,22 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - input: 1
+    - input: 0
       actionType: 1
       targetAnim: oh_attack_1
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 1
-    - input: 3
+      canBackStab: 0
+    - input: 2
       actionType: 3
       targetAnim: parry
       mirror: 0
       canBeParried: 0
       changeSpeed: 1
       animSpeed: 1.8
+      canBackStab: 0
     two_handedActions: []
     LeftHandMirror: 1
     weaponModel: {fileID: 216059515}
