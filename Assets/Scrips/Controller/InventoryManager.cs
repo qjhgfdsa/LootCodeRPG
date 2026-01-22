@@ -35,8 +35,14 @@ namespace SA
             states.anim.SetBool("mirror", isLeft);
             states.anim.Play("changeWeapon");
             states.anim.Play(targetIdle);
-        }
 
+            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
+            uiSlot.UpdateSlot(
+                (isLeft) ?
+                UI.QSlotType.lh : UI.QSlotType.rh, w.icon);
+
+          
+        }
         public void OpenAllDamageColliders()
         {
             if (rightHandWeapon.w_Hook != null)
@@ -75,6 +81,8 @@ namespace SA
     [System.Serializable]
     public class Weapon
     {
+        public string weaponId;
+        public Sprite icon;
         public string oh_idle;
         public string th_idle;
         public List<Action> actions;

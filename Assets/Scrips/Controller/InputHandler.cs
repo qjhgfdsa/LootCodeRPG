@@ -32,6 +32,8 @@ namespace SA
 
         void Start()
         {
+            UI.QuickSlot.singleton.Init();
+            
             states = GetComponent<StateManager>();
             states.Init();
 
