@@ -92,7 +92,7 @@ namespace SA
         void Update()
         {
             delta = Time.deltaTime;
-            canMove = anim.GetBool("canMove");
+            canMove = anim.GetBool(StaticStrings.canMove);
 
             if (dontDoAnything)
             {
@@ -141,7 +141,7 @@ namespace SA
         {
             anim.applyRootMotion = true;
             anim.Play("oh_attack_1");
-            anim.SetBool("canMove", false);
+            anim.SetBool(StaticStrings.canMove, false);
 
         }
 
@@ -155,7 +155,7 @@ namespace SA
             isInvicible = true;
             anim.Play("damage_01");
             anim.applyRootMotion = true;
-            anim.SetBool("canMove", false);
+            anim.SetBool(StaticStrings.canMove, false);
             Debug.Log("Enemy Health: " + health);
         }
 
@@ -171,9 +171,9 @@ namespace SA
                 return;
 
             isInvicible = true;
-            anim.Play("attack_interrupt");
+            anim.Play(StaticStrings.attack_interupt);
             anim.applyRootMotion = true;
-            anim.SetBool("canMove", false);
+            anim.SetBool(StaticStrings.canMove, false);
             //states.parryTarget = this;
             parriedBy = states;
             return;
@@ -182,8 +182,8 @@ namespace SA
         {
             health -= 500;
             dontDoAnything = true;
-            anim.SetBool("canMove", false);
-            anim.Play("parry_recieved");
+            anim.SetBool(StaticStrings.canMove, false);
+            anim.Play(StaticStrings.parry_receive);
             Debug.Log("Enemy Got Parried!");
         }
     }

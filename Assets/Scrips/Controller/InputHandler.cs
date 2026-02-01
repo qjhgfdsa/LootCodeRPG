@@ -61,23 +61,24 @@ namespace SA
 
         void GetInput()
         {
-            vertical = Input.GetAxis("Vertical");
-            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis(StaticStrings.Vertical);
+            horizontal = Input.GetAxis(StaticStrings.Horizontal);
 
-            b_input = Input.GetKey(KeyCode.LeftShift);//run
-            a_input = Input.GetKeyDown(KeyCode.Space);
+            b_input = Input.GetKey(StaticStrings.RunKey);//run
+            a_input = Input.GetKeyDown(StaticStrings.JumpKey);//jump
             //rolls_input = Input.GetKeyDown(KeyCode.LeftControl);
-            t_input = Input.GetKeyDown(KeyCode.T);//two handed
-            x_input = Input.GetKeyDown(KeyCode.X); //using item
-            lockon_input = Input.GetKeyDown(KeyCode.Tab);
+            t_input = Input.GetKeyDown(StaticStrings.TwoHandedKey);//two handed
+            x_input = Input.GetKeyDown(StaticStrings.UseItemKey); //using item
+            lockon_input = Input.GetKeyDown(StaticStrings.lockOnKey);
 
             // rt_axis = Input.GetAxis("RT");
             //rt_axis = Input.GetAxis("RT");
 
-            lt_input = Input.GetKey(KeyCode.Q);
-            lb_input = Input.GetKey(KeyCode.E);
-            rt_input = Input.GetKey(KeyCode.R);
-            rb_input = Input.GetKey(KeyCode.F);
+            lt_input = Input.GetKey(StaticStrings.AttackKey1);
+           lb_input = Input.GetKey(StaticStrings.AttackKey2);
+            rt_input = Input.GetKey(StaticStrings.AttackKey3);
+           rb_input = Input.GetKey(StaticStrings.AttackKey4);
+
 
             if (b_input)
                 b_timer += delta;
