@@ -40,6 +40,8 @@ namespace SA
         public static string attack_interupt = "attack_interrupt";
         public static string parry_receive = "parry_receive";
 
+        public static string backstabed = "backstabbed";
+
 
     
 

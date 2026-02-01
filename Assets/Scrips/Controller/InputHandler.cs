@@ -129,7 +129,8 @@ namespace SA
                     states.lockOnTarget = null;
                     states.lockOnTransform = null;
                     camManager.lockon = states.lockOn;
-                    camManager.lockonTarget = null;
+                    //camManager.currentEnemyTarget = null;
+                   // camManager.lockonTarget = null;
                 }
             }
 
@@ -140,7 +141,8 @@ namespace SA
                     if (states.lockOnTarget == null)
                         states.lockOn = false;
 
-                    camManager.lockonTarget = states.lockOnTarget;
+                    //camManager.lockonTarget = states.lockOnTarget;
+                    //camManager.currentEnemyTarget = states.lockOnTarget;
                     states.lockOnTransform = camManager.lockonTransform;
                     camManager.lockon = states.lockOn;
 

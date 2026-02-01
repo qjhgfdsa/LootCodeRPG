@@ -54,6 +54,5 @@ namespace SA
             index = Mathf.Clamp(index, 0, targets.Count);
             return targets[index];
         }
-
     }
 }

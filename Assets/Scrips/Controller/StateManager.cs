@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 namespace SA
@@ -30,6 +31,7 @@ namespace SA
         public float toGround = 0.5f;
         public float rollSpeed = 1;
         public float parryOffset = 1.4f;
+        public float backstabOffset = 1.4f;
 
         [Header("States")]
         public bool run;
@@ -266,6 +268,18 @@ namespace SA
             if (CheckForBackstab(slot))
                 return;
 
+            // ใส่ตรงที่คุณ trigger attack (เช่น ใน AttackState หรือตอน input detect)
+if (!CameraManager.singleton.lockon)
+{
+    Transform softTarget = CameraManager.singleton.FindSoftLockTarget();
+    if (softTarget != null)
+    {
+        CameraManager.singleton.FaceTarget(softTarget, Time.deltaTime);
+        
+    }
+        
+}
+
             string targetAnim = null;
             targetAnim = slot.targetAnim;
 
@@ -378,19 +392,18 @@ namespace SA
             
             if (angle > 150)
             {
-                Vector3 targetPosition = dir * parryOffset;
+                Vector3 targetPosition = dir * backstabOffset;
                 targetPosition += backstab.transform.position;
                 transform.position = targetPosition;
 
 
                 backstab.transform.rotation = transform.rotation;
-                backstab.IsGettingParried();
+                backstab.IsGettingBackStabbed();
 
                 canMove = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
                 anim.CrossFade(StaticStrings.parry_attack, 0.2f);
-
                 return true;
 
             }

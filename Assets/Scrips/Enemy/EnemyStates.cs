@@ -31,7 +31,7 @@ namespace SA
 
         void Start()
         {
-            health = 100;
+            health = 1000;
             anim = GetComponentInChildren<Animator>();
             enTarget = GetComponent<EnemyTarget>();
             enTarget.Init(this);
@@ -180,11 +180,22 @@ namespace SA
         }
         public void IsGettingParried()
         {
-            health -= 500;
+            //health -= 500;
+            health -= 50;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.parry_receive);
             Debug.Log("Enemy Got Parried!");
+        }
+
+        public void IsGettingBackStabbed()
+        {
+            //health -= 500;
+            health -= 100;
+            dontDoAnything = true;
+            anim.SetBool(StaticStrings.canMove, false);
+            anim.Play(StaticStrings.backstabed);
+            Debug.Log("Enemy Got Back Stabbed!");
         }
     }
 }
