@@ -30,7 +30,7 @@ namespace SA
         public static string two_handed = "two_handed";
         public static string run = "run";
         public static string blocking = "blocking";
-        public static string lockOn = "lockOn";
+        public static string lockon = "lockOn";
         public static string OnGround = "onGround";
         public static string animSpeed = "animSpeed";
         public static string isLeftHand = "isLeft";

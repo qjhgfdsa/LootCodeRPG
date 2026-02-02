@@ -185,8 +185,7 @@ namespace SA
             if (run)
                 lockOn = false;
 
-            Vector3 targetDir = (!lockOn) ? moveDir
-            : (lockOnTransform != null) ?
+            Vector3 targetDir = (!lockOn) ? moveDir : (lockOnTransform != null) ?
             lockOnTransform.transform.position - transform.position :
              moveDir;
 
@@ -197,7 +196,7 @@ namespace SA
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, delta * moveAmount * rotateSpeed);
             transform.rotation = targetRotation;
 
-            anim.SetBool(StaticStrings.lockOn, lockOn);
+            anim.SetBool(StaticStrings.lockon, lockOn);
 
             if (!lockOn)
             {
@@ -268,16 +267,13 @@ namespace SA
             if (CheckForBackstab(slot))
                 return;
 
-            // ใส่ตรงที่คุณ trigger attack (เช่น ใน AttackState หรือตอน input detect)
 if (!CameraManager.singleton.lockon)
 {
     Transform softTarget = CameraManager.singleton.FindSoftLockTarget();
     if (softTarget != null)
     {
         CameraManager.singleton.FaceTarget(softTarget, Time.deltaTime);
-        
     }
-        
 }
 
             string targetAnim = null;

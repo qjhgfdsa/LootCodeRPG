@@ -206,7 +206,7 @@ namespace SA
         // ─── Soft Lock (auto-face on attack) ───
         [Header("Soft Lock Settings")]
         public float softLockRadius = 8f;
-        public float softLockAngle = 60f;       // มุม cone หน้า player
+        public float softLockAngle = 90f;       // มุม cone หน้า player (90 องศา)
         public float softLockSmoothSpeed = 12f;
 
         // ─── Camera Targeting ───
@@ -342,8 +342,6 @@ namespace SA
                 float worldDist = Vector3.Distance(target.position, eRoot.position);
                 float score = normalizedDist + worldDist * 0.05f;
 
-                Debug.Log("ล็อคเเล้ว");
-
                 if (score < bestScore)
                 {
                     bestScore = score;
@@ -358,6 +356,7 @@ namespace SA
                 lockonTransform = best.eStates.transform;
                 if (states != null)
                     states.lockOnTransform = lockonTransform;
+                states.lockOn = true; // ← เพิ่มบรรทัดนี้
             }
         }
 
@@ -446,11 +445,11 @@ namespace SA
         }
 
         // ════════════════════════════════════════
-        // Soft Lock: หาเป้าใกล้ player ในมุม forward (เรียกจาก attack)
+        // Soft Lock: หาเป้าใกล้ player รอบๆตัว ในมุม 90° หน้าตัวละคร
         // ════════════════════════════════════════
         public Transform FindSoftLockTarget()
         {
-            List<EnemyTarget> nearby = FindAllEnemiesInCamera();
+            List<EnemyTarget> nearby = FindAllEnemiesNearbyPlayer();
             if (nearby.Count == 0) return null;
 
             EnemyTarget best = null;
@@ -479,6 +478,23 @@ namespace SA
         }
 
         // ════════════════════════════════════════
+        // หา EnemyTarget รอบๆ ตัว player (สำหรับ soft-lock)
+        // ════════════════════════════════════════
+        List<EnemyTarget> FindAllEnemiesNearbyPlayer()
+        {
+            List<EnemyTarget> result = new List<EnemyTarget>();
+            Collider[] hits = Physics.OverlapSphere(target.position, softLockRadius, enemyLayer);
+
+            foreach (var col in hits)
+            {
+                EnemyTarget et = col.GetComponentInParent<EnemyTarget>();
+                if (et != null && et.eStates != null && !result.Contains(et))
+                    result.Add(et);
+            }
+            return result;
+        }
+
+        // ════════════════════════════════════════
         // หันหน้า player เข้าหา soft target (เรียกจาก attack state)
         // ════════════════════════════════════════
         public void FaceTarget(Transform t, float d)
@@ -503,7 +519,7 @@ namespace SA
             currentEnemyTarget = null;
             if (states != null)
                 states.lockOnTransform = null;
-            Debug.Log("ปลดล็อค");
+                 states.lockOn = false; // ← เพิ่มบรรทัดนี้
         }
     }
 }
