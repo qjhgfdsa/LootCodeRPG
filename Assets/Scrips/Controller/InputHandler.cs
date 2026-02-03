@@ -129,37 +129,35 @@ namespace SA
                     states.lockOnTarget = null;
                     states.lockOnTransform = null;
                     camManager.lockon = states.lockOn = false;
-                    camManager.currentEnemyTarget = null;
+                    camManager.lockonTarget = null;
                     //camManager.lockonTarget = null;
                 }
-            } else
+            } 
+            else
             {
                 
                     states.lockOn = false;
                     states.lockOnTarget = null;
                     states.lockOnTransform = null;
                     camManager.lockon = states.lockOn = false;
-                    camManager.currentEnemyTarget = null;
+                    camManager.lockonTarget = null;
                 
             }
 
-            /*  if (Input.GetMouseButtonDown(2))
+              if (Input.GetMouseButtonDown(2))
                 {
                     states.lockOn = !states.lockOn;
 
                     states.lockOnTarget = EnemyManager.singleton.GetEnemy(transform.position);
                     if (states.lockOnTarget == null)
                      states.lockOn = false;
-
-                   
-                    //camManager.lockonTarget = states.lockOnTarget;
                  
 
-                    camManager.currentEnemyTarget = states.lockOnTarget;
+                    camManager.lockonTarget = states.lockOnTarget;
                     states.lockOnTransform = camManager.lockonTransform;
                     camManager.lockon = states.lockOn;
 
-                } */
+                } 
          } 
         
         void ResetInputNStates()

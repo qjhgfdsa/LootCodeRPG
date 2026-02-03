@@ -267,15 +267,6 @@ namespace SA
             if (CheckForBackstab(slot))
                 return;
 
-if (!CameraManager.singleton.lockon)
-{
-    Transform softTarget = CameraManager.singleton.FindSoftLockTarget();
-    if (softTarget != null)
-    {
-        CameraManager.singleton.FaceTarget(softTarget, Time.deltaTime);
-    }
-}
-
             string targetAnim = null;
             targetAnim = slot.targetAnim;
 
