@@ -400,6 +400,8 @@ if (!CameraManager.singleton.lockon)
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
                 anim.CrossFade(StaticStrings.parry_attack, 0.2f);
+                lockOnTarget = null;
+                //lockOn = false;
                 return true;
 
             }
@@ -547,5 +549,7 @@ if (!CameraManager.singleton.lockon)
         {
 
         }
-    }
+        
+   
+    }  
 }

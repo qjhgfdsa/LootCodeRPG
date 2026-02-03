@@ -357,6 +357,7 @@ namespace SA
                 if (states != null)
                     states.lockOnTransform = lockonTransform;
                 states.lockOn = true; // ← เพิ่มบรรทัดนี้
+                Debug.Log("Locked on: ");
             }
         }
 
@@ -520,6 +521,7 @@ namespace SA
             if (states != null)
                 states.lockOnTransform = null;
                  states.lockOn = false; // ← เพิ่มบรรทัดนี้
+                  Debug.Log(" Cleared Lock on: ");
         }
     }
 }

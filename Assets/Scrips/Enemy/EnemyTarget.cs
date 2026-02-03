@@ -24,8 +24,8 @@ namespace SA
             for (int i = 0; i < h_bones.Count; i++)
             {
                 targets.Add(anim.GetBoneTransform(h_bones[i]));
-
             }
+            EnemyManager.singleton.enemyTargets.Add(this);
         }
 
         public Transform GetTarget(bool negative = false)

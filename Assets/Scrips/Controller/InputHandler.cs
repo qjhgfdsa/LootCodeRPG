@@ -69,7 +69,7 @@ namespace SA
             //rolls_input = Input.GetKeyDown(KeyCode.LeftControl);
             t_input = Input.GetKeyDown(StaticStrings.TwoHandedKey);//two handed
             x_input = Input.GetKeyDown(StaticStrings.UseItemKey); //using item
-            lockon_input = Input.GetKeyDown(StaticStrings.lockOnKey);
+           // lockon_input = Input.GetKeyDown(StaticStrings.lockOnKey); ไม่ได้ใช้
 
             // rt_axis = Input.GetAxis("RT");
             //rt_axis = Input.GetAxis("RT");
@@ -128,25 +128,38 @@ namespace SA
                     states.lockOn = false;
                     states.lockOnTarget = null;
                     states.lockOnTransform = null;
-                    camManager.lockon = states.lockOn;
-                    //camManager.currentEnemyTarget = null;
-                   // camManager.lockonTarget = null;
+                    camManager.lockon = states.lockOn = false;
+                    camManager.currentEnemyTarget = null;
+                    //camManager.lockonTarget = null;
                 }
+            } else
+            {
+                
+                    states.lockOn = false;
+                    states.lockOnTarget = null;
+                    states.lockOnTransform = null;
+                    camManager.lockon = states.lockOn = false;
+                    camManager.currentEnemyTarget = null;
+                
             }
 
-              if (lockon_input)
+            /*  if (Input.GetMouseButtonDown(2))
                 {
                     states.lockOn = !states.lockOn;
 
+                    states.lockOnTarget = EnemyManager.singleton.GetEnemy(transform.position);
                     if (states.lockOnTarget == null)
-                        states.lockOn = false;
+                     states.lockOn = false;
 
+                   
                     //camManager.lockonTarget = states.lockOnTarget;
-                    //camManager.currentEnemyTarget = states.lockOnTarget;
+                 
+
+                    camManager.currentEnemyTarget = states.lockOnTarget;
                     states.lockOnTransform = camManager.lockonTransform;
                     camManager.lockon = states.lockOn;
 
-                }
+                } */
          } 
         
         void ResetInputNStates()

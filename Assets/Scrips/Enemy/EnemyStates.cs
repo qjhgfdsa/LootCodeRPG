@@ -31,7 +31,7 @@ namespace SA
 
         void Start()
         {
-            health = 1000;
+            health = 100;
             anim = GetComponentInChildren<Animator>();
             enTarget = GetComponent<EnemyTarget>();
             enTarget.Init(this);
