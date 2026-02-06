@@ -43,6 +43,14 @@ namespace SA
 
           
         }
+
+        public Weapon GetCurrentWeapon(bool isLeft)
+        {
+            if (isLeft)
+                return leftHandWeapon;
+            else
+                return rightHandWeapon;
+        }
         public void OpenAllDamageColliders()
         {
             if (rightHandWeapon.w_Hook != null)
@@ -53,9 +61,6 @@ namespace SA
                 leftHandWeapon.w_Hook.OpenDamageColliders();
 
         }
-
-
-
         public void CloseAllDamageColliders()
         {
 

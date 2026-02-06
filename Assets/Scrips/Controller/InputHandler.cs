@@ -154,8 +154,10 @@ namespace SA
                  
 
                     camManager.lockonTarget = states.lockOnTarget;
-                    states.lockOnTransform = camManager.lockonTransform;
+                    states.lockOnTransform = states.lockOnTarget.GetTarget();
+                    camManager.lockonTransform = states.lockOnTransform;
                     camManager.lockon = states.lockOn;
+                     // states.lockOnTransform = camManager.lockonTransform;
 
                 } 
          } 

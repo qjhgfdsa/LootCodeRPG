@@ -7,7 +7,8 @@ namespace SA
 {
     public class EnemyStates : MonoBehaviour
     {
-        public float health;
+        public int health;
+        public CharacterStats characterStats;
         public bool canBeParried = true;
         public bool parryIsOn = true;
         public bool doParry = false;
@@ -146,12 +147,12 @@ namespace SA
         }
 
 
-        public void DoDamage(float v)
+        public void DoDamage(Weapon w, bool isTwoHanded)
         {
             if (isInvicible)
                 return;
 
-            health -= v;
+           // health -= v;
             isInvicible = true;
             anim.Play("damage_01");
             anim.applyRootMotion = true;

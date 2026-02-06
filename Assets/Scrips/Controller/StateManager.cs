@@ -12,6 +12,10 @@ namespace SA
         [Header("Model")]
         public GameObject activeModel;
 
+        [Header("Stats")]
+        public Attributes attributes;
+        public CharacterStats characterStats;
+
 
         [Header("Inputs")]
         public float vertical;
@@ -73,8 +77,11 @@ namespace SA
         [HideInInspector]
         public LayerMask ignoreLayers;
 
-        float actionDelay;
+        [HideInInspector]
+        public bool attacksLeftHand;    
 
+
+        float actionDelay;
 
         public void Init()
         {
@@ -261,6 +268,8 @@ namespace SA
 
         void AttackAction(Action slot)
         {
+            attacksLeftHand = actionManager.IsLeftHandslot(slot);
+
             if (CheckForParry(slot))
                 return;
             

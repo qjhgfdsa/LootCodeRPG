@@ -170,6 +170,11 @@ namespace SA
 
              return ActionInput.rb;
          }
+
+         public bool IsLeftHandslot(Action slot)
+         {
+            return (slot.input == ActionInput.lb || slot.input == ActionInput.lt);
+         }
      }
 
 

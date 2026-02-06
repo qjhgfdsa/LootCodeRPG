@@ -3432,6 +3432,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeModel: {fileID: 661144851}
+  stats:
+    hp: 100
+    fp: 100
+    stamina: 100
+    poise: 20
+    itemDiscover: 111
+    R_weapon_1: 51
+    R_weapon_2: 51
+    R_weapon_3: 51
+    L_weapon_1: 51
+    L_weapon_2: 51
+    L_weapon_3: 51
+    Physical: 87
+    vs_strikes: 87
+    vs_slash: 87
+    vs_thrust: 87
+    magic: 30
+    fire: 30
+    lightning: 30
+    dark: 30
+    bleed: 100
+    frost: 100
+    poison: 100
+    curse: 100
+    attunemntSlots: 0
+  attributes:
+    level: 1
+    souls: 0
+    vigor: 11
+    attunement: 11
+    endurance: 11
+    vitality: 11
+    strength: 11
+    dexterity: 11
+    intelligence: 11
+    faith: 11
+    luck: 11
   vertical: 0
   horizontal: 0
   moveAmount: 0
@@ -6390,7 +6427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lockon: 0
   followSpeed: 3
-  mouseSeed: 10
+  mouseSpeed: 10
   target: {fileID: 0}
   lockonTarget: {fileID: 0}
   lockonTransform: {fileID: 0}
