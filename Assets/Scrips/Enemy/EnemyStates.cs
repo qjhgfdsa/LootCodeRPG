@@ -16,6 +16,7 @@ namespace SA
         public bool dontDoAnything;
         public bool canMove;
         public bool isDead;
+
         public StateManager parriedBy;
 
         public Animator anim;
@@ -23,6 +24,7 @@ namespace SA
         AnimatorHook a_hook;
         public Rigidbody rigid;
         public float delta;
+        public float poiseDegrade = 2;
 
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
@@ -32,7 +34,7 @@ namespace SA
 
         void Start()
         {
-            health = 100;
+            health = 10000;
             anim = GetComponentInChildren<Animator>();
             enTarget = GetComponent<EnemyTarget>();
             enTarget.Init(this);
@@ -99,7 +101,7 @@ namespace SA
             {
                 dontDoAnything = !canMove;
                 return;
-            } 
+            }
 
             if (health <= 0)
             {
@@ -116,11 +118,11 @@ namespace SA
                 isInvicible = !canMove;
             }
 
-            if(parriedBy !=null && parryIsOn == false)
+            if (parriedBy != null && parryIsOn == false)
             {
                 //parriedBy.parryTarget = null;
                 parriedBy = null;
-                
+
             }
 
             if (canMove)
@@ -136,33 +138,56 @@ namespace SA
                 }
             }
 
+            characterStats.poise -= delta * poiseDegrade;
+            if (characterStats.poise < 0)
+                characterStats.poise = 0;
+
         }
 
         void DoAction()
         {
             anim.applyRootMotion = true;
+            parryIsOn = true; // กำลังโจมตี — ผู้เล่นสามารถ parry ได้
             anim.Play("oh_attack_1");
             anim.SetBool(StaticStrings.canMove, false);
 
         }
 
 
-        public void DoDamage(Weapon w, bool isTwoHanded)
+        public void DoDamage(Action a)
         {
             if (isInvicible)
                 return;
 
-           // health -= v;
+           int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+
+            characterStats.poise += damage;
+            health -= damage;
+
+            if (canMove || characterStats.poise > 100)
+            {
+                if (a.ovverideDamageAnim)
+                    anim.Play(a.damageAnim);
+                else
+                {
+                    int ran = Random.Range(0, 100);
+                    string tA = (ran > 50) ? StaticStrings.damage1 : StaticStrings.damage2;
+                    anim.Play(tA);
+                }
+            }
+
+             Debug.Log(" Damage is " + damage + " Poise is " + characterStats.poise);
+
             isInvicible = true;
-            anim.Play("damage_01");
             anim.applyRootMotion = true;
             anim.SetBool(StaticStrings.canMove, false);
             Debug.Log("Enemy Health: " + health);
+           
         }
 
         public void CheckForParry(Transform target, StateManager states)
         {
-            if (canBeParried == false || parryIsOn==false || isInvicible)
+            if (canBeParried == false || parryIsOn == false || isInvicible)
                 return;
 
             Vector3 dir = transform.position - target.position;
@@ -179,24 +204,24 @@ namespace SA
             parriedBy = states;
             return;
         }
-        public void IsGettingParried()
+        public void IsGettingParried(WeaponStats weaponStats)
         {
-            //health -= 500;
-            health -= 50;
+            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
+            health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.parry_receive);
-            Debug.Log("Enemy Got Parried!");
+            Debug.Log("Enemy Got Parried!" + damage);
         }
 
-        public void IsGettingBackStabbed()
+        public void IsGettingBackStabbed(WeaponStats weaponStats)
         {
-            //health -= 500;
-            health -= 100;
+            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
+            health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.backstabed);
-            Debug.Log("Enemy Got Back Stabbed!");
+            Debug.Log("Enemy Got Back Stabbed!" + damage);
         }
     }
 }

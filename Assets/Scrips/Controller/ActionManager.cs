@@ -83,11 +83,28 @@ namespace SA
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
             a.canBackStab = w_a.canBackStab;
+            a.ovverideDamageAnim = w_a.ovverideDamageAnim;
+            a.damageAnim = w_a.damageAnim;
+            a.weaponPointer = w;
 
             if(isLeftHand)
             {      
                 a.mirror = true;
             }
+
+            DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
+        }
+
+        public void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)
+        {
+            to.physical = from.physical;
+            to.slash = from.slash;
+            to.strike = from.strike;
+            to.thrust = from.thrust;
+            to.magic = from.magic;
+            to.lightning = from.lightning;
+            to.fire = from.fire;
+            to.dark = from.dark;
         }
 
         public void UpdateActionsTwoHanded()
@@ -200,6 +217,14 @@ namespace SA
         public bool changeSpeed = false;
         public float animSpeed = 1;
         public bool canBackStab = false;
+
+        public bool ovverideDamageAnim;
+        public string damageAnim;
+
+        public WeaponStats weaponStats;
+      
+        [System.NonSerialized]
+        public Weapon weaponPointer;
      }
 
      [System.Serializable]

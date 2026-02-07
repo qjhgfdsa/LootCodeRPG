@@ -38,9 +38,12 @@ namespace SA
         // Animator states
         public static string Rolls = "Rolls";
         public static string attack_interupt = "attack_interrupt";
-        public static string parry_receive = "parry_receive";
+        public static string parry_receive = "parry_recieved";
 
         public static string backstabed = "backstabbed";
+        public static string damage1 = "damage_1";
+        public static string damage2 = "damage_2";
+        public static string damage3 = "damage_3";
 
 
     

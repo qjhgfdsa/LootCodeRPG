@@ -21,5 +21,14 @@ namespace SA
                 damageColliders[i].SetActive(false);
             }
         }
+
+        public void InitDamageCollider(StateManager states)
+        {
+             for (int i = 0; i < damageColliders.Length; i++)
+            {
+                damageColliders[i].GetComponent<DamageCollider>().Init(states);
+            }
+
+        }
     }
 }

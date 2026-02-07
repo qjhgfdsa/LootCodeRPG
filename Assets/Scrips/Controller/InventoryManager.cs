@@ -22,7 +22,9 @@ namespace SA
             EquipWeapon(rightHandWeapon, false);
             EquipWeapon(leftHandWeapon, true);
 
+            InitAllDamageCollider(st);
             CloseAllDamageColliders();
+
             ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
             pr.InitPlayer(st);
             CloseParryCollider();
@@ -72,6 +74,18 @@ namespace SA
                 leftHandWeapon.w_Hook.CloseDamageColliders();
         }
 
+        public void InitAllDamageCollider(StateManager state)
+        {
+            
+            if (rightHandWeapon.w_Hook != null)
+                rightHandWeapon.w_Hook.InitDamageCollider(states);
+
+
+            if (leftHandWeapon.w_Hook != null)
+                leftHandWeapon.w_Hook.InitDamageCollider(states);
+
+        }
+
         public void CloseParryCollider()
         {
             parryCollider.SetActive(false);
@@ -90,8 +104,11 @@ namespace SA
         public Sprite icon;
         public string oh_idle;
         public string th_idle;
+
         public List<Action> actions;
         public List<Action> two_handedActions;
+        public WeaponStats parryStats;
+        public WeaponStats backstabStats;
         public bool LeftHandMirror;
         public GameObject weaponModel;
         public WeaponHook w_Hook;

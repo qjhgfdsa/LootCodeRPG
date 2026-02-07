@@ -21,8 +21,8 @@ namespace SA
         public int L_weapon_3 = 51;
 
         [Header("Defense Power")]
-        public int Physical = 87;
-        public int vs_strikes = 87;
+        public int physical = 87;
+        public int vs_strike = 87;
         public int vs_slash = 87;
         public int vs_thrust = 87;
         public int magic = 30;

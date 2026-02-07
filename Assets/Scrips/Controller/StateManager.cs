@@ -78,7 +78,7 @@ namespace SA
         public LayerMask ignoreLayers;
 
         [HideInInspector]
-        public bool attacksLeftHand;    
+        public Action currentAction;    
 
 
         float actionDelay;
@@ -268,7 +268,6 @@ namespace SA
 
         void AttackAction(Action slot)
         {
-            attacksLeftHand = actionManager.IsLeftHandslot(slot);
 
             if (CheckForParry(slot))
                 return;
@@ -281,6 +280,8 @@ namespace SA
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
+            
+            currentAction = slot;
 
             canMove = false;
             inAction = true;
@@ -316,7 +317,12 @@ namespace SA
             if (parryTarget == null)
                 return false;
 
-            if(parryTarget.parriedBy == null)
+            if (parryTarget.canBeParried == false)
+                return false;
+
+            // ใช้ได้ทั้งสองแบบ: (1) กดปุ่ม parry แล้วศัตรูชน ParryCollider → parriedBy ถูก set
+            // (2) โจมตีศัตรูที่กำลังโจมตี → parryIsOn = true
+            if (parryTarget.parriedBy == null && parryTarget.parryIsOn == false)
                 return false;
             
              /*if (parryTarget == null)
@@ -335,7 +341,7 @@ namespace SA
 
             if (angle < 60)
             {
-                  Debug.Log("Checking for parry...");
+                Debug.Log("Parry ถูกใช้! (ทำดาเมจตอบ)");
 
                 Vector3 targetPosition = -dir * parryOffset;
                 targetPosition += parryTarget.transform.position;
@@ -349,7 +355,8 @@ namespace SA
 
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = ourRot;
-                parryTarget.IsGettingParried();
+                parryTarget.parriedBy = this;
+                parryTarget.IsGettingParried(inventoryManager.GetCurrentWeapon(isLeftHand).parryStats);
 
                 canMove = false;
                 inAction = true;
@@ -394,7 +401,7 @@ namespace SA
 
 
                 backstab.transform.rotation = transform.rotation;
-                backstab.IsGettingBackStabbed();
+                backstab.IsGettingBackStabbed(inventoryManager.GetCurrentWeapon(isLeftHand).backstabStats);
 
                 canMove = false;
                 inAction = true;

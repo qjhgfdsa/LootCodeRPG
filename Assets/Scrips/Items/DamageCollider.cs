@@ -17,10 +17,9 @@ namespace SA
             if (eStates == null)
                 return;
 
-            Weapon w = states.inventoryManager.GetCurrentWeapon(states.attacksLeftHand);
-            
-           eStates.DoDamage(w, states.attacksLeftHand);
-            
+
+            eStates.DoDamage(states.currentAction);
+
         }
     }
 }

@@ -464,6 +464,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  characterStats:
+    hp: 100
+    fp: 100
+    stamina: 100
+    poise: 20
+    itemDiscover: 111
+    R_weapon_1: 51
+    R_weapon_2: 51
+    R_weapon_3: 51
+    L_weapon_1: 51
+    L_weapon_2: 51
+    L_weapon_3: 51
+    physical: 87
+    vs_strike: 87
+    vs_slash: 87
+    vs_thrust: 87
+    magic: 30
+    fire: 30
+    lightning: 30
+    dark: 30
+    bleed: 100
+    frost: 100
+    poison: 100
+    curse: 100
+    attunemntSlots: 0
   canBeParried: 1
   parryIsOn: 1
   doParry: 0
@@ -475,6 +500,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   rigid: {fileID: 0}
   delta: 0
+  poiseDegrade: 2
 --- !u!4 &42795328
 Transform:
   m_ObjectHideFlags: 0
@@ -2255,6 +2281,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  characterStats:
+    hp: 100
+    fp: 100
+    stamina: 100
+    poise: 20
+    itemDiscover: 111
+    R_weapon_1: 51
+    R_weapon_2: 51
+    R_weapon_3: 51
+    L_weapon_1: 51
+    L_weapon_2: 51
+    L_weapon_3: 51
+    physical: 87
+    vs_strike: 87
+    vs_slash: 87
+    vs_thrust: 87
+    magic: 30
+    fire: 30
+    lightning: 30
+    dark: 30
+    bleed: 100
+    frost: 100
+    poison: 100
+    curse: 100
+    attunemntSlots: 0
   canBeParried: 1
   parryIsOn: 1
   doParry: 0
@@ -2266,6 +2317,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   rigid: {fileID: 0}
   delta: 0
+  poiseDegrade: 2
 --- !u!4 &230056150
 Transform:
   m_ObjectHideFlags: 0
@@ -3432,31 +3484,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeModel: {fileID: 661144851}
-  stats:
-    hp: 100
-    fp: 100
-    stamina: 100
-    poise: 20
-    itemDiscover: 111
-    R_weapon_1: 51
-    R_weapon_2: 51
-    R_weapon_3: 51
-    L_weapon_1: 51
-    L_weapon_2: 51
-    L_weapon_3: 51
-    Physical: 87
-    vs_strikes: 87
-    vs_slash: 87
-    vs_thrust: 87
-    magic: 30
-    fire: 30
-    lightning: 30
-    dark: 30
-    bleed: 100
-    frost: 100
-    poison: 100
-    curse: 100
-    attunemntSlots: 0
   attributes:
     level: 1
     souls: 0
@@ -3469,6 +3496,31 @@ MonoBehaviour:
     intelligence: 11
     faith: 11
     luck: 11
+  characterStats:
+    hp: 100
+    fp: 100
+    stamina: 100
+    poise: 20
+    itemDiscover: 111
+    R_weapon_1: 51
+    R_weapon_2: 51
+    R_weapon_3: 51
+    L_weapon_1: 51
+    L_weapon_2: 51
+    L_weapon_3: 51
+    physical: 87
+    vs_strike: 87
+    vs_slash: 87
+    vs_thrust: 87
+    magic: 30
+    fire: 30
+    lightning: 30
+    dark: 30
+    bleed: 100
+    frost: 100
+    poison: 100
+    curse: 100
+    attunemntSlots: 0
   vertical: 0
   horizontal: 0
   moveAmount: 0
@@ -3559,6 +3611,26 @@ MonoBehaviour:
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 0
+  currentAction:
+    input: 0
+    actionType: 0
+    targetAnim: 
+    mirror: 0
+    canBeParried: 1
+    changeSpeed: 0
+    animSpeed: 1
+    canBackStab: 0
+    ovverideDamageAnim: 0
+    damageAnim: 
+    weaponStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
 --- !u!114 &459074578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3712,6 +3784,17 @@ MonoBehaviour:
     changeSpeed: 0
     animSpeed: 1
     canBackStab: 0
+    ovverideDamageAnim: 0
+    damageAnim: 
+    weaponStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
   - input: 2
     actionType: 0
     targetAnim: 
@@ -3720,6 +3803,17 @@ MonoBehaviour:
     changeSpeed: 0
     animSpeed: 1
     canBackStab: 0
+    ovverideDamageAnim: 0
+    damageAnim: 
+    weaponStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
   - input: 1
     actionType: 0
     targetAnim: 
@@ -3728,6 +3822,17 @@ MonoBehaviour:
     changeSpeed: 0
     animSpeed: 1
     canBackStab: 0
+    ovverideDamageAnim: 0
+    damageAnim: 
+    weaponStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
   - input: 3
     actionType: 0
     targetAnim: 
@@ -3736,6 +3841,17 @@ MonoBehaviour:
     changeSpeed: 0
     animSpeed: 1
     canBackStab: 0
+    ovverideDamageAnim: 0
+    damageAnim: 
+    weaponStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
   consumableItem:
     targetAnim: bestus
     item_id: 
@@ -3765,6 +3881,17 @@ MonoBehaviour:
       changeSpeed: 0
       animSpeed: 1
       canBackStab: 1
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 30
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
     - input: 2
       actionType: 0
       targetAnim: oh_attack_3
@@ -3773,7 +3900,36 @@ MonoBehaviour:
       changeSpeed: 0
       animSpeed: 1
       canBackStab: 1
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
     two_handedActions: []
+    parryStats:
+      physical: 0
+      strike: 200
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
+    backstabStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 500
+      lightning: 0
+      dark: 0
     LeftHandMirror: 0
     weaponModel: {fileID: 290650444}
     w_Hook: {fileID: 1474964301}
@@ -3792,6 +3948,17 @@ MonoBehaviour:
       changeSpeed: 0
       animSpeed: 1
       canBackStab: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
     - input: 2
       actionType: 3
       targetAnim: parry
@@ -3800,7 +3967,36 @@ MonoBehaviour:
       changeSpeed: 1
       animSpeed: 1.8
       canBackStab: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
     two_handedActions: []
+    parryStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
+    backstabStats:
+      physical: 0
+      strike: 0
+      slash: 0
+      thrust: 0
+      magic: 0
+      fire: 0
+      lightning: 0
+      dark: 0
     LeftHandMirror: 1
     weaponModel: {fileID: 216059515}
     w_Hook: {fileID: 216059517}
@@ -8555,6 +8751,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  characterStats:
+    hp: 100
+    fp: 100
+    stamina: 100
+    poise: 20
+    itemDiscover: 111
+    R_weapon_1: 51
+    R_weapon_2: 51
+    R_weapon_3: 51
+    L_weapon_1: 51
+    L_weapon_2: 51
+    L_weapon_3: 51
+    physical: 87
+    vs_strike: 0
+    vs_slash: 0
+    vs_thrust: 0
+    magic: 0
+    fire: 0
+    lightning: 0
+    dark: 0
+    bleed: 100
+    frost: 100
+    poison: 100
+    curse: 100
+    attunemntSlots: 0
   canBeParried: 1
   parryIsOn: 1
   doParry: 0
@@ -8566,6 +8787,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   rigid: {fileID: 0}
   delta: 0
+  poiseDegrade: 3
 --- !u!4 &1859414285
 Transform:
   m_ObjectHideFlags: 0
