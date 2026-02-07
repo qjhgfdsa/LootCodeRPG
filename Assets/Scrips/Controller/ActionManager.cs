@@ -85,7 +85,7 @@ namespace SA
             a.canBackStab = w_a.canBackStab;
             a.ovverideDamageAnim = w_a.ovverideDamageAnim;
             a.damageAnim = w_a.damageAnim;
-            a.weaponPointer = w;
+          
 
             if(isLeftHand)
             {      
@@ -223,8 +223,6 @@ namespace SA
 
         public WeaponStats weaponStats;
       
-        [System.NonSerialized]
-        public Weapon weaponPointer;
      }
 
      [System.Serializable]

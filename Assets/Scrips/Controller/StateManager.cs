@@ -238,23 +238,14 @@ namespace SA
 
         public void DetectAction()
         {
-            if (usingItem)
+            if (!canMove || usingItem)
                 return;
             if (!rb && !rt && !lb && !lt)
                 return;
 
+
             Action slot = actionManager.GetActionSlot(this);
             if (slot == null)
-                return;
-
-            // Parry counter: ใช้ได้ทันทีหลัง CheckForParry แม้ canMove จะ false (กำลังเล่นแอนิเมชัน parry)
-            if (slot.actionType == ActionType.attack)
-            {
-                if (CheckForParry(slot))
-                    return;
-            }
-
-            if (!canMove)
                 return;
 
             switch (slot.actionType)
@@ -277,6 +268,10 @@ namespace SA
 
         void AttackAction(Action slot)
         {
+
+            if (CheckForParry(slot))
+                return;
+            
             if (CheckForBackstab(slot))
                 return;
 
@@ -325,8 +320,9 @@ namespace SA
             if (parryTarget.canBeParried == false)
                 return false;
 
-            // ต้อง parry ให้ได้ก่อน (ศัตรูชน ParryCollider → CheckForParry → parriedBy = this) ถึงจะกดโจมตีตอบโต้ได้
-            if (parryTarget.parriedBy != this)
+            // ใช้ได้ทั้งสองแบบ: (1) กดปุ่ม parry แล้วศัตรูชน ParryCollider → parriedBy ถูก set
+            // (2) โจมตีศัตรูที่กำลังโจมตี → parryIsOn = true
+            if (parryTarget.parriedBy == null && parryTarget.parryIsOn == false)
                 return false;
             
              /*if (parryTarget == null)
@@ -359,9 +355,8 @@ namespace SA
 
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = ourRot;
-                WeaponStats parryDmg = inventoryManager.GetCurrentWeapon(isLeftHand).parryStats;
-                if (parryDmg == null) parryDmg = slot.weaponStats;
-                parryTarget.IsGettingParried(parryDmg, this);
+                parryTarget.parriedBy = this;
+                parryTarget.IsGettingParried(inventoryManager.GetCurrentWeapon(isLeftHand).parryStats);
 
                 canMove = false;
                 inAction = true;
@@ -406,9 +401,7 @@ namespace SA
 
 
                 backstab.transform.rotation = transform.rotation;
-                WeaponStats backstabDmg = inventoryManager.GetCurrentWeapon(isLeftHand).backstabStats;
-                if (backstabDmg == null) backstabDmg = slot.weaponStats;
-                backstab.IsGettingBackStabbed(backstabDmg);
+                backstab.IsGettingBackStabbed(inventoryManager.GetCurrentWeapon(isLeftHand).backstabStats);
 
                 canMove = false;
                 inAction = true;

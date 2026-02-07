@@ -30,9 +30,6 @@ namespace SA
         List<Collider> ragdollColliders = new List<Collider>();
 
         float timer;
-        /// <summary> เวลาที่รอก่อนล้าง parriedBy (วินาที) — ให้ผู้เล่นกดโจมตีตอบโต้ได้แม่นยำ </summary>
-        public float parryCounterWindow = 1.2f;
-        float parriedByClearTimer;
 
 
         void Start()
@@ -121,20 +118,11 @@ namespace SA
                 isInvicible = !canMove;
             }
 
-            // ล้าง parriedBy หลัง parryCounterWindow วินาที (ให้ผู้เล่นกดโจมตีตอบโต้ได้ทัน)
-            if (parriedBy != null)
+            if (parriedBy != null && parryIsOn == false)
             {
-                if (parryIsOn)
-                    parriedByClearTimer = 0f;
-                else
-                {
-                    parriedByClearTimer += Time.deltaTime;
-                    if (parriedByClearTimer >= parryCounterWindow)
-                    {
-                        parriedBy = null;
-                        parriedByClearTimer = 0f;
-                    }
-                }
+                //parriedBy.parryTarget = null;
+                parriedBy = null;
+
             }
 
             if (canMove)
@@ -216,14 +204,8 @@ namespace SA
             parriedBy = states;
             return;
         }
-        /// <summary> เรียกได้เฉพาะหลังจาก CheckForParry ถูกเรียกแล้ว (parriedBy ถูก set) </summary>
-        public void IsGettingParried(WeaponStats weaponStats, StateManager parrier)
+        public void IsGettingParried(WeaponStats weaponStats)
         {
-            if (parriedBy == null || parrier != parriedBy)
-                return;
-            parriedBy = null;
-            parriedByClearTimer = 0f;
-
             int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
             health -= damage;
             dontDoAnything = true;
