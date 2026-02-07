@@ -501,6 +501,7 @@ MonoBehaviour:
   rigid: {fileID: 0}
   delta: 0
   poiseDegrade: 2
+  parryCounterWindow: 1.2
 --- !u!4 &42795328
 Transform:
   m_ObjectHideFlags: 0
@@ -2318,6 +2319,7 @@ MonoBehaviour:
   rigid: {fileID: 0}
   delta: 0
   poiseDegrade: 2
+  parryCounterWindow: 1.2
 --- !u!4 &230056150
 Transform:
   m_ObjectHideFlags: 0
@@ -8788,6 +8790,7 @@ MonoBehaviour:
   rigid: {fileID: 0}
   delta: 0
   poiseDegrade: 3
+  parryCounterWindow: 1.2
 --- !u!4 &1859414285
 Transform:
   m_ObjectHideFlags: 0
