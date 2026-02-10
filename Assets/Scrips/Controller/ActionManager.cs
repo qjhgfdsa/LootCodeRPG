@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
@@ -13,17 +14,17 @@ namespace SA
 {
     public class ActionManager : MonoBehaviour
     {
-         public List<Action> actionSlots = new List<Action>();
-         public ItemAction consumableItem;
+        public List<Action> actionSlots = new List<Action>();
+        public ItemAction consumableItem;
 
 
-         StateManager states;
+        StateManager states;
 
-         public void Init(StateManager st)
-         {
-             states = st;
-             UpdateActionsOneHanded();
-         }
+        public void Init(StateManager st)
+        {
+            states = st;
+            UpdateActionsOneHanded();
+        }
 
         public void UpdateActionsOneHanded()
         {
@@ -76,7 +77,7 @@ namespace SA
             Action a = GetAction(assing);
             Action w_a = w.GetAction(w.actions, inp);
             if (w_a == null)
-             return;
+                return;
             a.targetAnim = w_a.targetAnim;
             a.actionType = w_a.actionType;
             a.canBeParried = w_a.canBeParried;
@@ -85,10 +86,12 @@ namespace SA
             a.canBackStab = w_a.canBackStab;
             a.ovverideDamageAnim = w_a.ovverideDamageAnim;
             a.damageAnim = w_a.damageAnim;
-          
+            a.parryMultiplier = w_a.parryMultiplier;
+            a.backstabMultiplier = w_a.backstabMultiplier;
 
-            if(isLeftHand)
-            {      
+
+            if (isLeftHand)
+            {
                 a.mirror = true;
             }
 
@@ -120,15 +123,15 @@ namespace SA
                 Action a = GetAction(w.two_handedActions[i].input); // แก้ไขตรงนี้
                 if (a != null)
                     a.targetAnim = w.two_handedActions[i].targetAnim;
-                    a.actionType = w.two_handedActions[i].actionType;
+                a.actionType = w.two_handedActions[i].actionType;
             }
         }
 
 
-     
 
-         void EmptyAllSlot()
-         {
+
+        void EmptyAllSlot()
+        {
             for (int i = 0; i < 4; i++)
             {
                 Action a = GetAction((ActionInput)i);
@@ -136,73 +139,73 @@ namespace SA
                 a.mirror = false;
                 a.actionType = ActionType.attack;
 
-             }
-         }
+            }
+        }
 
 
 
 
-         ActionManager()
-         {
-             for (int i = 0; i < 4; i++)
-             {
-                 Action a = new Action();
-                 a.input = (ActionInput)i;
-                 actionSlots.Add(a);
-             }
+        ActionManager()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Action a = new Action();
+                a.input = (ActionInput)i;
+                actionSlots.Add(a);
+            }
 
-         }
+        }
 
-         public Action GetActionSlot(StateManager st)
-         {
-             ActionInput a_input = GetActionInput(st);
-             return GetAction(a_input);
+        public Action GetActionSlot(StateManager st)
+        {
+            ActionInput a_input = GetActionInput(st);
+            return GetAction(a_input);
 
-         }
+        }
 
-         Action GetAction(ActionInput input)
-         {
+        Action GetAction(ActionInput input)
+        {
 
-             for (int i = 0; i < actionSlots.Count; i++)
-             {
-                 if (actionSlots[i].input == input)
-                     return actionSlots[i];
-             }
+            for (int i = 0; i < actionSlots.Count; i++)
+            {
+                if (actionSlots[i].input == input)
+                    return actionSlots[i];
+            }
 
-             return null;
+            return null;
 
-         }
+        }
 
-         public ActionInput GetActionInput(StateManager st)
-         {
+        public ActionInput GetActionInput(StateManager st)
+        {
 
-             if (st.rb)
-                 return ActionInput.rb;
-             if (st.rt)
-                 return ActionInput.rt;
-             if (st.lb)
-                 return ActionInput.lb;
-             if (st.lt)
-                 return ActionInput.lt;
+            if (st.rb)
+                return ActionInput.rb;
+            if (st.rt)
+                return ActionInput.rt;
+            if (st.lb)
+                return ActionInput.lb;
+            if (st.lt)
+                return ActionInput.lt;
 
-             return ActionInput.rb;
-         }
+            return ActionInput.rb;
+        }
 
-         public bool IsLeftHandslot(Action slot)
-         {
+        public bool IsLeftHandslot(Action slot)
+        {
             return (slot.input == ActionInput.lb || slot.input == ActionInput.lt);
-         }
-     }
+        }
+    }
 
 
-     public enum ActionInput
-     {
-         rb, lb, rt, lt,
-     }
+    public enum ActionInput
+    {
+        rb, lb, rt, lt,
+    }
 
     public enum ActionType
     {
-        attack,block,spells,parry
+        attack, block, spells, parry
     }
 
 
@@ -216,21 +219,26 @@ namespace SA
         public bool canBeParried = true;
         public bool changeSpeed = false;
         public float animSpeed = 1;
+        public bool canParry = false;
         public bool canBackStab = false;
+
+        [HideInInspector]
+        public float parryMultiplier;
+        public float backstabMultiplier;
 
         public bool ovverideDamageAnim;
         public string damageAnim;
 
         public WeaponStats weaponStats;
-      
-     }
 
-     [System.Serializable]
-     public class ItemAction
-     {
-         public string targetAnim;
-         public string item_id;
-     }
+    }
+
+    [System.Serializable]
+    public class ItemAction
+    {
+        public string targetAnim;
+        public string item_id;
+    }
 }
 
 

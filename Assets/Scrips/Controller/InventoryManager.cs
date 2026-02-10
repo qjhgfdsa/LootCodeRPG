@@ -43,7 +43,7 @@ namespace SA
                 (isLeft) ?
                 UI.QSlotType.lh : UI.QSlotType.rh, w.icon);
 
-          
+
         }
 
         public Weapon GetCurrentWeapon(bool isLeft)
@@ -76,7 +76,7 @@ namespace SA
 
         public void InitAllDamageCollider(StateManager state)
         {
-            
+
             if (rightHandWeapon.w_Hook != null)
                 rightHandWeapon.w_Hook.InitDamageCollider(states);
 
@@ -91,7 +91,7 @@ namespace SA
             parryCollider.SetActive(false);
         }
 
-         public void OpenParryCollider()
+        public void OpenParryCollider()
         {
             parryCollider.SetActive(true);
         }
@@ -107,13 +107,14 @@ namespace SA
 
         public List<Action> actions;
         public List<Action> two_handedActions;
-        public WeaponStats parryStats;
-        public WeaponStats backstabStats;
+
+        public float parryMultiplier;
+        public float backstabMultiplier;
         public bool LeftHandMirror;
         public GameObject weaponModel;
         public WeaponHook w_Hook;
 
-        public Action GetAction(List<Action> l , ActionInput inp)
+        public Action GetAction(List<Action> l, ActionInput inp)
         {
             for (int i = 0; i < l.Count; i++)
             {

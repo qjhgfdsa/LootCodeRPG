@@ -302,6 +302,9 @@ namespace SA
 
         bool CheckForParry(Action slot)
         {
+            if(slot.canParry == false)
+               return false;
+
             EnemyStates parryTarget = null;
             Vector3 origin = transform.position;
             origin.y += 1;
@@ -356,12 +359,13 @@ namespace SA
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = ourRot;
                 parryTarget.parriedBy = this;
-                parryTarget.IsGettingParried(inventoryManager.GetCurrentWeapon(isLeftHand).parryStats);
+                parryTarget.IsGettingParried(slot);
 
                 canMove = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
                 anim.CrossFade(StaticStrings.parry_attack, 0.2f);
+                lockOnTarget = null;
                 return true;
             }
 
@@ -401,7 +405,7 @@ namespace SA
 
 
                 backstab.transform.rotation = transform.rotation;
-                backstab.IsGettingBackStabbed(inventoryManager.GetCurrentWeapon(isLeftHand).backstabStats);
+                backstab.IsGettingBackStabbed(slot);
 
                 canMove = false;
                 inAction = true;

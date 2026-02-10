@@ -204,20 +204,23 @@ namespace SA
             parriedBy = states;
             return;
         }
-        public void IsGettingParried(WeaponStats weaponStats)
+        public void IsGettingParried(Action a)
         {
-            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
-            health -= damage;
+            float damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+            damage *= a.parryMultiplier;
+            health -= Mathf.RoundToInt(damage);
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.parry_receive);
             Debug.Log("Enemy Got Parried!" + damage);
         }
 
-        public void IsGettingBackStabbed(WeaponStats weaponStats)
+        public void IsGettingBackStabbed(Action a)
         {
-            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
-            health -= damage;
+            
+            float damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+            damage *= a.backstabMultiplier;
+            health -= Mathf.RoundToInt(damage);
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.backstabed);
