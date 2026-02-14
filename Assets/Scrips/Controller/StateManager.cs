@@ -78,7 +78,7 @@ namespace SA
         public LayerMask ignoreLayers;
 
         [HideInInspector]
-        public Action currentAction;    
+        public Action currentAction;
 
 
         float actionDelay;
@@ -137,7 +137,7 @@ namespace SA
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             DetectAction();
             DetectItemAction();
-            inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
+            inventoryManager.rightHandWeapon.instance.weaponModel.SetActive(!usingItem);
 
             anim.SetBool(StaticStrings.blocking, isBlocking);
             anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
@@ -271,7 +271,7 @@ namespace SA
 
             if (CheckForParry(slot))
                 return;
-            
+
             if (CheckForBackstab(slot))
                 return;
 
@@ -280,7 +280,7 @@ namespace SA
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
-            
+
             currentAction = slot;
 
             canMove = false;
@@ -302,15 +302,15 @@ namespace SA
 
         bool CheckForParry(Action slot)
         {
-            if(slot.canParry == false)
-               return false;
+            if (slot.canParry == false)
+                return false;
 
             EnemyStates parryTarget = null;
             Vector3 origin = transform.position;
             origin.y += 1;
             Vector3 rayDir = transform.forward;
             RaycastHit hit;
-            if (Physics.Raycast(origin, rayDir, out hit, 3,  ~ignoreLayers))
+            if (Physics.Raycast(origin, rayDir, out hit, 3, ~ignoreLayers))
             {
                 parryTarget = hit.transform.GetComponentInParent<EnemyStates>();
             }
@@ -327,20 +327,20 @@ namespace SA
             // (2) โจมตีศัตรูที่กำลังโจมตี → parryIsOn = true
             if (parryTarget.parriedBy == null && parryTarget.parryIsOn == false)
                 return false;
-            
-             /*if (parryTarget == null)
-                return false;
-                
 
-            float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
+            /*if (parryTarget == null)
+               return false;
 
-            if (dis > 3)
-                return false;*/
+
+           float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
+
+           if (dis > 3)
+               return false;*/
 
             Vector3 dir = parryTarget.transform.position - transform.position;
             dir.Normalize();
             dir.y = 0;
-            float angle = Vector3.Angle(transform.forward,dir);
+            float angle = Vector3.Angle(transform.forward, dir);
 
             if (angle < 60)
             {
@@ -372,12 +372,12 @@ namespace SA
             return false;
 
         }
-      
-      bool CheckForBackstab(Action slot)
+
+        bool CheckForBackstab(Action slot)
         {
             if (slot.canBackStab == false)
                 return false;
-                
+
             EnemyStates backstab = null;
             Vector3 origin = transform.position;
             origin.y += 1;
@@ -390,13 +390,13 @@ namespace SA
 
             if (backstab == null)
                 return false;
-                
+
             Vector3 dir = transform.position - backstab.transform.position;
             dir.Normalize();
             dir.y = 0;
             float angle = Vector3.Angle(backstab.transform.forward, dir);
             Debug.Log("Backstab Angle: ");
-            
+
             if (angle > 150)
             {
                 Vector3 targetPosition = dir * backstabOffset;
@@ -433,8 +433,8 @@ namespace SA
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
-            
-             float targetSpeed = 1;
+
+            float targetSpeed = 1;
             if (slot.changeSpeed)
             {
                 targetSpeed = slot.animSpeed;
@@ -549,18 +549,64 @@ namespace SA
         }
         public void HandleTwoHanded()
         {
-            anim.SetBool(StaticStrings.two_handed, isTwoHanded);
+            bool isRight = true;
+
+            Weapon w = inventoryManager.rightHandWeapon.instance;
+            if (w == null)
+            {
+                w = inventoryManager.leftHandWeapon.instance;
+                isRight = false;
+            }
+
+            if (w == null)
+            {
+                return;
+            }
+
             if (isTwoHanded)
-                actionManager.UpdateActionsTwoHanded();
+            { 
+                anim.CrossFade(w.th_idle,0.2f);
+                actionManager.UpdateActionsTwoHanded(); 
+
+                if (isRight)
+                {
+                    if (inventoryManager.leftHandWeapon)
+                    inventoryManager.leftHandWeapon.instance.weaponModel.SetActive(false);
+                }
+                else
+                {
+                      if (inventoryManager.rightHandWeapon)
+                    inventoryManager.rightHandWeapon.instance.weaponModel.SetActive(false);
+                }
+            }
             else
-                actionManager.UpdateActionsOneHanded();
+            { 
+
+                string targetAnim = w.oh_idle;
+                targetAnim += (isRight) ? StaticStrings._r : StaticStrings._l;
+                //anim.CrossFade(targetAnim,0.2f);
+                anim.Play(StaticStrings.equipWeapon_oh);
+                actionManager.UpdateActionsOneHanded(); 
+
+                
+                if (isRight)
+                {
+                    if (inventoryManager.leftHandWeapon)
+                    inventoryManager.leftHandWeapon.instance.weaponModel.SetActive(true);
+                }
+                else
+                {
+                      if (inventoryManager.rightHandWeapon)
+                    inventoryManager.rightHandWeapon.instance.weaponModel.SetActive(true);
+                }
+            }
         }
 
         public void IsGettingParried()
         {
 
         }
-        
-   
-    }  
+
+
+    }
 }

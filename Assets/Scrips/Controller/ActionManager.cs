@@ -30,18 +30,18 @@ namespace SA
         {
             EmptyAllSlot();
 
-            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rb, ActionInput.rb);
-            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rt, ActionInput.rt);
+            DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rb, ActionInput.rb);
+            DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rt, ActionInput.rt);
 
             if (states.inventoryManager.hasLeftHandWeapon)
             {
-                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rb, ActionInput.lb, true);
-                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rt, ActionInput.lt, true);
+                DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rb, ActionInput.lb, true);
+                DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rt, ActionInput.lt, true);
             }
             else
             {
-                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lb, ActionInput.lb);
-                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lt, ActionInput.lt);
+                DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lb, ActionInput.lb);
+                DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lt, ActionInput.lt);
             }
         }
         /*   public void UpdateActionsWithLeftHand()
@@ -86,8 +86,8 @@ namespace SA
             a.canBackStab = w_a.canBackStab;
             a.ovverideDamageAnim = w_a.ovverideDamageAnim;
             a.damageAnim = w_a.damageAnim;
-            a.parryMultiplier = w_a.parryMultiplier;
-            a.backstabMultiplier = w_a.backstabMultiplier;
+            a.parryMultiplier = w.parryMultiplier;
+            a.backstabMultiplier = w.backstabMultiplier;
 
 
             if (isLeftHand)
@@ -114,7 +114,7 @@ namespace SA
         {
 
             EmptyAllSlot();
-            Weapon w = states.inventoryManager.rightHandWeapon;
+            Weapon w = states.inventoryManager.rightHandWeapon.instance;
 
             if (w == null || w.two_handedActions == null) return;
 
@@ -224,6 +224,8 @@ namespace SA
 
         [HideInInspector]
         public float parryMultiplier;
+
+        [HideInInspector]
         public float backstabMultiplier;
 
         public bool ovverideDamageAnim;

@@ -244,280 +244,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.16989145, y: 0.10929395, z: 0.17293471}
   m_Center: {x: -0.08494569, y: -0.012280248, z: 0.000016570091}
---- !u!1 &20005525 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2989751060765130902, guid: 3910d452d77a232498857be043651e9f, type: 3}
-  m_PrefabInstance: {fileID: 1484190211}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &20005526
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20005525}
-  serializedVersion: 4
-  m_Mass: 1.25
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!144 &20005527
-CharacterJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20005525}
-  serializedVersion: 3
-  m_ConnectedBody: {fileID: 995742342}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
-  m_Axis: {x: 0, y: 0, z: -1}
-  m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  m_SwingAxis: {x: -1, y: 0, z: 0}
-  m_TwistLimitSpring:
-    spring: 0
-    damper: 0
-  m_LowTwistLimit:
-    limit: -70
-    bounciness: 0
-    contactDistance: 0
-  m_HighTwistLimit:
-    limit: 10
-    bounciness: 0
-    contactDistance: 0
-  m_SwingLimitSpring:
-    spring: 0
-    damper: 0
-  m_Swing1Limit:
-    limit: 50
-    bounciness: 0
-    contactDistance: 0
-  m_Swing2Limit:
-    limit: 0
-    bounciness: 0
-    contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
-  m_ProjectionAngle: 180
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
---- !u!136 &20005528
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20005525}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.027101748
-  m_Height: 0.10840699
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.054203495, z: 0}
---- !u!1 &42795322
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 42795328}
-  - component: {fileID: 42795327}
-  - component: {fileID: 42795326}
-  - component: {fileID: 42795325}
-  - component: {fileID: 42795324}
-  - component: {fileID: 42795323}
-  m_Layer: 9
-  m_Name: Enemy (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &42795323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42795322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5b67058b2a36cb448dbcc34dd1d7efb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rm_Mutil: 0
-  rollCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!136 &42795324
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42795322}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &42795325
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42795322}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 4
-  m_AngularDrag: 999
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
---- !u!114 &42795326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42795322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0497ffc7bfef0d488240e6b75ef1d42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
-  targets: []
-  h_bones: 
-  eStates: {fileID: 0}
---- !u!114 &42795327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42795322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20d134b4e2dfc3041a2659799274af4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 0
-  characterStats:
-    hp: 100
-    fp: 100
-    stamina: 100
-    poise: 20
-    itemDiscover: 111
-    R_weapon_1: 51
-    R_weapon_2: 51
-    R_weapon_3: 51
-    L_weapon_1: 51
-    L_weapon_2: 51
-    L_weapon_3: 51
-    physical: 87
-    vs_strike: 87
-    vs_slash: 87
-    vs_thrust: 87
-    magic: 30
-    fire: 30
-    lightning: 30
-    dark: 30
-    bleed: 100
-    frost: 100
-    poison: 100
-    curse: 100
-    attunemntSlots: 0
-  canBeParried: 1
-  parryIsOn: 1
-  doParry: 0
-  isInvicible: 0
-  dontDoAnything: 0
-  canMove: 0
-  isDead: 0
-  parriedBy: {fileID: 0}
-  anim: {fileID: 0}
-  rigid: {fileID: 0}
-  delta: 0
-  poiseDegrade: 2
-  parryCounterWindow: 1.2
---- !u!4 &42795328
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42795322}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.99980783, z: -0, w: 0.019604528}
-  m_LocalPosition: {x: -3.5, y: 0, z: 0.57925045}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2039544898}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -177.753, z: 0}
 --- !u!1 &48629431 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 913311529831766493, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -2306,6 +2032,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: prop_shield_01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2940cd5eae9798f46811f7e9da0ef44f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3695,7 +3425,10 @@ MonoBehaviour:
     canBeParried: 1
     changeSpeed: 0
     animSpeed: 1
+    canParry: 0
     canBackStab: 0
+    parryMultiplier: 0
+    backstabMultiplier: 0
     ovverideDamageAnim: 0
     damageAnim: 
     weaponStats:
@@ -3859,7 +3592,10 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canParry: 0
     canBackStab: 0
+    parryMultiplier: 0
+    backstabMultiplier: 0
     ovverideDamageAnim: 0
     damageAnim: 
     weaponStats:
@@ -3878,7 +3614,10 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canParry: 0
     canBackStab: 0
+    parryMultiplier: 0
+    backstabMultiplier: 0
     ovverideDamageAnim: 0
     damageAnim: 
     weaponStats:
@@ -3897,7 +3636,10 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canParry: 0
     canBackStab: 0
+    parryMultiplier: 0
+    backstabMultiplier: 0
     ovverideDamageAnim: 0
     damageAnim: 
     weaponStats:
@@ -3916,7 +3658,10 @@ MonoBehaviour:
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
+    canParry: 0
     canBackStab: 0
+    parryMultiplier: 0
+    backstabMultiplier: 0
     ovverideDamageAnim: 0
     damageAnim: 
     weaponStats:
@@ -3943,139 +3688,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f842fab3281e247b942df80d40bef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandWeapon:
-    weaponId: 
-    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
-    oh_idle: oh_idle
-    th_idle: th_idle
-    actions:
-    - input: 0
-      actionType: 0
-      targetAnim: oh_attack_1
-      mirror: 0
-      canBeParried: 1
-      changeSpeed: 0
-      animSpeed: 1
-      canBackStab: 1
-      ovverideDamageAnim: 0
-      damageAnim: 
-      weaponStats:
-        physical: 30
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    - input: 2
-      actionType: 0
-      targetAnim: oh_attack_3
-      mirror: 0
-      canBeParried: 1
-      changeSpeed: 0
-      animSpeed: 1
-      canBackStab: 1
-      ovverideDamageAnim: 1
-      damageAnim: damage_3
-      weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    two_handedActions: []
-    parryStats:
-      physical: 0
-      strike: 200
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
-    backstabStats:
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 500
-      lightning: 0
-      dark: 0
-    LeftHandMirror: 0
-    weaponModel: {fileID: 290650444}
-    w_Hook: {fileID: 1474964301}
+  rightHandWeapon: {fileID: 1975116925}
   hasLeftHandWeapon: 1
-  leftHandWeapon:
-    weaponId: 
-    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
-    oh_idle: oh_idle
-    th_idle: th_idle
-    actions:
-    - input: 0
-      actionType: 1
-      targetAnim: oh_attack_1
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 1
-      canBackStab: 0
-      ovverideDamageAnim: 0
-      damageAnim: 
-      weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    - input: 2
-      actionType: 3
-      targetAnim: parry
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 1
-      animSpeed: 1.8
-      canBackStab: 0
-      ovverideDamageAnim: 0
-      damageAnim: 
-      weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    two_handedActions: []
-    parryStats:
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
-    backstabStats:
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
-    LeftHandMirror: 1
-    weaponModel: {fileID: 216059515}
-    w_Hook: {fileID: 216059517}
+  leftHandWeapon: {fileID: 1766253517}
   parryCollider: {fileID: 1842171381}
 --- !u!4 &460392556 stripped
 Transform:
@@ -4183,6 +3798,150 @@ CapsuleCollider:
   m_Height: 0.108406894
   m_Direction: 1
   m_Center: {x: 0, y: 0.054203447, z: 0}
+--- !u!1 &571735364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 571735366}
+  - component: {fileID: 571735365}
+  m_Layer: 0
+  m_Name: Sword 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &571735365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571735364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instance:
+    weaponId: sword
+    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      actionType: 0
+      targetAnim: oh_attack_1
+      mirror: 0
+      canBeParried: 1
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 1
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 30
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 2
+      actionType: 0
+      targetAnim: oh_attack_3
+      mirror: 0
+      canBeParried: 1
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 80
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions:
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 50
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_2
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 150
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    parryMultiplier: 5
+    backstabMultiplier: 5
+    LeftHandMirror: 1
+    weaponModel: {fileID: 1416862130}
+    w_Hook: {fileID: 1416862131}
+--- !u!4 &571735366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571735364}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4589252, y: -0.15847927, z: -1.7510694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &571972745 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1941051771512280896, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -6856,6 +6615,37 @@ MonoBehaviour:
   maxAngle: 35
   lookAngle: 0
   tiltAngle: 0
+--- !u!1 &1298928396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1298928397}
+  m_Layer: 0
+  m_Name: -----------------------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1298928397
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298928396}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4589252, y: -0.15847927, z: -1.7510694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1309706956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -6980,6 +6770,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4421c3c2ad02dc64497959fb17c50ca6, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4421c3c2ad02dc64497959fb17c50ca6, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -7784,7 +7578,7 @@ MonoBehaviour:
     L_weapon_1: 51
     L_weapon_2: 51
     L_weapon_3: 51
-    physical: 87
+    physical: 30
     vs_strike: 0
     vs_slash: 0
     vs_thrust: 0
@@ -8035,6 +7829,150 @@ PrefabInstance:
       addedObject: {fileID: 1893464443}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1047fd949162da44baca98d35fc71597, type: 3}
+--- !u!1 &1766253516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1766253518}
+  - component: {fileID: 1766253517}
+  m_Layer: 0
+  m_Name: Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1766253517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766253516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instance:
+    weaponId: shield
+    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      actionType: 1
+      targetAnim: 
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 2
+      actionType: 3
+      targetAnim: parry
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 1.5
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 80
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions:
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 50
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_2
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 150
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    parryMultiplier: 5
+    backstabMultiplier: 5
+    LeftHandMirror: 1
+    weaponModel: {fileID: 216059515}
+    w_Hook: {fileID: 216059517}
+--- !u!4 &1766253518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766253516}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4589252, y: -0.15847927, z: -1.7510694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1787731253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9042,7 +8980,7 @@ MonoBehaviour:
     L_weapon_1: 51
     L_weapon_2: 51
     L_weapon_3: 51
-    physical: 87
+    physical: 30
     vs_strike: 0
     vs_slash: 0
     vs_thrust: 0
@@ -10039,6 +9977,150 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1975116924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1975116926}
+  - component: {fileID: 1975116925}
+  m_Layer: 0
+  m_Name: Sword
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1975116925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975116924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instance:
+    weaponId: sword
+    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      actionType: 0
+      targetAnim: oh_attack_1
+      mirror: 0
+      canBeParried: 1
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 1
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 30
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 2
+      actionType: 0
+      targetAnim: oh_attack_3
+      mirror: 0
+      canBeParried: 1
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 80
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions:
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 50
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_2
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 150
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    parryMultiplier: 5
+    backstabMultiplier: 5
+    LeftHandMirror: 1
+    weaponModel: {fileID: 290650444}
+    w_Hook: {fileID: 1474964301}
+--- !u!4 &1975116926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975116924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4589252, y: -0.15847927, z: -1.7510694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1984579105
 GameObject:
   m_ObjectHideFlags: 0
@@ -10555,3 +10637,7 @@ SceneRoots:
   - {fileID: 230056150}
   - {fileID: 283489733}
   - {fileID: 1250406972}
+  - {fileID: 1298928397}
+  - {fileID: 1975116926}
+  - {fileID: 1766253518}
+  - {fileID: 571735366}

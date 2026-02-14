@@ -176,7 +176,7 @@ namespace SA
                 }
             }
 
-             Debug.Log(" Damage is " + damage + " Poise is " + characterStats.poise);
+           //  Debug.Log(" Damage is " + damage + " Poise is " + characterStats.poise);
 
             isInvicible = true;
             anim.applyRootMotion = true;
@@ -206,25 +206,23 @@ namespace SA
         }
         public void IsGettingParried(Action a)
         {
-            float damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
-            damage *= a.parryMultiplier;
-            health -= Mathf.RoundToInt(damage);
+            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.parryMultiplier);
+            health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.parry_receive);
-            Debug.Log("Enemy Got Parried!" + damage);
+           // Debug.Log("Enemy Got Parried!" + damage);
         }
 
         public void IsGettingBackStabbed(Action a)
         {
             
-            float damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
-            damage *= a.backstabMultiplier;
-            health -= Mathf.RoundToInt(damage);
+            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.backstabMultiplier);
+            health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.backstabed);
-            Debug.Log("Enemy Got Back Stabbed!" + damage);
+           // Debug.Log("Enemy Got Back Stabbed!" + damage);
         }
     }
 }
