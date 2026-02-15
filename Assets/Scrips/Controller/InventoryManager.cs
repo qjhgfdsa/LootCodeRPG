@@ -120,9 +120,14 @@ namespace SA
         public float parryMultiplier;
         public float backstabMultiplier;
         public bool LeftHandMirror;
+
         public GameObject weaponModel;
         public WeaponHook w_Hook;
-
+        
+        public Vector3 model_pos;
+        public Vector3 model_eulers;
+        public Vector3 model_scale;
+        
         public Action GetAction(List<Action> l, ActionInput inp)
         {
             for (int i = 0; i < l.Count; i++)

@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 namespace SA
@@ -52,6 +53,19 @@ namespace SA
         //Other
         public static string _l = "_l";
         public static string _r = "_r";
+
+        //Data
+        public static string itemFolder = "/Item/";
+        public static string SaveLocation()
+        {
+            string r = Application.streamingAssetsPath;
+            if (!Directory.Exists(r))
+            {
+                Directory.CreateDirectory(r);
+            }
+
+            return r;
+        }
 
 
     
