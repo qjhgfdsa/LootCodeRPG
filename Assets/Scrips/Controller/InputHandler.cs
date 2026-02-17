@@ -33,14 +33,14 @@ namespace SA
         void Start()
         {
             UI.QuickSlot.singleton.Init();
-            
+
             states = GetComponent<StateManager>();
             states.Init();
 
             camManager = CameraManager.singleton;
             camManager.Init(states);
 
-            
+
         }
 
         void FixedUpdate()
@@ -69,22 +69,22 @@ namespace SA
             //rolls_input = Input.GetKeyDown(KeyCode.LeftControl);
             t_input = Input.GetKeyDown(StaticStrings.TwoHandedKey);//two handed
             x_input = Input.GetKeyDown(StaticStrings.UseItemKey); //using item
-           // lockon_input = Input.GetKeyDown(StaticStrings.lockOnKey); ไม่ได้ใช้
+                                                                  // lockon_input = Input.GetKeyDown(StaticStrings.lockOnKey); ไม่ได้ใช้
 
             // rt_axis = Input.GetAxis("RT");
             //rt_axis = Input.GetAxis("RT");
 
             lt_input = Input.GetKey(StaticStrings.AttackKey1);
-           lb_input = Input.GetKey(StaticStrings.AttackKey2);
+            lb_input = Input.GetKey(StaticStrings.AttackKey2);
             rt_input = Input.GetKey(StaticStrings.AttackKey3);
-           rb_input = Input.GetKey(StaticStrings.AttackKey4);
+            rb_input = Input.GetKey(StaticStrings.AttackKey4);
 
 
             if (b_input)
                 b_timer += delta;
         }
 
-          void UpdateStates()
+        /*  void UpdateStates()
           {
               states.vertical = vertical;
               states.horizontal = horizontal;
@@ -154,17 +154,116 @@ namespace SA
                  
 
                     camManager.lockonTarget = states.lockOnTarget;
-                    states.lockOnTransform = states.lockOnTarget.GetTarget();
+                    states.lockOnTransform = states.lockOnTarget?.GetTarget(); //เเก้ใส่เครื่องหมายคำถาม states.lockOnTarget?
                     camManager.lockonTransform = states.lockOnTransform;
                     camManager.lockon = states.lockOn;
                      // states.lockOnTransform = camManager.lockonTransform;
 
                 } 
-         } 
-        
+         } */
+
+        // ใน UpdateStates() ให้แทนที่ทั้งส่วน lock-on ด้วยโค้ดนี้
+
+        void UpdateStates()
+        {
+            states.vertical = vertical;
+            states.horizontal = horizontal;
+
+            Vector3 v = vertical * camManager.transform.forward;
+            Vector3 h = horizontal * camManager.transform.right;
+            states.moveDir = (v + h).normalized;
+            float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
+            states.moveAmount = Mathf.Clamp01(m);
+
+            if (x_input)
+                b_input = false;
+
+            if (b_input && b_timer > 0.5f)
+                states.run = (states.moveAmount > 0);
+
+            if (b_input == false && b_timer > 0 && b_timer < 0.5f)
+                states.rollInput = true;
+
+            states.itemInput = x_input;
+            states.rt = rt_input;
+            states.lt = lt_input;
+            states.rb = rb_input;
+            states.lb = lb_input;
+
+            if (t_input)
+            {
+                states.isTwoHanded = !states.isTwoHanded;
+                states.HandleTwoHanded();
+            }
+
+            // ========== LOCK-ON SYSTEM (แก้ใหม่) ==========
+
+            // [1] เช็ค target ที่ล็อคอยู่ว่ายังใช้ได้ไหม — เฉพาะตอนที่ lock on อยู่เท่านั้น
+            if (states.lockOn)
+            {
+                bool shouldClear = false;
+
+                if (states.lockOnTarget == null)
+                    shouldClear = true;
+                else if (states.lockOnTarget.eStates.isDead)
+                    shouldClear = true;
+
+                if (shouldClear)
+                    ClearLockOn();
+            }
+
+            // [2] กด scroll wheel click เพื่อ toggle
+            if (Input.GetMouseButtonDown(2))
+            {
+                if (states.lockOn)
+                {
+                    // กำลัง lock อยู่ → ปิด
+                    ClearLockOn();
+                }
+                else
+                {
+                    // ยังไม่ได้ lock → หา enemy แล้วเปิด
+                    TryLockOn();
+                }
+            }
+        }
+
+        // แยกเป็น method ชัดเจน
+        void TryLockOn()
+        {
+            EnemyTarget target = EnemyManager.singleton.GetEnemy(transform.position);
+
+            if (target == null)
+                return; // ไม่เจอ enemy ไม่ต้องทำอะไร
+
+            Transform targetTransform = target.GetTarget();
+            if (targetTransform == null)
+                return; // enemy ไม่มี valid transform
+
+            // Set ทุกอย่างพร้อมกัน
+            states.lockOnTarget = target;
+            states.lockOnTransform = targetTransform;
+            states.lockOn = true;
+
+            camManager.lockonTarget = target;
+            camManager.lockonTransform = targetTransform;
+            camManager.lockon = true;
+        }
+
+        void ClearLockOn()
+        {
+            states.lockOn = false;
+            states.lockOnTarget = null;
+            states.lockOnTransform = null;
+
+            camManager.lockon = false;
+            camManager.lockonTarget = null;
+            camManager.lockonTransform = null;
+        }
+
         void ResetInputNStates()
         {
-            
+
             if (b_input == false)
                 b_timer = 0;
 
