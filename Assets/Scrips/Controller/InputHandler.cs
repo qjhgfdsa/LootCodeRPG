@@ -30,19 +30,39 @@ namespace SA
         CameraManager camManager;
         float delta;
 
+        void Awake()
+        {
+            states = GetComponent<StateManager>();
+        }
+
         void Start()
         {
             UI.QuickSlot.singleton.Init();
-
-            states = GetComponent<StateManager>();
             states.Init();
 
+            // รอให้ CameraManager พร้อม
             camManager = CameraManager.singleton;
+
+            if (camManager == null)
+            {
+                // ถ้ายังเป็น null ลองหาจาก Scene
+                camManager = FindFirstObjectByType<CameraManager>();
+
+                if (camManager != null)
+                {
+                    // เจอแล้ว ให้มันเป็น singleton เลย
+                    CameraManager.singleton = camManager;
+                }
+                else
+                {
+                    Debug.LogError("❌ ไม่เจอ CameraManager ใน Scene! ต้องมี GameObject ที่แนบ CameraManager script");
+                    enabled = false;
+                    return;
+                }
+            }
+
             camManager.Init(states);
-
-
         }
-
         void FixedUpdate()
         {
             delta = Time.fixedDeltaTime;
@@ -169,9 +189,25 @@ namespace SA
             states.vertical = vertical;
             states.horizontal = horizontal;
 
+            // เช็คทุกครั้งก่อนใช้ (ป้องกัน camManager หาย)
+            if (camManager == null)
+            {
+                camManager = CameraManager.singleton;
+                if (camManager == null)
+                {
+                    camManager = FindFirstObjectByType<CameraManager>();
+                    if (camManager == null)
+                    {
+                        Debug.LogError("❌ CameraManager หายไประหว่างเล่น!");
+                        return; // หยุดทำงานต่อ
+                    }
+                }
+            }
+
             Vector3 v = vertical * camManager.transform.forward;
             Vector3 h = horizontal * camManager.transform.right;
             states.moveDir = (v + h).normalized;
+
             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
             states.moveAmount = Mathf.Clamp01(m);
 
@@ -196,51 +232,55 @@ namespace SA
                 states.HandleTwoHanded();
             }
 
-            // ========== LOCK-ON SYSTEM (แก้ใหม่) ==========
+            // ========== LOCK-ON SYSTEM ==========
 
-            // [1] เช็ค target ที่ล็อคอยู่ว่ายังใช้ได้ไหม — เฉพาะตอนที่ lock on อยู่เท่านั้น
+            // [1] เช็ค target ที่ล็อคอยู่
             if (states.lockOn)
             {
                 bool shouldClear = false;
 
                 if (states.lockOnTarget == null)
                     shouldClear = true;
-                else if (states.lockOnTarget.eStates.isDead)
+                else if (states.lockOnTarget.eStates != null && states.lockOnTarget.eStates.isDead) // เพิ่มการเช็ค eStates
                     shouldClear = true;
 
                 if (shouldClear)
                     ClearLockOn();
             }
 
-            // [2] กด scroll wheel click เพื่อ toggle
+            // [2] กด scroll wheel click
             if (Input.GetMouseButtonDown(2))
             {
                 if (states.lockOn)
                 {
-                    // กำลัง lock อยู่ → ปิด
                     ClearLockOn();
                 }
                 else
                 {
-                    // ยังไม่ได้ lock → หา enemy แล้วเปิด
                     TryLockOn();
                 }
             }
         }
 
-        // แยกเป็น method ชัดเจน
         void TryLockOn()
         {
+            // เช็ค EnemyManager ก่อน
+            if (EnemyManager.singleton == null)
+            {
+                Debug.LogWarning("EnemyManager.singleton is null!");
+                return;
+            }
+
             EnemyTarget target = EnemyManager.singleton.GetEnemy(transform.position);
 
             if (target == null)
-                return; // ไม่เจอ enemy ไม่ต้องทำอะไร
+                return;
 
             Transform targetTransform = target.GetTarget();
             if (targetTransform == null)
-                return; // enemy ไม่มี valid transform
+                return;
 
-            // Set ทุกอย่างพร้อมกัน
+            // Set ทุกอย่าง
             states.lockOnTarget = target;
             states.lockOnTransform = targetTransform;
             states.lockOn = true;

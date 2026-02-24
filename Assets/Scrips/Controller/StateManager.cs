@@ -137,7 +137,26 @@ namespace SA
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             DetectAction();
             DetectItemAction();
-            inventoryManager.rightHandWeapon.instance.weaponModel.SetActive(!usingItem);
+
+
+            // เช็คก่อนใช้
+            if (inventoryManager == null)
+            {
+                Debug.LogError("❌ inventoryManager is NULL!");
+                return;
+            }
+            if (inventoryManager.rightHandWeapon == null)
+            {
+                Debug.LogError("❌ rightHandWeapon is NULL!");
+                return;
+            }
+            if (inventoryManager.rightHandWeapon.weaponModel == null)
+            {
+                Debug.LogError("❌ weaponModel is NULL!");
+                return;
+            }
+
+            inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
 
             anim.SetBool(StaticStrings.blocking, isBlocking);
             anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
@@ -165,11 +184,14 @@ namespace SA
 
             anim.applyRootMotion = false;
 
+
+
             if (!canMove)
                 return;
 
             //a_hook.rm_Mutil = 1;
-            a_hook.CloseRoll();
+            a_hook.CloseRoll(); //_กรรมเเท้ๆ
+
             HandleRolls();
 
             anim.applyRootMotion = false;
@@ -192,9 +214,22 @@ namespace SA
             if (run)
                 lockOn = false;
 
-            Vector3 targetDir = (!lockOn) ? moveDir : (lockOnTransform != null) ?
-            lockOnTransform.transform.position - transform.position :
-             moveDir;
+            // ============ ตรงนี้แหละที่มีปัญหา! ============
+            Debug.Log("lockOn: " + lockOn);
+            Debug.Log("lockOnTransform: " + (lockOnTransform == null ? "NULL" : "OK"));
+
+
+            Vector3 targetDir;
+            if (lockOn && lockOnTransform != null)
+            {
+                Debug.Log("Using lockOnTransform.position");
+                targetDir = lockOnTransform.position - transform.position;
+            }
+            else
+            {
+                Debug.Log("Using moveDir");
+                targetDir = moveDir;
+            }
 
             targetDir.y = 0;
             if (targetDir == Vector3.zero)
@@ -564,40 +599,40 @@ namespace SA
             }
 
             if (isTwoHanded)
-            { 
-                anim.CrossFade(w.th_idle,0.2f);
-                actionManager.UpdateActionsTwoHanded(); 
+            {
+                anim.CrossFade(w.th_idle, 0.2f);
+                actionManager.UpdateActionsTwoHanded();
 
                 if (isRight)
                 {
                     if (inventoryManager.leftHandWeapon)
-                    inventoryManager.leftHandWeapon.instance.weaponModel.SetActive(false);
+                        inventoryManager.leftHandWeapon.weaponModel.SetActive(false);
                 }
                 else
                 {
-                      if (inventoryManager.rightHandWeapon)
-                    inventoryManager.rightHandWeapon.instance.weaponModel.SetActive(false);
+                    if (inventoryManager.rightHandWeapon)
+                        inventoryManager.rightHandWeapon.weaponModel.SetActive(false);
                 }
             }
             else
-            { 
+            {
 
                 string targetAnim = w.oh_idle;
                 targetAnim += (isRight) ? StaticStrings._r : StaticStrings._l;
                 //anim.CrossFade(targetAnim,0.2f);
                 anim.Play(StaticStrings.equipWeapon_oh);
-                actionManager.UpdateActionsOneHanded(); 
+                actionManager.UpdateActionsOneHanded();
 
-                
+
                 if (isRight)
                 {
                     if (inventoryManager.leftHandWeapon)
-                    inventoryManager.leftHandWeapon.instance.weaponModel.SetActive(true);
+                        inventoryManager.leftHandWeapon.weaponModel.SetActive(true);
                 }
                 else
                 {
-                      if (inventoryManager.rightHandWeapon)
-                    inventoryManager.rightHandWeapon.instance.weaponModel.SetActive(true);
+                    if (inventoryManager.rightHandWeapon)
+                        inventoryManager.rightHandWeapon.weaponModel.SetActive(true);
                 }
             }
         }

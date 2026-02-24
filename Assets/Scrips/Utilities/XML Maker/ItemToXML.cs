@@ -37,9 +37,18 @@ namespace SA.Utilities
                 xml += "<parryMultiplier>" + w.parryMultiplier + "</parryMultiplier>" + "\n";
                 xml += "<backstabMultiplier>" + w.backstabMultiplier + "</backstabMultiplier>" + "\n";
                 xml += "<LeftHandMirror>" + w.LeftHandMirror + "</LeftHandMirror>" + "\n";
-                xml += "<model_pos>" + w.model_pos + "</model_pos>" + "\n";
-                xml += "<model_eulers>" + w.model_eulers + "</model_eulers>" + "\n";
-                xml += "<model_scale>" + w.model_scale + "</model_scale>" + "\n";
+
+                xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
+                xml += "<mp_y>" + w.model_pos.y + "</mp_y>";
+                xml += "<mp_z>" + w.model_pos.z + "</mp_z>" + "\n";
+
+                xml += "<me_x>" + w.model_eulers.x + "</me_x>";
+                xml += "<me_y>" + w.model_eulers.y + "</me_y>";
+                xml += "<me_z>" + w.model_eulers.z + "</me_z>" + "\n";
+
+                xml += "<ms_x>" + w.model_scale.x + "</ms_x>";
+                xml += "<ms_y>" + w.model_scale.y + "</ms_y>";
+                xml += "<ms_z>" + w.model_scale.z + "</ms_z>" + "\n";
 
                 xml += "</weapon>" + "\n";
             }
@@ -64,13 +73,13 @@ namespace SA.Utilities
             foreach (Action a in l)
             {
                 xml += "<" + nodeName + ">" + "\n";
-                xml += "<ActionsInput>" + a.input.ToString() + "</ActionsInput>" + "\n";
-                xml += "<ActionsType>" + a.actionType.ToString() + "</ActionsType>" + "\n";
+                xml += "<ActionInput>" + a.input.ToString() + "</ActionInput>" + "\n";
+                xml += "<ActionType>" + a.actionType.ToString() + "</ActionType>" + "\n";
                 xml += "<targetAnim>" + a.targetAnim + "</targetAnim>" + "\n";
                 xml += "<mirror>" + a.mirror + "</mirror>" + "\n";
                 xml += "<canBeParried>" + a.canBeParried + "</canBeParried>" + "\n";
                 xml += "<changeSpeed>" + a.changeSpeed + "</changeSpeed>" + "\n";
-                xml += "<animSpeed>" + a.animSpeed.ToString() + "<animSpeed>" + "\n";
+                xml += "<animSpeed>" + a.animSpeed.ToString() + "</animSpeed>" + "\n";
                 xml += "<canParry>" + a.canParry + "</canParry>" + "\n";
                 xml += "<canBackStab>" + a.canBackStab + "</canBackStab>" + "\n";
                 xml += "<ovverideDamageAnim>" + a.ovverideDamageAnim + "</ovverideDamageAnim>" + "\n";

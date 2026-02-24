@@ -30,18 +30,18 @@ namespace SA
         {
             EmptyAllSlot();
 
-            DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rb, ActionInput.rb);
-            DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rt, ActionInput.rt);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rb, ActionInput.rb, actionSlots);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rt, ActionInput.rt, actionSlots);
 
             if (states.inventoryManager.hasLeftHandWeapon)
             {
-                DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rb, ActionInput.lb, true);
-                DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rt, ActionInput.lt, true);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rb, ActionInput.lb, actionSlots, true);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rt, ActionInput.lt, actionSlots, true);
             }
             else
             {
-                DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lb, ActionInput.lb);
-                DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lt, ActionInput.lt);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lb, ActionInput.lb, actionSlots);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lt, ActionInput.lt, actionSlots);
             }
         }
         /*   public void UpdateActionsWithLeftHand()
@@ -72,7 +72,7 @@ namespace SA
                  a.targetAnim = w.two_handedActions[i].targetAnim;
              }
          }*/
-        public void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, bool isLeftHand = false)
+     /*   public void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, bool isLeftHand = false)
         {
             Action a = GetAction(assing);
             Action w_a = w.GetAction(w.actions, inp);
@@ -108,7 +108,7 @@ namespace SA
             to.lightning = from.lightning;
             to.fire = from.fire;
             to.dark = from.dark;
-        }
+        } */
 
         public void UpdateActionsTwoHanded()
         {
@@ -120,7 +120,7 @@ namespace SA
 
             for (int i = 0; i < w.two_handedActions.Count; i++)
             {
-                Action a = GetAction(w.two_handedActions[i].input); // แก้ไขตรงนี้
+                Action a = StaticFunctions.GetAction(w.two_handedActions[i].input, actionSlots); // แก้ไขตรงนี้
                 if (a != null)
                     a.targetAnim = w.two_handedActions[i].targetAnim;
                 a.actionType = w.two_handedActions[i].actionType;
@@ -134,7 +134,7 @@ namespace SA
         {
             for (int i = 0; i < 4; i++)
             {
-                Action a = GetAction((ActionInput)i);
+                Action a = StaticFunctions.GetAction((ActionInput)i, actionSlots);
                 a.targetAnim = null;
                 a.mirror = false;
                 a.actionType = ActionType.attack;
@@ -159,23 +159,11 @@ namespace SA
         public Action GetActionSlot(StateManager st)
         {
             ActionInput a_input = GetActionInput(st);
-            return GetAction(a_input);
+            return StaticFunctions.GetAction(a_input, actionSlots);
 
         }
 
-        Action GetAction(ActionInput input)
-        {
-
-            for (int i = 0; i < actionSlots.Count; i++)
-            {
-                if (actionSlots[i].input == input)
-                    return actionSlots[i];
-            }
-
-            return null;
-
-        }
-
+      
         public ActionInput GetActionInput(StateManager st)
         {
 
