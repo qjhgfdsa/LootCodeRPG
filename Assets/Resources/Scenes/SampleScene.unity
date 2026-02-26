@@ -9871,9 +9871,9 @@ MonoBehaviour:
     backstabMultiplier: 5
     LeftHandMirror: 1
     modelPrefab: {fileID: 0}
-    model_pos: {x: 0, y: 0, z: 0}
-    model_eulers: {x: 0, y: 0, z: 0}
-    model_scale: {x: 0, y: 0, z: 0}
+    model_pos: {x: -0.012, y: 0.007, z: -0.018}
+    model_eulers: {x: -26.952, y: 42.042, z: 92.93}
+    model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
   weaponModel: {fileID: 0}
   w_Hook: {fileID: 0}
 --- !u!4 &1975116926
@@ -10282,10 +10282,10 @@ MonoBehaviour:
     parryMultiplier: 5
     backstabMultiplier: 5
     LeftHandMirror: 1
-    modelPrefab: {fileID: 1653556051664181941, guid: 4cc3ea6663a87054aaf0ebde0f0ff4d3, type: 3}
-    model_pos: {x: 0, y: 0, z: 0}
-    model_eulers: {x: 0, y: 0, z: 0}
-    model_scale: {x: 0, y: 0, z: 0}
+    modelPrefab: {fileID: 8721339794671314178, guid: c5e8fc17b4ba4af48aec55de13576689, type: 3}
+    model_pos: {x: -0.012, y: 0.007, z: -0.018}
+    model_eulers: {x: -26.952, y: 42.042, z: 92.93}
+    model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
 --- !u!4 &2109640209
 Transform:
   m_ObjectHideFlags: 0

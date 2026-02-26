@@ -13,12 +13,12 @@ namespace SA
         public Transform target;
         public EnemyTarget lockonTarget;
         public Transform lockonTransform;
-        
+
         [HideInInspector]
         public Transform pivot;
         [HideInInspector]
         public Transform camTrans;
-        
+
         StateManager states;
 
         float turnSmoothing = .1f; // แก้จาก turnSmooting
@@ -54,7 +54,18 @@ namespace SA
             target = st.transform;
 
             camTrans = Camera.main.transform;
+            if (camTrans == null)
+            {
+                Debug.LogError("❌ Camera.main ไม่เจอ!");
+                return;
+            }
             pivot = camTrans.parent;
+
+            if (pivot == null)
+            {
+                Debug.LogError("❌ Camera ไม่มี parent (pivot)! ต้องสร้าง Empty GameObject เป็น parent ของ Camera");
+                return;
+            }
         }
 
         public void Tick(float d)
@@ -96,14 +107,14 @@ namespace SA
             if (Mathf.Abs(h) > 0.6f && !usedMouseAxis)
             {
                 Transform newTarget = lockonTarget.GetTarget(h < 0); // h < 0 = ซ้าย, h > 0 = ขวา
-                
+
                 if (newTarget != null)
                 {
                     lockonTransform = newTarget;
                     if (states != null)
                         states.lockOnTransform = lockonTransform;
                 }
-                
+
                 usedMouseAxis = true;
             }
 
@@ -111,7 +122,7 @@ namespace SA
             if (changeTargetLeft || changeTargetRight)
             {
                 Transform newTarget = lockonTarget.GetTarget(changeTargetLeft);
-                
+
                 if (newTarget != null)
                 {
                     lockonTransform = newTarget;
@@ -129,6 +140,9 @@ namespace SA
 
         void FollowTarget(float d)
         {
+            if (target == null)
+                return; // ไม่มี target ไม่ต้องทำอะไร
+
             float speed = d * followSpeed;
             Vector3 targetPosition = Vector3.Lerp(transform.position, target.position, speed);
             transform.position = targetPosition;
@@ -136,6 +150,9 @@ namespace SA
 
         void HandleRotations(float d, float v, float h, float targetSpeed)
         {
+            // เช็คก่อนใช้
+            if (pivot == null)
+                return;
             // Smooth camera movement
             if (turnSmoothing > 0)
             {
@@ -165,7 +182,7 @@ namespace SA
                     transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, d * 9);
                     lookAngle = transform.eulerAngles.y;
                 }
-                
+
                 return;
             }
 
@@ -176,6 +193,6 @@ namespace SA
     }
 }
 
-        
 
-    
+
+

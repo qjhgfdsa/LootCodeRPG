@@ -90,8 +90,8 @@
 <parryMultiplier>5</parryMultiplier>
 <backstabMultiplier>5</backstabMultiplier>
 <LeftHandMirror>True</LeftHandMirror>
-<mp_x>1</mp_x><mp_y>0</mp_y><mp_z>0</mp_z>
-<me_x>0</me_x><me_y>0</me_y><me_z>0</me_z>
-<ms_x>1</ms_x><ms_y>1</ms_y><ms_z>2</ms_z>
+<mp_x>-0.012</mp_x><mp_y>0.007</mp_y><mp_z>-0.018</mp_z>
+<me_x>-26.952</me_x><me_y>42.042</me_y><me_z>92.93</me_z>
+<ms_x>0.3937009</ms_x><ms_y>0.3937008</ms_y><ms_z>0.3937009</ms_z>
 </weapon>
 </root>

@@ -86,23 +86,32 @@ namespace SA
         public void Init()
         {
             SetupAnimator();
+
+            // เช็คว่า anim พร้อมหรือยัง
+            if (anim == null)
+            {
+                Debug.LogError("❌ Animator is NULL after SetupAnimator!");
+                return;
+            }
+
             rigid = GetComponent<Rigidbody>();
             rigid.angularDamping = 999;
             rigid.linearDamping = 4;
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
-
             inventoryManager = GetComponent<InventoryManager>();
-            inventoryManager.Init(this);
 
             actionManager = GetComponent<ActionManager>();
             actionManager.Init(this);
 
-
+            // ===== สำคัญ: ต้อง Init a_hook ก่อน inventoryManager =====
             a_hook = activeModel.GetComponent<AnimatorHook>();
             if (a_hook == null)
                 a_hook = activeModel.AddComponent<AnimatorHook>();
             a_hook.Init(this, null);
+
+            // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
+            inventoryManager.Init(this);
 
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
@@ -133,35 +142,34 @@ namespace SA
         {
             delta = d;
 
+            if (anim == null || inventoryManager == null)
+            {
+                Debug.LogError("anim หรือ inventoryManager เป็น null!");
+                return;
+            }
+
+            if (anim == null || a_hook == null)
+            {
+                Debug.LogError("❌ anim หรือ a_hook ยัง NULL!");
+                return;
+            }
+
             isBlocking = false;
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             DetectAction();
             DetectItemAction();
+            Debug.Log("ถึงบรรทัด 180");
 
-
-            // เช็คก่อนใช้
-            if (inventoryManager == null)
+            // เช็คทุกอย่างก่อนใช้
+            if (inventoryManager != null &&
+                inventoryManager.rightHandWeapon != null &&
+                inventoryManager.rightHandWeapon.weaponModel != null)
             {
-                Debug.LogError("❌ inventoryManager is NULL!");
-                return;
+                inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
             }
-            if (inventoryManager.rightHandWeapon == null)
-            {
-                Debug.LogError("❌ rightHandWeapon is NULL!");
-                return;
-            }
-            if (inventoryManager.rightHandWeapon.weaponModel == null)
-            {
-                Debug.LogError("❌ weaponModel is NULL!");
-                return;
-            }
-
-            inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
 
             anim.SetBool(StaticStrings.blocking, isBlocking);
             anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
-
-
 
 
             if (inAction)
@@ -188,10 +196,14 @@ namespace SA
 
             if (!canMove)
                 return;
+            // ตรงนี้ใน FixedTick() ก่อนเรียก a_hook
+            if (a_hook == null)
+            {
+                Debug.LogError("❌ a_hook is NULL!");
+                return;
+            }
 
-            //a_hook.rm_Mutil = 1;
-            a_hook.CloseRoll(); //_กรรมเเท้ๆ
-
+            a_hook.CloseRoll();
             HandleRolls();
 
             anim.applyRootMotion = false;
@@ -246,10 +258,20 @@ namespace SA
             }
             else
             {
-                HandleLockOnAnimations(moveDir);
-            }
+                if (lockOnTransform != null)
+                {
+                    HandleLockOnAnimations(moveDir);
 
+                }
+                else
+                {
+                    // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
+                    HandleMovementAnimations();
+                }
+
+            }
         }
+
 
         public void DetectItemAction()
         {
