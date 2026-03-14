@@ -3695,11 +3695,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rh_weapons:
   - sword
-  lh_weapons:
-  - sword_3
+  lh_weapons: []
   rightHandWeapon: {fileID: 1975116925}
   hasLeftHandWeapon: 1
-  leftHandWeapon: {fileID: 1975116925}
+  leftHandWeapon: {fileID: 1766253517}
   parryCollider: {fileID: 1842171381}
 --- !u!1 &477745407 stripped
 GameObject:
@@ -7679,8 +7678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instance:
-    itemName: 
-    itemDescription: 
+    weaponId: shield
     icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
@@ -9775,8 +9773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instance:
-    itemName: 
-    itemDescription: 
+    weaponId: sword
     icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
@@ -10231,6 +10228,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9790c11643b02fe4bba12ddd89916812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourcesManager
+  weaponList:
+  - weaponId: sword
+    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions: []
+    two_handedActions:
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 50
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 0
+      actionType: 0
+      targetAnim: th_attack_2
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 1
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 1
+      damageAnim: damage_3
+      weaponStats:
+        physical: 150
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    parryMultiplier: 5
+    backstabMultiplier: 5
+    LeftHandMirror: 1
+    modelPrefab: {fileID: 8721339794671314178, guid: c5e8fc17b4ba4af48aec55de13576689, type: 3}
+    model_pos: {x: -0.012, y: 0.007, z: -0.018}
+    model_eulers: {x: -26.952, y: 42.042, z: 92.93}
+    model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
 --- !u!4 &2109640209
 Transform:
   m_ObjectHideFlags: 0

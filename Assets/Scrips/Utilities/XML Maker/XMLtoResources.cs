@@ -42,7 +42,7 @@ namespace SA.Utilities
                 _w.two_handedActions = new List<Action>();
 
                 XmlNode weaponId = w.SelectSingleNode("weaponId");
-                _w.weaponId = weaponId.InnerText;
+               // _w.weaponId = weaponId.InnerText;
 
                 XmlNode oh_idle = w.SelectSingleNode("oh_idle");
                 _w.oh_idle = oh_idle.InnerText;
@@ -64,7 +64,7 @@ namespace SA.Utilities
                 _w.model_eulers = XmlToVector(w, "me");
                 _w.model_scale = XmlToVector(w, "ms");
 
-                resourcesManager.weaponList.Add(_w);
+               // resourcesManager.weaponList.Add(_w);
             }
         }
 

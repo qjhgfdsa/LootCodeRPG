@@ -158,7 +158,6 @@ namespace SA
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             DetectAction();
             DetectItemAction();
-            Debug.Log("ถึงบรรทัด 180");
 
             // เช็คทุกอย่างก่อนใช้
             if (inventoryManager != null &&
@@ -227,8 +226,8 @@ namespace SA
                 lockOn = false;
 
             // ============ ตรงนี้แหละที่มีปัญหา! ============
-            Debug.Log("lockOn: " + lockOn);
-            Debug.Log("lockOnTransform: " + (lockOnTransform == null ? "NULL" : "OK"));
+         //   Debug.Log("lockOn: " + lockOn);
+          //  Debug.Log("lockOnTransform: " + (lockOnTransform == null ? "NULL" : "OK"));
 
 
             Vector3 targetDir;
@@ -239,7 +238,6 @@ namespace SA
             }
             else
             {
-                Debug.Log("Using moveDir");
                 targetDir = moveDir;
             }
 
@@ -452,7 +450,6 @@ namespace SA
             dir.Normalize();
             dir.y = 0;
             float angle = Vector3.Angle(backstab.transform.forward, dir);
-            Debug.Log("Backstab Angle: ");
 
             if (angle > 150)
             {

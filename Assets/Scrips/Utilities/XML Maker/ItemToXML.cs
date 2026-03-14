@@ -9,7 +9,7 @@ namespace SA.Utilities
     public class ItemToXML : MonoBehaviour
     {
         public bool make;
-        public List<ItemInstance> canidates = new List<ItemInstance>();
+        public List<RuntimeWeapon> canidates = new List<RuntimeWeapon>();
         public string xml_version;
         public string targetName;
         void Update()
@@ -21,13 +21,13 @@ namespace SA.Utilities
             string xml = xml_version; // <?xml version = "1.0" encoding = "UTF-8"?>
             xml += "\n";
             xml += "<root>";
-            foreach (ItemInstance i in canidates)
+            foreach (RuntimeWeapon i in canidates)
             {
 
                 Weapon w = i.instance;
 
                 xml += "<weapon>" + "\n";
-                xml += "<weaponId>" + w.weaponId + "</weaponId>" + "\n";
+               // xml += "<weaponId>" + w.weaponId + "</weaponId>" + "\n";
                 xml += "<oh_idle>" + w.oh_idle + "</oh_idle>" + "\n";
                 xml += "<th_idle>" + w.th_idle + "</th_idle>" + "\n";
 

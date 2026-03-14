@@ -8,7 +8,6 @@ namespace SA
     {
         public static void DeepCopyWeapon(Weapon from, Weapon to)
         {
-            to.weaponId = from.weaponId;
             to.icon = from.icon;
             to.oh_idle = from.oh_idle;
             to.th_idle = from.th_idle;
