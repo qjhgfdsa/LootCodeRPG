@@ -63,8 +63,12 @@ namespace SA
             inst.weaponModel = Instantiate(inst.instance.modelPrefab) as GameObject;
             Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
             inst.weaponModel.transform.parent = p;
-            inst.weaponModel.transform.localPosition = inst.instance.model_pos;
-            inst.weaponModel.transform.localEulerAngles = inst.instance.model_eulers;
+
+
+            inst.weaponModel.transform.localPosition =
+            (isLeft) ? inst.instance.l_model_pos : inst.instance.r_model_pos;
+            inst.weaponModel.transform.localEulerAngles =
+            (isLeft) ? inst.instance.l_model_eulers : inst.instance.r_model_eulers;
             inst.weaponModel.transform.localScale = inst.instance.model_scale;
 
             inst.w_Hook = inst.weaponModel.GetComponentInChildren<WeaponHook>();
@@ -168,8 +172,10 @@ namespace SA
 
         public GameObject modelPrefab;
 
-        public Vector3 model_pos;
-        public Vector3 model_eulers;
+        public Vector3 r_model_pos;
+        public Vector3 l_model_pos;
+        public Vector3 r_model_eulers;
+        public Vector3 l_model_eulers;
         public Vector3 model_scale;
 
         public Action GetAction(List<Action> l, ActionInput inp)
@@ -185,4 +191,14 @@ namespace SA
             return null;
         }
     }
+   
+    [System.Serializable]
+    public class Spell : Item
+    {
+        public SpellType spellType;
+    }
+
+   
+
 }
+

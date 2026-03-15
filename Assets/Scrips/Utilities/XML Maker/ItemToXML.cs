@@ -38,7 +38,7 @@ namespace SA.Utilities
                 xml += "<backstabMultiplier>" + w.backstabMultiplier + "</backstabMultiplier>" + "\n";
                 xml += "<LeftHandMirror>" + w.LeftHandMirror + "</LeftHandMirror>" + "\n";
 
-                xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
+              /*  xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
                 xml += "<mp_y>" + w.model_pos.y + "</mp_y>";
                 xml += "<mp_z>" + w.model_pos.z + "</mp_z>" + "\n";
 
@@ -49,6 +49,7 @@ namespace SA.Utilities
                 xml += "<ms_x>" + w.model_scale.x + "</ms_x>";
                 xml += "<ms_y>" + w.model_scale.y + "</ms_y>";
                 xml += "<ms_z>" + w.model_scale.z + "</ms_z>" + "\n";
+                */
 
                 xml += "</weapon>" + "\n";
             }

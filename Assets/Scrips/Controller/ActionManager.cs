@@ -1,14 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-
-
 
 namespace SA
 {
@@ -195,6 +186,11 @@ namespace SA
     {
         attack, block, spells, parry
     }
+     public enum SpellType
+    {
+        pyromancy, miracles, sorcery
+    }
+
 
 
     [System.Serializable]
@@ -202,6 +198,7 @@ namespace SA
     {
         public ActionInput input;
         public ActionType actionType;
+        public SpellType spellType;
         public string targetAnim;
         public bool mirror = false;
         public bool canBeParried = true;

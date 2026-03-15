@@ -46,23 +46,25 @@ MonoBehaviour:
     backstabMultiplier: 0
     LeftHandMirror: 0
     modelPrefab: {fileID: 8721339794671314178, guid: c5e8fc17b4ba4af48aec55de13576689, type: 3}
-    model_pos: {x: 0, y: 0, z: 0}
-    model_eulers: {x: 0, y: 0, z: 0}
-    model_scale: {x: 0.3, y: 0.3, z: 0.3}
-  - itemName: sword_3
+    r_model_pos: {x: 0, y: 0, z: 0}
+    l_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: -26.952, y: 42.042, z: 92.93}
+    l_model_eulers: {x: -26.952, y: -140, z: 92.93}
+    model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
+  - itemName: shied
     itemDescription: 
-    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
     - input: 0
       actionType: 0
-      targetAnim: oh_attack_1
+      targetAnim: parry
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
-      canParry: 0
+      canParry: 1
       canBackStab: 0
       parryMultiplier: 0
       backstabMultiplier: 0
@@ -81,7 +83,9 @@ MonoBehaviour:
     parryMultiplier: 0
     backstabMultiplier: 0
     LeftHandMirror: 0
-    modelPrefab: {fileID: 8721339794671314178, guid: c5e8fc17b4ba4af48aec55de13576689, type: 3}
-    model_pos: {x: 0, y: 0, z: 0}
-    model_eulers: {x: 0, y: 0, z: 0}
-    model_scale: {x: 0.39, y: 0.39, z: 0.39}
+    modelPrefab: {fileID: 620497614938976523, guid: 97a600806be05e24fbc091f78b06dc80, type: 3}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    l_model_pos: {x: -0.01488131, y: 0.004208799, z: -0.008205913}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    l_model_eulers: {x: 1, y: 1, z: 1}
+    model_scale: {x: 0.8, y: 0.8, z: 0.8}

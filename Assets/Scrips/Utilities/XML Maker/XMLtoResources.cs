@@ -60,9 +60,10 @@ namespace SA.Utilities
                 XmlNode LeftHandMirror = w.SelectSingleNode("LeftHandMirror");
                 _w.LeftHandMirror = (LeftHandMirror.InnerText == "True");
                 
-                _w.model_pos = XmlToVector(w, "mp");
+              /*  _w.model_pos = XmlToVector(w, "mp");
                 _w.model_eulers = XmlToVector(w, "me");
                 _w.model_scale = XmlToVector(w, "ms");
+                */
 
                // resourcesManager.weaponList.Add(_w);
             }

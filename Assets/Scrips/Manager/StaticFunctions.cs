@@ -34,15 +34,20 @@ namespace SA
             to.backstabMultiplier = from.backstabMultiplier;
             to.LeftHandMirror = from.LeftHandMirror;
             to.modelPrefab = from.modelPrefab;
-            to.model_pos = from.model_pos;
-            to.model_eulers = from.model_eulers;
+            to.l_model_pos = from.l_model_pos;
+            to.l_model_eulers = from.l_model_eulers;
+            to.r_model_pos = from.r_model_pos;
+            to.r_model_eulers = from.r_model_eulers;
             to.model_scale = from.model_scale;
         }
 
         public static void DeepCopyActionToAction(Action a, Action w_a)
         {
+            a.input = w_a.input;
             a.targetAnim = w_a.targetAnim;
             a.actionType = w_a.actionType;
+            a.spellType = w_a.spellType;
+            a.canParry = w_a.canParry;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
@@ -58,9 +63,13 @@ namespace SA
             Action a = GetAction(assing, actionList);
             Action w_a = w.GetAction(w.actions, inp);
             if (w_a == null)
+            {
+                Debug.Log("no weapon action found");
                 return;
-            a.targetAnim = w_a.targetAnim;
+            }
             a.actionType = w_a.actionType;
+            a.targetAnim = w_a.targetAnim;
+            a.spellType = w_a.spellType;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
