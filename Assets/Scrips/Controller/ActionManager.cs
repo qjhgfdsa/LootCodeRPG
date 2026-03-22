@@ -63,43 +63,43 @@ namespace SA
                  a.targetAnim = w.two_handedActions[i].targetAnim;
              }
          }*/
-     /*   public void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, bool isLeftHand = false)
-        {
-            Action a = GetAction(assing);
-            Action w_a = w.GetAction(w.actions, inp);
-            if (w_a == null)
-                return;
-            a.targetAnim = w_a.targetAnim;
-            a.actionType = w_a.actionType;
-            a.canBeParried = w_a.canBeParried;
-            a.changeSpeed = w_a.changeSpeed;
-            a.animSpeed = w_a.animSpeed;
-            a.canBackStab = w_a.canBackStab;
-            a.ovverideDamageAnim = w_a.ovverideDamageAnim;
-            a.damageAnim = w_a.damageAnim;
-            a.parryMultiplier = w.parryMultiplier;
-            a.backstabMultiplier = w.backstabMultiplier;
+        /*   public void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, bool isLeftHand = false)
+           {
+               Action a = GetAction(assing);
+               Action w_a = w.GetAction(w.actions, inp);
+               if (w_a == null)
+                   return;
+               a.targetAnim = w_a.targetAnim;
+               a.actionType = w_a.actionType;
+               a.canBeParried = w_a.canBeParried;
+               a.changeSpeed = w_a.changeSpeed;
+               a.animSpeed = w_a.animSpeed;
+               a.canBackStab = w_a.canBackStab;
+               a.ovverideDamageAnim = w_a.ovverideDamageAnim;
+               a.damageAnim = w_a.damageAnim;
+               a.parryMultiplier = w.parryMultiplier;
+               a.backstabMultiplier = w.backstabMultiplier;
 
 
-            if (isLeftHand)
-            {
-                a.mirror = true;
-            }
+               if (isLeftHand)
+               {
+                   a.mirror = true;
+               }
 
-            DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
-        }
+               DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
+           }
 
-        public void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)
-        {
-            to.physical = from.physical;
-            to.slash = from.slash;
-            to.strike = from.strike;
-            to.thrust = from.thrust;
-            to.magic = from.magic;
-            to.lightning = from.lightning;
-            to.fire = from.fire;
-            to.dark = from.dark;
-        } */
+           public void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)
+           {
+               to.physical = from.physical;
+               to.slash = from.slash;
+               to.strike = from.strike;
+               to.thrust = from.thrust;
+               to.magic = from.magic;
+               to.lightning = from.lightning;
+               to.fire = from.fire;
+               to.dark = from.dark;
+           } */
 
         public void UpdateActionsTwoHanded()
         {
@@ -154,7 +154,7 @@ namespace SA
 
         }
 
-      
+
         public ActionInput GetActionInput(StateManager st)
         {
 
@@ -186,9 +186,13 @@ namespace SA
     {
         attack, block, spells, parry
     }
-     public enum SpellType
+    public enum SpellClass
     {
         pyromancy, miracles, sorcery
+    }
+    public enum SpellType
+    {
+        projectile, buff, looping
     }
 
 
@@ -198,7 +202,7 @@ namespace SA
     {
         public ActionInput input;
         public ActionType actionType;
-        public SpellType spellType;
+        public SpellClass spellClass;
         public string targetAnim;
         public bool mirror = false;
         public bool canBeParried = true;

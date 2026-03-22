@@ -37,7 +37,11 @@ namespace SA
 
         void Start()
         {
-            UI.QuickSlot.singleton.Init();
+            if (UI.QuickSlot.singleton != null)
+                UI.QuickSlot.singleton.Init();
+            else
+                Debug.LogWarning("InputHandler: QuickSlot is missing from the scene — hotbar UI will not update.");
+
             states.Init();
 
             // รอให้ CameraManager พร้อม

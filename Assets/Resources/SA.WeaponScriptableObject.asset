@@ -21,6 +21,7 @@ MonoBehaviour:
     actions:
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: oh_attack_1
       mirror: 0
       canBeParried: 0
@@ -59,6 +60,7 @@ MonoBehaviour:
     actions:
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: parry
       mirror: 0
       canBeParried: 0
@@ -89,3 +91,42 @@ MonoBehaviour:
     r_model_eulers: {x: 0, y: 0, z: 0}
     l_model_eulers: {x: 1, y: 1, z: 1}
     model_scale: {x: 0.8, y: 0.8, z: 0.8}
+  - itemName: Pyromancy Flame
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 3dd23b9d6ec11ee419c81e9f6a58b35d, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 2
+      actionType: 2
+      spellClass: 0
+      targetAnim: throw
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    LeftHandMirror: 0
+    modelPrefab: {fileID: 3743199259833680333, guid: 46844748098a5dd4f80d25b5da1d7a35, type: 3}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    l_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    l_model_eulers: {x: 0, y: 0, z: 0}
+    model_scale: {x: 0.01, y: 0.01, z: 0.01}

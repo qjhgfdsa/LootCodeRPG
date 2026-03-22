@@ -46,7 +46,7 @@ namespace SA
             a.input = w_a.input;
             a.targetAnim = w_a.targetAnim;
             a.actionType = w_a.actionType;
-            a.spellType = w_a.spellType;
+            a.spellClass = w_a.spellClass;
             a.canParry = w_a.canParry;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;
@@ -69,7 +69,7 @@ namespace SA
             }
             a.actionType = w_a.actionType;
             a.targetAnim = w_a.targetAnim;
-            a.spellType = w_a.spellType;
+            a.spellClass = w_a.spellClass;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
@@ -112,5 +112,14 @@ namespace SA
             return null;
         }
 
+        public static void DeepCopySpell(Spell from, Spell to)
+        {
+            to.itemName = from.itemName;
+            to.itemDescription = from.itemDescription;
+            to.icon = from.icon;
+            to.spellType = from.spellType;
+            to.projecttile = from.projecttile;
+            to.particlePrefab = from.particlePrefab;
+        }
     }
 }

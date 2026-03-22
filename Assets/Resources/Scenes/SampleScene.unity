@@ -3023,6 +3023,58 @@ CapsuleCollider:
   m_Height: 0.1684139
   m_Direction: 1
   m_Center: {x: 0, y: 0.08420695, z: 0}
+--- !u!1 &400226243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400226245}
+  - component: {fileID: 400226246}
+  m_Layer: 0
+  m_Name: fireball
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400226245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400226243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.31195, y: 0, z: -1.90527}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &400226246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400226243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48dea9b2fe614545883306f7292c8dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SA.RuntimeSpellItems
+  instance:
+    itemName: fireball
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 7e8c071f60b4a9b4db309a20e40ac045, type: 3}
+    spellType: 0
+    projecttile: {fileID: 0}
+    particlePrefab: {fileID: 0}
+  currentParticle: {fileID: 0}
 --- !u!4 &403174432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -3322,6 +3374,7 @@ MonoBehaviour:
   currentAction:
     input: 0
     actionType: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 1
@@ -3493,6 +3546,7 @@ MonoBehaviour:
   actionSlots:
   - input: 0
     actionType: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 0
@@ -3515,6 +3569,7 @@ MonoBehaviour:
       dark: 0
   - input: 2
     actionType: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 0
@@ -3537,6 +3592,7 @@ MonoBehaviour:
       dark: 0
   - input: 1
     actionType: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 0
@@ -3559,6 +3615,7 @@ MonoBehaviour:
       dark: 0
   - input: 3
     actionType: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 0
@@ -3595,10 +3652,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rh_weapons:
-  - sword
+  - Pyromancy Flame
   lh_weapons:
   - shied
-  rightHandWeapon: {fileID: 1975116925}
+  spell_items:
+  - fireball
+  currentSpell: {fileID: 0}
+  rightHandWeapon: {fileID: 1899791626}
   hasLeftHandWeapon: 1
   leftHandWeapon: {fileID: 1766253517}
   parryCollider: {fileID: 1842171381}
@@ -6551,7 +6611,7 @@ MonoBehaviour:
   slots:
   - type: 2
     icon: {fileID: 1004882609}
-  - type: 2
+  - type: 3
     icon: {fileID: 1805511030}
   - type: 1
     icon: {fileID: 184901412}
@@ -7627,12 +7687,13 @@ MonoBehaviour:
   instance:
     itemName: 
     itemDescription: 
-    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
+    icon: {fileID: 0}
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
     - input: 0
       actionType: 1
+      spellClass: 0
       targetAnim: 
       mirror: 0
       canBeParried: 0
@@ -7655,6 +7716,7 @@ MonoBehaviour:
         dark: 0
     - input: 2
       actionType: 3
+      spellClass: 0
       targetAnim: parry
       mirror: 0
       canBeParried: 0
@@ -7678,6 +7740,7 @@ MonoBehaviour:
     two_handedActions:
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: th_attack_1
       mirror: 0
       canBeParried: 0
@@ -7700,6 +7763,7 @@ MonoBehaviour:
         dark: 0
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: th_attack_2
       mirror: 0
       canBeParried: 0
@@ -9452,6 +9516,92 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1899791625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1899791627}
+  - component: {fileID: 1899791626}
+  m_Layer: 0
+  m_Name: Magic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1899791626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899791625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SA.RuntimeWeapon
+  instance:
+    itemName: 
+    itemDescription: 
+    icon: {fileID: 0}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      actionType: 0
+      spellClass: 0
+      targetAnim: throw
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    LeftHandMirror: 0
+    modelPrefab: {fileID: 0}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    l_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    l_model_eulers: {x: 0, y: 0, z: 0}
+    model_scale: {x: 0, y: 0, z: 0}
+  weaponModel: {fileID: 0}
+  w_Hook: {fileID: 0}
+--- !u!4 &1899791627
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899791625}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 554.0053, y: 0.00001, z: 1704.6498}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1912884582 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -691121220501843484, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -9725,12 +9875,13 @@ MonoBehaviour:
   instance:
     itemName: 
     itemDescription: 
-    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+    icon: {fileID: 0}
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: oh_attack_1
       mirror: 0
       canBeParried: 1
@@ -9753,6 +9904,7 @@ MonoBehaviour:
         dark: 0
     - input: 2
       actionType: 0
+      spellClass: 0
       targetAnim: oh_attack_3
       mirror: 0
       canBeParried: 1
@@ -9776,6 +9928,7 @@ MonoBehaviour:
     two_handedActions:
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: th_attack_1
       mirror: 0
       canBeParried: 0
@@ -9798,6 +9951,7 @@ MonoBehaviour:
         dark: 0
     - input: 0
       actionType: 0
+      spellClass: 0
       targetAnim: th_attack_2
       mirror: 0
       canBeParried: 0
@@ -10407,6 +10561,8 @@ SceneRoots:
   - {fileID: 1298928397}
   - {fileID: 1975116926}
   - {fileID: 1766253518}
+  - {fileID: 1899791627}
+  - {fileID: 400226245}
   - {fileID: 1120288335}
   - {fileID: 2109640209}
   - {fileID: 650193802}

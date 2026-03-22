@@ -6604,7 +6604,7 @@ MonoBehaviour:
   slots:
   - type: 2
     icon: {fileID: 1004882609}
-  - type: 2
+  - type: 3
     icon: {fileID: 1805511030}
   - type: 1
     icon: {fileID: 184901412}

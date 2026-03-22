@@ -25,13 +25,21 @@ namespace SA
                 Debug.Log(typeof(T).ToString() + " already exists");
             }
         }
-        [MenuItem("Assets/Inventory/CreateInventory")]
+
+        [MenuItem("Assets/Inventory/Create Inventory List Scriptable Object")]
         public static void CreateInventory()
         {
 
         }
 
-        [MenuItem("Assets/Inventory/CreateWeaponList")]
+        [MenuItem("Assets/Inventory/Create Spell Items List Scriptable Object")]
+        public static void CreateSpellItemsList()
+        {
+            ScriptableObjectManager.CreateAsset<SpellItemScriptableObject>();
+        }
+
+
+        [MenuItem("Assets/Inventory/Create Weapon List Scriptable Object")]
         public static void CreateWeaponList()
         {
             ScriptableObjectManager.CreateAsset<WeaponScriptableObject>();

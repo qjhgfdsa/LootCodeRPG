@@ -9,7 +9,9 @@ namespace SA
     {
         public List<string> rh_weapons;
         public List<string> lh_weapons;
+        public List<string> spell_items;
 
+        public RuntimeSpellItems currentSpell;
         public RuntimeWeapon rightHandWeapon;
         public bool hasLeftHandWeapon = true;
         public RuntimeWeapon leftHandWeapon;
@@ -42,6 +44,16 @@ namespace SA
 
             hasLeftHandWeapon = (leftHandWeapon != null);
 
+            if(spell_items.Count > 0)
+            {
+                currentSpell = SpellToRuntimeSpell(ResourcesManager.singleton.GetSpell(spell_items[0]));
+            }
+
+            if(currentSpell != null)
+            {
+                EquipSpell(currentSpell);
+            }
+
 
             InitAllDamageCollider(st);
             CloseAllDamageColliders();
@@ -51,11 +63,23 @@ namespace SA
             CloseParryCollider();
         }
 
+
+        public RuntimeSpellItems SpellToRuntimeSpell(Spell s)
+        {
+            GameObject go = new GameObject();
+            RuntimeSpellItems inst = go.AddComponent<RuntimeSpellItems>();
+            inst.instance = new Spell();
+            StaticFunctions.DeepCopySpell(s, inst.instance);
+            go.name = s.itemName;
+
+            return inst;
+        }
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false)
         {
 
             GameObject go = new GameObject();
             RuntimeWeapon inst = go.AddComponent<RuntimeWeapon>();
+            go.name = w.itemName;
 
             inst.instance = new Weapon();
             StaticFunctions.DeepCopyWeapon(w, inst.instance);
@@ -88,12 +112,27 @@ namespace SA
             states.anim.Play(StaticStrings.changeWeapon);
             states.anim.Play(targetIdle);
 
-            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
-            uiSlot.UpdateSlot(
-                (isLeft) ?
-                UI.QSlotType.lh : UI.QSlotType.rh, w.instance.icon);
+            if (UI.QuickSlot.singleton != null)
+            {
+                UI.QuickSlot.singleton.UpdateSlot(
+                    (isLeft) ?
+                    UI.QSlotType.lh : UI.QSlotType.rh, w.instance.icon);
+            }
+            else
+                Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
 
             w.weaponModel.SetActive(true);
+        }
+
+        public void EquipSpell(RuntimeSpellItems spell)
+        {
+            if (UI.QuickSlot.singleton == null)
+            {
+                Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
+                return;
+            }
+
+            UI.QuickSlot.singleton.UpdateSlot(UI.QSlotType.spell, spell.instance.icon);
         }
 
         public Weapon GetCurrentWeapon(bool isLeft)
@@ -191,14 +230,16 @@ namespace SA
             return null;
         }
     }
-   
+
     [System.Serializable]
     public class Spell : Item
     {
         public SpellType spellType;
+        public GameObject projecttile;
+        public GameObject particlePrefab;
     }
 
-   
+
 
 }
 
