@@ -18,7 +18,10 @@ namespace SA.UI
             for (int i = 0; i < slots.Count; i++)
             {
                 if (slots[i].icon != null)
+                {
+                    EnsureSlotClipsOverflow(slots[i].icon);
                     slots[i].icon.gameObject.SetActive(false);
+                }
             }
         }
 
@@ -38,8 +41,30 @@ namespace SA.UI
                 return;
             }
 
+            if (i == null)
+            {
+                q.icon.sprite = null;
+                q.icon.gameObject.SetActive(false);
+                return;
+            }
+
+            EnsureSlotClipsOverflow(q.icon);
             q.icon.sprite = i;
             q.icon.gameObject.SetActive(true);
+        }
+
+        void EnsureSlotClipsOverflow(Image icon)
+        {
+            RectTransform iconRect = icon.rectTransform;
+            if (iconRect == null || iconRect.parent == null)
+                return;
+
+            RectMask2D clipMask = iconRect.parent.GetComponent<RectMask2D>();
+            if (clipMask == null)
+                iconRect.parent.gameObject.AddComponent<RectMask2D>();
+
+            // Ensure icon participates in masking.
+            icon.maskable = true;
         }
         
         public QSlots GetSlot(QSlotType t)
@@ -59,11 +84,6 @@ namespace SA.UI
         {
             singleton = this;
         }
-        
-
-
-
-
     }
 
     public enum QSlotType

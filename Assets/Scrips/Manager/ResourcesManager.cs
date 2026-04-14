@@ -11,6 +11,7 @@ public class ResourcesManager : MonoBehaviour
     {
         singleton = this;
         LoadWeaponId();
+        LoadSpellIds();
     }
 
     void LoadSpellIds()
@@ -19,7 +20,7 @@ public class ResourcesManager : MonoBehaviour
 
         if (obj == null)
         {
-            Debug.Log("SA.WeaponScriptableObject หาไม่เจอ");
+            Debug.Log("SA.SpellItemScriptableObject หาไม่เจอ");
             return;
         }
         for (int i = 0; i < obj.spell_items.Count; i++)

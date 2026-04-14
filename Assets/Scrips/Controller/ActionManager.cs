@@ -107,15 +107,50 @@ namespace SA
             EmptyAllSlot();
             Weapon w = states.inventoryManager.rightHandWeapon.instance;
 
-            if (w == null || w.two_handedActions == null) return;
+            if (w == null)
+                return;
+
+            if (w.two_handedActions == null || w.two_handedActions.Count == 0)
+            {
+                Debug.LogWarning("Two-handed mode enabled but weapon has no two_handedActions.");
+                return;
+            }
 
             for (int i = 0; i < w.two_handedActions.Count; i++)
             {
-                Action a = StaticFunctions.GetAction(w.two_handedActions[i].input, actionSlots); // แก้ไขตรงนี้
+                Action source = w.two_handedActions[i];
+                Action a = StaticFunctions.GetAction(source.input, actionSlots);
                 if (a != null)
-                    a.targetAnim = w.two_handedActions[i].targetAnim;
-                a.actionType = w.two_handedActions[i].actionType;
+                {
+                    a.targetAnim = source.targetAnim;
+                    a.actionType = source.actionType;
+                    a.spellClass = source.spellClass;
+                    a.mirror = source.mirror;
+                    a.canBeParried = source.canBeParried;
+                    a.changeSpeed = source.changeSpeed;
+                    a.animSpeed = source.animSpeed;
+                    a.canParry = source.canParry;
+                    a.canBackStab = source.canBackStab;
+                    a.ovverideDamageAnim = source.ovverideDamageAnim;
+                    a.damageAnim = source.damageAnim;
+                    a.parryMultiplier = source.parryMultiplier;
+                    a.backstabMultiplier = source.backstabMultiplier;
+                    if (source.weaponStats != null && a.weaponStats != null)
+                        StaticFunctions.DeepCopyWeaponStats(source.weaponStats, a.weaponStats);
+                }
             }
+
+            // Keep Q/E usable in two-handed mode by mirroring right-hand
+            // slots when left-hand slots are not explicitly configured.
+            Action rb = StaticFunctions.GetAction(ActionInput.rb, actionSlots);
+            Action rt = StaticFunctions.GetAction(ActionInput.rt, actionSlots);
+            Action lb = StaticFunctions.GetAction(ActionInput.lb, actionSlots);
+            Action lt = StaticFunctions.GetAction(ActionInput.lt, actionSlots);
+
+            if (lb != null && string.IsNullOrEmpty(lb.targetAnim) && rb != null && !string.IsNullOrEmpty(rb.targetAnim))
+                StaticFunctions.DeepCopyActionToAction(lb, rb);
+            if (lt != null && string.IsNullOrEmpty(lt.targetAnim) && rt != null && !string.IsNullOrEmpty(rt.targetAnim))
+                StaticFunctions.DeepCopyActionToAction(lt, rt);
         }
 
 

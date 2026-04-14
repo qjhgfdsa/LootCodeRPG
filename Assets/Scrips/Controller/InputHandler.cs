@@ -14,6 +14,12 @@ namespace SA
         bool t_input;
         bool x_input;
 
+        bool d_up;
+        bool d_down;
+        bool d_right;
+        bool d_left;
+
+
         bool rb_input;
         bool rt_input;
         float rt_axis;
@@ -50,7 +56,7 @@ namespace SA
             if (camManager == null)
             {
                 // ถ้ายังเป็น null ลองหาจาก Scene
-                camManager = FindFirstObjectByType<CameraManager>();
+                camManager = FindAnyObjectByType<CameraManager>();
 
                 if (camManager != null)
                 {
@@ -70,8 +76,6 @@ namespace SA
         void FixedUpdate()
         {
             delta = Time.fixedDeltaTime;
-            GetInput();
-            UpdateStates();
             states.FixedTick(delta);
             camManager.Tick(delta);
         }
@@ -79,6 +83,8 @@ namespace SA
         void Update()
         {
             delta = Time.deltaTime;
+            GetInput();
+            UpdateStates();
             states.Tick(delta);
             ResetInputNStates();
         }
@@ -106,87 +112,12 @@ namespace SA
 
             if (b_input)
                 b_timer += delta;
+
+            d_up = Input.GetKeyDown(KeyCode.Alpha1);
+            d_down = Input.GetKeyDown(KeyCode.Alpha2);
+            d_left = Input.GetKeyDown(KeyCode.Alpha3);
+            d_right = Input.GetKeyDown(KeyCode.Alpha4);
         }
-
-        /*  void UpdateStates()
-          {
-              states.vertical = vertical;
-              states.horizontal = horizontal;
-
-             Vector3 v = vertical * camManager.transform.forward;
-             Vector3 h = horizontal * camManager.transform.right;
-              states.moveDir = (v + h).normalized;
-              float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
-              states.moveAmount = Mathf.Clamp01(m);
-
-             if (x_input)
-                 b_input = false;
-
-
-              if (b_input && b_timer > 0.5f)
-                  {
-                      states.run = (states.moveAmount > 0);
-                  }
-
-              if (b_input == false && b_timer > 0 && b_timer < 0.5f)
-                  states.rollInput = true;
-
-             states.itemInput = x_input;
-              states.rt = rt_input;
-              states.lt = lt_input;
-              states.rb = rb_input;
-              states.lb = lb_input;
-
-
-
-             if (t_input)
-              {
-                 states.isTwoHanded = !states.isTwoHanded;
-                  states.HandleTwoHanded();
-              }
-
-            if (states.lockOnTarget != null)
-            {
-                if (states.lockOnTarget.eStates.isDead)
-                {
-                    states.lockOn = false;
-                    states.lockOnTarget = null;
-                    states.lockOnTransform = null;
-                    camManager.lockon = states.lockOn = false;
-                    camManager.lockonTarget = null;
-                    //camManager.lockonTarget = null;
-                }
-            } 
-            else
-            {
-                
-                    states.lockOn = false;
-                    states.lockOnTarget = null;
-                    states.lockOnTransform = null;
-                    camManager.lockon = states.lockOn = false;
-                    camManager.lockonTarget = null;
-                
-            }
-
-              if (Input.GetMouseButtonDown(2))
-                {
-                    states.lockOn = !states.lockOn;
-
-                    states.lockOnTarget = EnemyManager.singleton.GetEnemy(transform.position);
-                    if (states.lockOnTarget == null)
-                     states.lockOn = false;
-                 
-
-                    camManager.lockonTarget = states.lockOnTarget;
-                    states.lockOnTransform = states.lockOnTarget?.GetTarget(); //เเก้ใส่เครื่องหมายคำถาม states.lockOnTarget?
-                    camManager.lockonTransform = states.lockOnTransform;
-                    camManager.lockon = states.lockOn;
-                     // states.lockOnTransform = camManager.lockonTransform;
-
-                } 
-         } */
-
-        // ใน UpdateStates() ให้แทนที่ทั้งส่วน lock-on ด้วยโค้ดนี้
 
         void UpdateStates()
         {
@@ -199,7 +130,7 @@ namespace SA
                 camManager = CameraManager.singleton;
                 if (camManager == null)
                 {
-                    camManager = FindFirstObjectByType<CameraManager>();
+                    camManager = FindAnyObjectByType<CameraManager>();
                     if (camManager == null)
                     {
                         Debug.LogError("❌ CameraManager หายไประหว่างเล่น!");
@@ -264,6 +195,26 @@ namespace SA
                     TryLockOn();
                 }
             }
+
+            HandleQuickSlotChanges();
+        }
+
+        void HandleQuickSlotChanges()
+        {
+           
+            if (d_up)
+                states.inventoryManager.ChangeToNextSpell();
+
+             if (states.canMove == false)
+                return;
+            if (states.isTwoHanded)
+                return;
+
+            if (d_left)
+                states.inventoryManager.ChangeToNextWeapon(true);
+            if (d_right)
+                states.inventoryManager.ChangeToNextWeapon(false);
+
         }
 
         void TryLockOn()
@@ -304,6 +255,8 @@ namespace SA
             camManager.lockonTarget = null;
             camManager.lockonTransform = null;
         }
+
+
 
         void ResetInputNStates()
         {

@@ -19,3 +19,9 @@ MonoBehaviour:
     spellType: 0
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 3686615981850196321, guid: 615b6c2f8620b58478005554ebcf3a24, type: 3}
+  - itemName: "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 7d15f3365b401f1458e65e7dcde25252, type: 3}
+    spellType: 2
+    projecttile: {fileID: 0}
+    particlePrefab: {fileID: 3686615981850196321, guid: 615b6c2f8620b58478005554ebcf3a24, type: 3}

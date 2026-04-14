@@ -2492,6 +2492,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -3106,7 +3107,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
@@ -3158,7 +3159,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -3652,13 +3653,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rh_weapons:
+  - sword
   - Pyromancy Flame
   lh_weapons:
   - shied
+  - sword
   spell_items:
   - fireball
-  currentSpell: {fileID: 0}
-  rightHandWeapon: {fileID: 1899791626}
+  - "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
+  r_index: 2
+  l_index: 2
+  s_index: 2
+  currentSpell: {fileID: 400226246}
+  rightHandWeapon: {fileID: 1975116925}
   hasLeftHandWeapon: 1
   leftHandWeapon: {fileID: 1766253517}
   parryCollider: {fileID: 1842171381}
@@ -4684,6 +4691,58 @@ CapsuleCollider:
   m_Height: 0.17236704
   m_Direction: 1
   m_Center: {x: 0, y: 0.08618352, z: 0}
+--- !u!1 &771394969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 771394971}
+  - component: {fileID: 771394970}
+  m_Layer: 0
+  m_Name: "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &771394970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771394969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48dea9b2fe614545883306f7292c8dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SA.RuntimeSpellItems
+  instance:
+    itemName: "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 7d15f3365b401f1458e65e7dcde25252, type: 3}
+    spellType: 2
+    projecttile: {fileID: 0}
+    particlePrefab: {fileID: 0}
+  currentParticle: {fileID: 0}
+--- !u!4 &771394971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771394969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.59994, y: -0, z: 0.22499}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &815738363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5124656962777521795, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -10561,8 +10620,9 @@ SceneRoots:
   - {fileID: 1298928397}
   - {fileID: 1975116926}
   - {fileID: 1766253518}
-  - {fileID: 1899791627}
   - {fileID: 400226245}
+  - {fileID: 771394971}
+  - {fileID: 1899791627}
   - {fileID: 1120288335}
   - {fileID: 2109640209}
   - {fileID: 650193802}
