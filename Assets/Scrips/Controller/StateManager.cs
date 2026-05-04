@@ -226,8 +226,8 @@ namespace SA
                 lockOn = false;
 
             // ============ ตรงนี้แหละที่มีปัญหา! ============
-         //   Debug.Log("lockOn: " + lockOn);
-          //  Debug.Log("lockOnTransform: " + (lockOnTransform == null ? "NULL" : "OK"));
+            //   Debug.Log("lockOn: " + lockOn);
+            //  Debug.Log("lockOnTransform: " + (lockOnTransform == null ? "NULL" : "OK"));
 
 
             Vector3 targetDir;
@@ -312,6 +312,7 @@ namespace SA
                     BlockAction(slot);
                     break;
                 case ActionType.spells:
+                    SpellAction(slot);
                     break;
                 case ActionType.parry:
                     ParryAction(slot);
@@ -355,6 +356,37 @@ namespace SA
 
         }
 
+        void SpellAction(Action slot)
+        {
+
+
+            if (slot.spellClass != inventoryManager.currentSpell.instance.spellClass)
+            {
+                //targetAnim = "Cast_Failed";
+                Debug.Log("Spell class does not match");
+                //anim.CrossFade(targetAnim, 0.2f);
+
+                return;
+            }
+            ActionInput inp = actionManager.GetActionInput(this);
+            if (inp == ActionInput.lb)
+                inp = ActionInput.rb;
+            if (inp == ActionInput.lt)
+                inp = ActionInput.rt;
+
+            Spell s_inst = inventoryManager.currentSpell.instance;
+
+            Action s_slot = s_inst.GetAction(s_inst.actions, inp);
+            if (s_slot == null)
+            {
+                Debug.Log("Spell action not found");
+                return;
+            }
+
+            string targetAnim = s_slot.targetAnim;
+            anim.SetBool(StaticStrings.mirror, s_slot.mirror);
+            anim.CrossFade(targetAnim, 0.2f);
+        }
         bool CheckForParry(Action slot)
         {
             if (slot.canParry == false)

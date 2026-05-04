@@ -17,11 +17,38 @@ MonoBehaviour:
     itemDescription: 
     icon: {fileID: 21300000, guid: 7e8c071f60b4a9b4db309a20e40ac045, type: 3}
     spellType: 0
+    spellClass: 0
+    actions:
+    - input: 0
+      actionType: 0
+      spellClass: 0
+      targetAnim: throw
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 3686615981850196321, guid: 615b6c2f8620b58478005554ebcf3a24, type: 3}
   - itemName: "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
     itemDescription: 
     icon: {fileID: 21300000, guid: 7d15f3365b401f1458e65e7dcde25252, type: 3}
     spellType: 2
+    spellClass: 0
+    actions: []
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 3686615981850196321, guid: 615b6c2f8620b58478005554ebcf3a24, type: 3}

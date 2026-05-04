@@ -118,8 +118,18 @@ namespace SA
             to.itemDescription = from.itemDescription;
             to.icon = from.icon;
             to.spellType = from.spellType;
+            to.spellClass = from.spellClass;
             to.projecttile = from.projecttile;
             to.particlePrefab = from.particlePrefab;
+
+            to.actions = new List<Action>();
+            for (int i = 0; i < from.actions.Count; i++)
+            {
+                Action a = new Action();
+                a.weaponStats = new WeaponStats();
+                DeepCopyActionToAction(a, from.actions[i]);
+                to.actions.Add(a);
+            }
         }
     }
 }

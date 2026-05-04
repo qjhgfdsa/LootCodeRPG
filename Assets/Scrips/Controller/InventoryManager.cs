@@ -300,6 +300,25 @@ namespace SA
         public string itemDescription;
         public Sprite icon;
 
+         public Action GetAction(List<Action> l, ActionInput inp)
+        {
+            if(l == null)
+            {
+                Debug.Log("List of actions is null");
+                return null;
+            }
+            
+            for (int i = 0; i < l.Count; i++)
+            {
+                if (l[i].input == inp)
+                {
+                    return l[i];
+                }
+            }
+
+            return null;
+        }
+
     }
 
     [System.Serializable]
@@ -322,30 +341,16 @@ namespace SA
         public Vector3 r_model_eulers;
         public Vector3 l_model_eulers;
         public Vector3 model_scale;
-
-        public Action GetAction(List<Action> l, ActionInput inp)
-        {
-            for (int i = 0; i < l.Count; i++)
-            {
-                if (l[i].input == inp)
-                {
-                    return l[i];
-                }
-            }
-
-            return null;
-        }
     }
 
     [System.Serializable]
     public class Spell : Item
     {
         public SpellType spellType;
+        public SpellClass spellClass;
+        public List<Action> actions;
         public GameObject projecttile;
         public GameObject particlePrefab;
     }
-
-
-
 }
 

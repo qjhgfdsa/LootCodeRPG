@@ -3073,6 +3073,8 @@ MonoBehaviour:
     itemDescription: 
     icon: {fileID: 21300000, guid: 7e8c071f60b4a9b4db309a20e40ac045, type: 3}
     spellType: 0
+    spellClass: 0
+    actions: []
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 0}
   currentParticle: {fileID: 0}
@@ -4725,6 +4727,8 @@ MonoBehaviour:
     itemDescription: 
     icon: {fileID: 21300000, guid: 7d15f3365b401f1458e65e7dcde25252, type: 3}
     spellType: 2
+    spellClass: 0
+    actions: []
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 0}
   currentParticle: {fileID: 0}

@@ -22,7 +22,7 @@ MonoBehaviour:
     - input: 0
       actionType: 0
       spellClass: 0
-      targetAnim: oh_attack_1
+      targetAnim: 
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - input: 2
+    - input: 0
       actionType: 2
       spellClass: 0
       targetAnim: throw
