@@ -99,7 +99,7 @@ namespace SA
 
 
         }
-        public RuntimeSpellItems SpellToRuntimeSpell(Spell s)
+        public RuntimeSpellItems SpellToRuntimeSpell(Spell s, bool isLeft = false)
         {
             if (s == null)
             {
@@ -113,8 +113,19 @@ namespace SA
             StaticFunctions.DeepCopySpell(s, inst.instance);
             go.name = s.itemName;
 
+            inst.currentParticle = Instantiate(s.particlePrefab) as GameObject;
+            Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
+            inst.currentParticle.transform.parent= p;
+            inst.currentParticle.transform.localPosition = Vector3.zero;
+            inst.currentParticle.SetActive(false);
+
             r_spells.Add(inst);
             return inst;
+        }
+
+        public void CreateSpellParticle(RuntimeSpellItems inst, bool isLeft)
+        {
+
         }
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false)
         {
@@ -300,24 +311,7 @@ namespace SA
         public string itemDescription;
         public Sprite icon;
 
-         public Action GetAction(List<Action> l, ActionInput inp)
-        {
-            if(l == null)
-            {
-                Debug.Log("List of actions is null");
-                return null;
-            }
-            
-            for (int i = 0; i < l.Count; i++)
-            {
-                if (l[i].input == inp)
-                {
-                    return l[i];
-                }
-            }
-
-            return null;
-        }
+      
 
     }
 
@@ -341,6 +335,25 @@ namespace SA
         public Vector3 r_model_eulers;
         public Vector3 l_model_eulers;
         public Vector3 model_scale;
+
+           public Action GetAction(List<Action> l, ActionInput inp)
+        {
+            if(l == null)
+            {
+                Debug.Log("List of actions is null");
+                return null;
+            }
+            
+            for (int i = 0; i < l.Count; i++)
+            {
+                if (l[i].input == inp)
+                {
+                    return l[i];
+                }
+            }
+
+            return null;
+        }
     }
 
     [System.Serializable]
@@ -348,9 +361,27 @@ namespace SA
     {
         public SpellType spellType;
         public SpellClass spellClass;
-        public List<Action> actions;
+        public List<SpellAction> actions = new List<SpellAction>();
         public GameObject projecttile;
         public GameObject particlePrefab;
+            public SpellAction GetAction(List<SpellAction> l, ActionInput inp)
+        {
+            if(l == null)
+            {
+                Debug.Log("List of actions is null");
+                return null;
+            }
+            
+            for (int i = 0; i < l.Count; i++)
+            {
+                if (l[i].input == inp)
+                {
+                    return l[i];
+                }
+            }
+
+            return null;
+        }
     }
 }
 

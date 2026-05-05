@@ -35,72 +35,6 @@ namespace SA
                 StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lt, ActionInput.lt, actionSlots);
             }
         }
-        /*   public void UpdateActionsWithLeftHand()
-           {
-               Weapon r_w = states.inventoryManager.rightHandWeapon;
-               Weapon l_w = states.inventoryManager.leftHandWeapon;
-
-               Action rb = GetAction(ActionInput.rb);
-               Action rt = GetAction(ActionInput.rt);
-               rb.targetAnim = r_w.GetAction(r_w.actions, ActionInput.rb).targetAnim;
-               rt.targetAnim = r_w.GetAction(r_w.actions, ActionInput.rt).targetAnim;
-
-               Action lb = GetAction(ActionInput.rb);
-               Action lt = GetAction(ActionInput.lt);
-               lb.targetAnim = l_w.GetAction(l_w.actions, ActionInput.rb).targetAnim;
-               lt.targetAnim = l_w.GetAction(l_w.actions, ActionInput.rt).targetAnim;
-
-           }*/
-
-        /*  public void UpdateActionsTwoHanded()
-         {
-             EmptyAllSlot();
-             Weapon w = states.inventoryManager.rightHandWeapon;
-
-             for (int i = 0; i < w.two_handedActions.Count; i++)
-             {
-                 Action a = GetAction(w.actions[i].input);
-                 a.targetAnim = w.two_handedActions[i].targetAnim;
-             }
-         }*/
-        /*   public void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, bool isLeftHand = false)
-           {
-               Action a = GetAction(assing);
-               Action w_a = w.GetAction(w.actions, inp);
-               if (w_a == null)
-                   return;
-               a.targetAnim = w_a.targetAnim;
-               a.actionType = w_a.actionType;
-               a.canBeParried = w_a.canBeParried;
-               a.changeSpeed = w_a.changeSpeed;
-               a.animSpeed = w_a.animSpeed;
-               a.canBackStab = w_a.canBackStab;
-               a.ovverideDamageAnim = w_a.ovverideDamageAnim;
-               a.damageAnim = w_a.damageAnim;
-               a.parryMultiplier = w.parryMultiplier;
-               a.backstabMultiplier = w.backstabMultiplier;
-
-
-               if (isLeftHand)
-               {
-                   a.mirror = true;
-               }
-
-               DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
-           }
-
-           public void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)
-           {
-               to.physical = from.physical;
-               to.slash = from.slash;
-               to.strike = from.strike;
-               to.thrust = from.thrust;
-               to.magic = from.magic;
-               to.lightning = from.lightning;
-               to.fire = from.fire;
-               to.dark = from.dark;
-           } */
-
         public void UpdateActionsTwoHanded()
         {
 
@@ -167,10 +101,6 @@ namespace SA
 
             }
         }
-
-
-
-
         ActionManager()
         {
             for (int i = 0; i < 4; i++)
@@ -181,15 +111,11 @@ namespace SA
             }
 
         }
-
         public Action GetActionSlot(StateManager st)
         {
             ActionInput a_input = GetActionInput(st);
             return StaticFunctions.GetAction(a_input, actionSlots);
-
         }
-
-
         public ActionInput GetActionInput(StateManager st)
         {
 
@@ -204,14 +130,11 @@ namespace SA
 
             return ActionInput.rb;
         }
-
         public bool IsLeftHandslot(Action slot)
         {
             return (slot.input == ActionInput.lb || slot.input == ActionInput.lt);
         }
     }
-
-
     public enum ActionInput
     {
         rb, lb, rt, lt,
@@ -229,9 +152,6 @@ namespace SA
     {
         projectile, buff, looping
     }
-
-
-
     [System.Serializable]
     public class Action
     {
@@ -257,6 +177,14 @@ namespace SA
 
         public WeaponStats weaponStats;
 
+    }
+    [System.Serializable]
+    public class SpellAction
+    {
+        public ActionInput input;
+        public string targetAnim;
+        public string throwAnim;
+        public float castTime;
     }
 
     [System.Serializable]

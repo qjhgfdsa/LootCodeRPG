@@ -34,6 +34,7 @@ namespace SA
         public static string OnGround = "onGround";
         public static string animSpeed = "animSpeed";
         public static string isLeftHand = "isLeft";
+        public static string spellcasting = "spellcasting";
 
        
         // Animator states
@@ -66,13 +67,6 @@ namespace SA
 
             return r;
         }
-
-
-    
-
-
-
-        
     }
     
 }

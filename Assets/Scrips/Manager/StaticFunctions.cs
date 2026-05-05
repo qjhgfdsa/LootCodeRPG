@@ -122,14 +122,20 @@ namespace SA
             to.projecttile = from.projecttile;
             to.particlePrefab = from.particlePrefab;
 
-            to.actions = new List<Action>();
+            to.actions = new List<SpellAction>();
             for (int i = 0; i < from.actions.Count; i++)
             {
-                Action a = new Action();
-                a.weaponStats = new WeaponStats();
-                DeepCopyActionToAction(a, from.actions[i]);
+                SpellAction a = new SpellAction();
+                DeepCopySpellAction(a, from.actions[i]);
                 to.actions.Add(a);
             }
+        }
+        public static void DeepCopySpellAction(SpellAction to, SpellAction from )
+        {
+            to.input = from.input;
+            to.targetAnim = from.targetAnim;
+            to.throwAnim = from.throwAnim;
+            to.castTime = from.castTime;
         }
     }
 }

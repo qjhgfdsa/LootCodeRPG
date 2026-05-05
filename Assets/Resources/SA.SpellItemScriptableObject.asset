@@ -20,28 +20,9 @@ MonoBehaviour:
     spellClass: 0
     actions:
     - input: 0
-      actionType: 0
-      spellClass: 0
-      targetAnim: throw
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 0
-      canParry: 0
-      canBackStab: 0
-      parryMultiplier: 0
-      backstabMultiplier: 0
-      ovverideDamageAnim: 0
-      damageAnim: 
-      weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
+      targetAnim: fireball_start
+      throwAnim: throw
+      castTime: 1
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 3686615981850196321, guid: 615b6c2f8620b58478005554ebcf3a24, type: 3}
   - itemName: "\u0E1E\u0E48\u0E19\u0E44\u0E1F"

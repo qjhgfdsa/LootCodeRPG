@@ -76,7 +76,7 @@ namespace SA
         void FixedUpdate()
         {
             delta = Time.fixedDeltaTime;
-            states.FixedTick(delta);
+           // states.FixedTick(delta);
             camManager.Tick(delta);
         }
 
@@ -87,6 +87,7 @@ namespace SA
             UpdateStates();
             states.Tick(delta);
             ResetInputNStates();
+            states.FixedTick(delta);//สลับจาก FixedUpdate เป็น Update
         }
 
         void GetInput()
@@ -201,6 +202,8 @@ namespace SA
 
         void HandleQuickSlotChanges()
         {
+            if (states.isSpellCasting || states.usingItem)
+                return;
            
             if (d_up)
                 states.inventoryManager.ChangeToNextSpell();

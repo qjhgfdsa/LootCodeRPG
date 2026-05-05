@@ -43,6 +43,7 @@ namespace SA
         public bool lockOn;
         public bool inAction;
         public bool canMove;
+        public bool isSpellCasting;
         public bool isTwoHanded;
         public bool usingItem;
         public bool isBlocking;
@@ -156,10 +157,10 @@ namespace SA
 
             isBlocking = false;
             usingItem = anim.GetBool(StaticStrings.isInteracting);
+            anim.SetBool(StaticStrings.spellcasting, isSpellCasting);
             DetectAction();
             DetectItemAction();
 
-            // เช็คทุกอย่างก่อนใช้
             if (inventoryManager != null &&
                 inventoryManager.rightHandWeapon != null &&
                 inventoryManager.rightHandWeapon.weaponModel != null)
@@ -169,7 +170,6 @@ namespace SA
 
             anim.SetBool(StaticStrings.blocking, isBlocking);
             anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
-
 
             if (inAction)
             {
@@ -186,12 +186,9 @@ namespace SA
                     return;
                 }
             }
-
             canMove = anim.GetBool(StaticStrings.canMove);
 
             anim.applyRootMotion = false;
-
-
 
             if (!canMove)
                 return;
@@ -201,19 +198,14 @@ namespace SA
                 Debug.LogError("❌ a_hook is NULL!");
                 return;
             }
-
-            a_hook.CloseRoll();
-            HandleRolls();
-
             anim.applyRootMotion = false;
             rigid.linearDamping = (moveAmount > 0 || onGround == false) ? 0 : 4;
 
             float targetSpeed = moveSpeed;
-            if (usingItem)
+            if (usingItem || isSpellCasting)
             {
                 run = false;
                 moveAmount = Mathf.Clamp(moveAmount, 0, 0.45f);
-
             }
 
             if (run)
@@ -225,29 +217,7 @@ namespace SA
             if (run)
                 lockOn = false;
 
-            // ============ ตรงนี้แหละที่มีปัญหา! ============
-            //   Debug.Log("lockOn: " + lockOn);
-            //  Debug.Log("lockOnTransform: " + (lockOnTransform == null ? "NULL" : "OK"));
-
-
-            Vector3 targetDir;
-            if (lockOn && lockOnTransform != null)
-            {
-                Debug.Log("Using lockOnTransform.position");
-                targetDir = lockOnTransform.position - transform.position;
-            }
-            else
-            {
-                targetDir = moveDir;
-            }
-
-            targetDir.y = 0;
-            if (targetDir == Vector3.zero)
-                targetDir = transform.forward;
-            Quaternion tr = Quaternion.LookRotation(targetDir);
-            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, delta * moveAmount * rotateSpeed);
-            transform.rotation = targetRotation;
-
+            HandleRotation();
             anim.SetBool(StaticStrings.lockon, lockOn);
 
             if (!lockOn)
@@ -266,8 +236,35 @@ namespace SA
                     // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
                     HandleMovementAnimations();
                 }
-
             }
+            if (isSpellCasting)
+            {
+                HandleSpellCasting();
+                return;
+            }
+            a_hook.CloseRoll();
+            HandleRolls();
+        }
+
+        void HandleRotation()
+        {
+            Vector3 targetDir;
+            if (lockOn && lockOnTransform != null)
+            {
+                Debug.Log("Using lockOnTransform.position");
+                targetDir = lockOnTransform.position - transform.position;
+            }
+            else
+            {
+                targetDir = moveDir;
+            }
+
+            targetDir.y = 0;
+            if (targetDir == Vector3.zero)
+                targetDir = transform.forward;
+            Quaternion tr = Quaternion.LookRotation(targetDir);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, delta * moveAmount * rotateSpeed);
+            transform.rotation = targetRotation;
         }
 
 
@@ -293,7 +290,7 @@ namespace SA
 
         public void DetectAction()
         {
-            if (!canMove || usingItem)
+            if (!canMove || usingItem || isSpellCasting)
                 return;
             if (!rb && !rt && !lb && !lt)
                 return;
@@ -375,17 +372,48 @@ namespace SA
                 inp = ActionInput.rt;
 
             Spell s_inst = inventoryManager.currentSpell.instance;
-
-            Action s_slot = s_inst.GetAction(s_inst.actions, inp);
+            SpellAction s_slot = s_inst.GetAction(s_inst.actions, inp);
             if (s_slot == null)
             {
                 Debug.Log("Spell action not found");
                 return;
             }
 
+            isSpellCasting = true;
+            spellCastingTime = 0;
+            max_spellCastTime = s_slot.castTime;
+            spellTargetAnim = s_slot.throwAnim;
+            spellIsMirrored = slot.mirror;
+
             string targetAnim = s_slot.targetAnim;
-            anim.SetBool(StaticStrings.mirror, s_slot.mirror);
+            if (spellIsMirrored)
+                targetAnim += StaticStrings._l;
+            else
+                targetAnim += StaticStrings._r;
+
+            anim.SetBool(StaticStrings.spellcasting, true);
+            //anim.SetBool(StaticStrings.mirror, s_slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
+        }
+        float spellCastingTime;
+        float max_spellCastTime;
+        string spellTargetAnim;
+        bool spellIsMirrored;
+        void HandleSpellCasting()
+        {
+            spellCastingTime += delta;
+            if (spellCastingTime > max_spellCastTime)
+            {
+                canMove = false;
+                inAction = true;
+                isSpellCasting = false;
+                
+
+                string targetAnim = spellTargetAnim;
+                anim.SetBool(StaticStrings.mirror, spellIsMirrored);
+                anim.CrossFade(targetAnim, 0.2f);
+            }
+
         }
         bool CheckForParry(Action slot)
         {
@@ -692,7 +720,5 @@ namespace SA
         {
 
         }
-
-
     }
 }
