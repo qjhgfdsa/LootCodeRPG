@@ -47,6 +47,7 @@ namespace SA
             a.targetAnim = w_a.targetAnim;
             a.actionType = w_a.actionType;
             a.spellClass = w_a.spellClass;
+            a.mirror = w_a.mirror;
             a.canParry = w_a.canParry;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;

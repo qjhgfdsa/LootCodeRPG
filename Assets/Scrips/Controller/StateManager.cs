@@ -391,6 +391,8 @@ namespace SA
             else
                 targetAnim += StaticStrings._r;
 
+            projectileCanidate = inventoryManager.currentSpell.instance.projecttile;
+            inventoryManager.CreateSpellParticle(inventoryManager.currentSpell, spellIsMirrored);
             anim.SetBool(StaticStrings.spellcasting, true);
             //anim.SetBool(StaticStrings.mirror, s_slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
@@ -399,21 +401,42 @@ namespace SA
         float max_spellCastTime;
         string spellTargetAnim;
         bool spellIsMirrored;
+        GameObject projectileCanidate;
         void HandleSpellCasting()
         {
             spellCastingTime += delta;
+
+            if (inventoryManager.currentSpell.currentParticle != null)
+                inventoryManager.currentSpell.currentParticle.SetActive(true);
+
             if (spellCastingTime > max_spellCastTime)
             {
                 canMove = false;
                 inAction = true;
                 isSpellCasting = false;
-                
 
                 string targetAnim = spellTargetAnim;
                 anim.SetBool(StaticStrings.mirror, spellIsMirrored);
                 anim.CrossFade(targetAnim, 0.2f);
             }
 
+        }
+        public void ThrowProjectile()
+        {
+            if (projectileCanidate == null)
+                return;
+
+            GameObject go = Instantiate(projectileCanidate) as GameObject;
+            Transform p = anim.GetBoneTransform((spellIsMirrored) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
+            go.transform.position = p.position;
+
+            if (lockOnTransform && lockOn)
+                go.transform.LookAt(lockOnTransform.position);
+            else
+                go.transform.rotation = transform.rotation;
+
+                Projectile proj = go.GetComponent<Projectile>();
+                proj.Init();
         }
         bool CheckForParry(Action slot)
         {

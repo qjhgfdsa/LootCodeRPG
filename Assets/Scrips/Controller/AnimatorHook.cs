@@ -165,7 +165,7 @@ namespace SA
 
         public void CloseParryFlag()
         {
-             if (states)
+            if (states)
             {
                 states.parryIsOn = false;
 
@@ -175,6 +175,23 @@ namespace SA
                 eStates.parryIsOn = false;
             }
 
-        } 
+        }
+        public void CloseParticle()
+        {
+            if (states)
+            {
+                if (states.inventoryManager.currentSpell.currentParticle != null)
+                    states.inventoryManager.currentSpell.currentParticle.SetActive(false);
+            }
+        }
+        public void InitiateThrowForProjecttile()
+        {
+            if(states)
+            {
+                states.ThrowProjectile();
+            }
+
+        }
+
     }
 }

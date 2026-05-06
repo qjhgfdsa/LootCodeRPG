@@ -113,11 +113,7 @@ namespace SA
             StaticFunctions.DeepCopySpell(s, inst.instance);
             go.name = s.itemName;
 
-            inst.currentParticle = Instantiate(s.particlePrefab) as GameObject;
-            Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
-            inst.currentParticle.transform.parent= p;
-            inst.currentParticle.transform.localPosition = Vector3.zero;
-            inst.currentParticle.SetActive(false);
+
 
             r_spells.Add(inst);
             return inst;
@@ -125,6 +121,13 @@ namespace SA
 
         public void CreateSpellParticle(RuntimeSpellItems inst, bool isLeft)
         {
+            if (inst.currentParticle == null)
+                inst.currentParticle = Instantiate(inst.instance.particlePrefab) as GameObject;
+
+            Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
+            inst.currentParticle.transform.parent = p;
+            inst.currentParticle.transform.localPosition = Vector3.zero;
+            inst.currentParticle.SetActive(false);
 
         }
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false)
@@ -268,22 +271,22 @@ namespace SA
             if (isLeft)
             {
                 if (l_index < r_l_weapons.Count - 1)
-                    l_index++;     
-                else    
+                    l_index++;
+                else
                     l_index = 0;
-                
+
                 EquipWeapon(r_l_weapons[l_index], true);
             }
             else
             {
-                if(r_index < r_r_weapons.Count - 1)
-                    r_index++;       
-                else   
+                if (r_index < r_r_weapons.Count - 1)
+                    r_index++;
+                else
                     r_index = 0;
 
                 EquipWeapon(r_r_weapons[r_index]);
             }
-            
+
             states.actionManager.UpdateActionsOneHanded();
         }
 
@@ -295,7 +298,7 @@ namespace SA
                 return;
             }
 
-            if(s_index < r_spells.Count - 1)
+            if (s_index < r_spells.Count - 1)
                 s_index++;
             else
                 s_index = 0;
@@ -311,7 +314,7 @@ namespace SA
         public string itemDescription;
         public Sprite icon;
 
-      
+
 
     }
 
@@ -336,14 +339,14 @@ namespace SA
         public Vector3 l_model_eulers;
         public Vector3 model_scale;
 
-           public Action GetAction(List<Action> l, ActionInput inp)
+        public Action GetAction(List<Action> l, ActionInput inp)
         {
-            if(l == null)
+            if (l == null)
             {
                 Debug.Log("List of actions is null");
                 return null;
             }
-            
+
             for (int i = 0; i < l.Count; i++)
             {
                 if (l[i].input == inp)
@@ -364,14 +367,14 @@ namespace SA
         public List<SpellAction> actions = new List<SpellAction>();
         public GameObject projecttile;
         public GameObject particlePrefab;
-            public SpellAction GetAction(List<SpellAction> l, ActionInput inp)
+        public SpellAction GetAction(List<SpellAction> l, ActionInput inp)
         {
-            if(l == null)
+            if (l == null)
             {
                 Debug.Log("List of actions is null");
                 return null;
             }
-            
+
             for (int i = 0; i < l.Count; i++)
             {
                 if (l[i].input == inp)
