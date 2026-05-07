@@ -251,7 +251,6 @@ namespace SA
             Vector3 targetDir;
             if (lockOn && lockOnTransform != null)
             {
-                Debug.Log("Using lockOnTransform.position");
                 targetDir = lockOnTransform.position - transform.position;
             }
             else
@@ -384,6 +383,7 @@ namespace SA
             max_spellCastTime = s_slot.castTime;
             spellTargetAnim = s_slot.throwAnim;
             spellIsMirrored = slot.mirror;
+            curSpellType = s_inst.spellType;
 
             string targetAnim = s_slot.targetAnim;
             if (spellIsMirrored)
@@ -392,7 +392,7 @@ namespace SA
                 targetAnim += StaticStrings._r;
 
             projectileCanidate = inventoryManager.currentSpell.instance.projecttile;
-            inventoryManager.CreateSpellParticle(inventoryManager.currentSpell, spellIsMirrored);
+            inventoryManager.CreateSpellParticle(inventoryManager.currentSpell, spellIsMirrored, (s_inst.spellType == SpellType.looping));
             anim.SetBool(StaticStrings.spellcasting, true);
             //anim.SetBool(StaticStrings.mirror, s_slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
@@ -401,9 +401,22 @@ namespace SA
         float max_spellCastTime;
         string spellTargetAnim;
         bool spellIsMirrored;
+        SpellType curSpellType;
         GameObject projectileCanidate;
         void HandleSpellCasting()
         {
+            if (curSpellType == SpellType.looping)
+            {
+              
+                inventoryManager.currentSpell.p_hook.Emit(1);
+                if (rb == false && lb == false)
+                {
+                 
+                    isSpellCasting = false;
+                }
+              
+                return;
+            }
             spellCastingTime += delta;
 
             if (inventoryManager.currentSpell.currentParticle != null)
@@ -435,8 +448,8 @@ namespace SA
             else
                 go.transform.rotation = transform.rotation;
 
-                Projectile proj = go.GetComponent<Projectile>();
-                proj.Init();
+            Projectile proj = go.GetComponent<Projectile>();
+            proj.Init();
         }
         bool CheckForParry(Action slot)
         {

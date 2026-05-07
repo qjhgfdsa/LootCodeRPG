@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8900666218500336786}
   - component: {fileID: 1023677442881494870}
   - component: {fileID: -7336012267821796400}
+  - component: {fileID: 342515205327677277}
   m_Layer: 0
   m_Name: "\u0E1E\u0E25\u0E31\u0E07\u0E44\u0E1F\u0E2A\u0E35\u0E1F\u0E49\u0E32\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14"
   m_TagString: Untagged
@@ -127,6 +128,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.WeaponHook
   damageColliders: []
+--- !u!114 &342515205327677277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743199259833680333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df62f0244cd39a4086e6909a8e93bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SA.ParticleHook
 --- !u!1001 &5469200256960553007
 PrefabInstance:
   m_ObjectHideFlags: 0

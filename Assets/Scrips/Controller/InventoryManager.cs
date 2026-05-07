@@ -119,16 +119,47 @@ namespace SA
             return inst;
         }
 
-        public void CreateSpellParticle(RuntimeSpellItems inst, bool isLeft)
+        public void CreateSpellParticle(RuntimeSpellItems inst, bool isLeft, bool parentUnderRoot = false)
         {
+             if (inst == null || inst.instance == null)
+            {
+                Debug.LogError("CreateSpellParticle: inst or inst.instance is null");
+                return;
+            }
+            if (inst.instance.particlePrefab == null)
+            {
+                Debug.LogWarning($"CreateSpellParticle: particlePrefab is null for spell '{inst.instance.itemName}'");
+                return;
+            }
+            
             if (inst.currentParticle == null)
                 inst.currentParticle = Instantiate(inst.instance.particlePrefab) as GameObject;
 
-            Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
-            inst.currentParticle.transform.parent = p;
-            inst.currentParticle.transform.localPosition = Vector3.zero;
-            inst.currentParticle.SetActive(false);
+            // Rebind every call in case currentParticle was created earlier but p_hook was never assigned.
+            // Include inactive children because some FX prefabs keep hook objects disabled.
+            inst.p_hook = inst.currentParticle.GetComponentInChildren<ParticleHook>(true);
+            if (inst.p_hook == null)
+            {
+                Debug.LogError($"CreateSpellParticle: ParticleHook not found on '{inst.currentParticle.name}'");
+                return;
+            }
+            inst.p_hook.Init();
 
+            if (!parentUnderRoot)
+            {
+                Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
+                inst.currentParticle.transform.parent = p;
+                inst.currentParticle.transform.localRotation = Quaternion.identity;
+                inst.currentParticle.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                inst.currentParticle.transform.parent = transform;
+                // firebreath2 emits sideways in local space, so compensate by -90 yaw.
+                inst.currentParticle.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
+                inst.currentParticle.transform.localPosition = new Vector3(0, 1.5f, 0.4f);
+            }
+           
         }
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false)
         {

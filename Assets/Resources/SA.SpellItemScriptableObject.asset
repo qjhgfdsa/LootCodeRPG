@@ -36,4 +36,4 @@ MonoBehaviour:
       throwAnim: 
       castTime: 0
     projecttile: {fileID: 0}
-    particlePrefab: {fileID: 3686615981850196321, guid: 615b6c2f8620b58478005554ebcf3a24, type: 3}
+    particlePrefab: {fileID: 2122438717319349008, guid: fb5d506cc434e314eb0d27ca5cce7757, type: 3}

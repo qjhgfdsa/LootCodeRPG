@@ -6,6 +6,7 @@ namespace SA
     {
         public Spell instance;
         public GameObject currentParticle;
+        public ParticleHook p_hook;
 
     }
 }

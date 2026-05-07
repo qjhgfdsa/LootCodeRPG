@@ -157,7 +157,7 @@ MonoBehaviour:
   hSpeed: 5
   vSpeed: 2
   target: {fileID: 0}
-  explosionPrefab: {fileID: 191186, guid: 079954accd64b32419ec069129c81273, type: 3}
+  explosionPrefab: {fileID: 840845252185566251, guid: efc5f7babd73de941a13188fbaffca04, type: 3}
 --- !u!1001 &1759989925066750346
 PrefabInstance:
   m_ObjectHideFlags: 0
