@@ -29,9 +29,9 @@ namespace SA
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
 
+        public delegate void SpellEffect_Loop();
+        public SpellEffect_Loop spellEffect_loop;
         float timer;
-
-
         void Start()
         {
             health = 10000;
@@ -97,6 +97,9 @@ namespace SA
             delta = Time.deltaTime;
             canMove = anim.GetBool(StaticStrings.canMove);
 
+            if (spellEffect_loop != null)
+                spellEffect_loop();
+
             if (dontDoAnything)
             {
                 dontDoAnything = !canMove;
@@ -152,14 +155,12 @@ namespace SA
             anim.SetBool(StaticStrings.canMove, false);
 
         }
-
-
         public void DoDamage(Action a)
         {
             if (isInvicible)
                 return;
 
-           int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
 
             characterStats.poise += damage;
             health -= damage;
@@ -176,15 +177,21 @@ namespace SA
                 }
             }
 
-           //  Debug.Log(" Damage is " + damage + " Poise is " + characterStats.poise);
+            //  Debug.Log(" Damage is " + damage + " Poise is " + characterStats.poise);
 
             isInvicible = true;
             anim.applyRootMotion = true;
             anim.SetBool(StaticStrings.canMove, false);
             Debug.Log("Enemy Health: " + health);
-           
-        }
 
+        }
+        public void DoDamage_()
+        {
+            if (isInvicible)
+                return;
+
+            anim.Play("damage_3");
+        }
         public void CheckForParry(Transform target, StateManager states)
         {
             if (canBeParried == false || parryIsOn == false || isInvicible)
@@ -211,18 +218,37 @@ namespace SA
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.parry_receive);
-           // Debug.Log("Enemy Got Parried!" + damage);
+            // Debug.Log("Enemy Got Parried!" + damage);
         }
 
         public void IsGettingBackStabbed(Action a)
         {
-            
+
             int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.backstabMultiplier);
             health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.backstabed);
-           // Debug.Log("Enemy Got Back Stabbed!" + damage);
+            // Debug.Log("Enemy Got Back Stabbed!" + damage);
+        }
+        public ParticleSystem fireParticle;
+        float _t;
+
+        public void OnFire()
+        {
+            if (fireParticle == null)
+                return;
+                
+            if (_t < 3)
+            {
+                _t += Time.deltaTime;
+                fireParticle.Emit(1);
+            }
+            else
+            {
+                _t = 0;
+                spellEffect_loop = null;
+            }
         }
     }
 }

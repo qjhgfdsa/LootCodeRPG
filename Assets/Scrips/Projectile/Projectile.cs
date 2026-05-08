@@ -27,6 +27,8 @@ namespace SA
             if (es != null)
             {
                 es.health -= 40;
+                es.DoDamage_();
+                SpellEffectManager.singleton.UseSpellEffect("onFire", null,es);
             }
 
             GameObject go = Instantiate(explosionPrefab, transform.position, transform.rotation) as GameObject;

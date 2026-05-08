@@ -121,6 +121,7 @@ namespace SA
             to.spellType = from.spellType;
             to.spellClass = from.spellClass;
             to.projecttile = from.projecttile;
+            to.spell_effect = from.spell_effect;
             to.particlePrefab = from.particlePrefab;
 
             to.actions = new List<SpellAction>();

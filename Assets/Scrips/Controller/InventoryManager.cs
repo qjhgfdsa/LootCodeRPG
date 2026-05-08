@@ -24,6 +24,8 @@ namespace SA
         public RuntimeWeapon leftHandWeapon;
 
         public GameObject parryCollider;
+        public GameObject breathCollider;
+        public GameObject blockCollider;
 
         StateManager states;
 
@@ -40,6 +42,8 @@ namespace SA
             ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
             pr.InitPlayer(st);
             CloseParryCollider();
+            CloseBreathCollider();
+            CloseBlockCollider();
         }
 
         public void LoadInventory()
@@ -121,7 +125,7 @@ namespace SA
 
         public void CreateSpellParticle(RuntimeSpellItems inst, bool isLeft, bool parentUnderRoot = false)
         {
-             if (inst == null || inst.instance == null)
+            if (inst == null || inst.instance == null)
             {
                 Debug.LogError("CreateSpellParticle: inst or inst.instance is null");
                 return;
@@ -131,7 +135,7 @@ namespace SA
                 Debug.LogWarning($"CreateSpellParticle: particlePrefab is null for spell '{inst.instance.itemName}'");
                 return;
             }
-            
+
             if (inst.currentParticle == null)
                 inst.currentParticle = Instantiate(inst.instance.particlePrefab) as GameObject;
 
@@ -159,7 +163,7 @@ namespace SA
                 inst.currentParticle.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
                 inst.currentParticle.transform.localPosition = new Vector3(0, 1.5f, 0.4f);
             }
-           
+
         }
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false)
         {
@@ -337,6 +341,28 @@ namespace SA
             EquipSpell(r_spells[s_index]);
         }
 
+        #region Delegate Calls
+        public void OpenBreathCollider()
+        {
+            breathCollider.SetActive(true);
+        }
+        public void CloseBreathCollider()
+        {
+            breathCollider.SetActive(false);
+        }
+        public void OpenBlockCollider()
+        {
+            blockCollider.SetActive(true);
+        }
+        public void CloseBlockCollider()
+        {
+            blockCollider.SetActive(false);
+        }
+        public void EmitSpellParticle()
+        {
+            currentSpell.p_hook.Emit(1);
+        }
+        #endregion
     }
     [System.Serializable]
     public class Item
@@ -344,9 +370,6 @@ namespace SA
         public string itemName;
         public string itemDescription;
         public Sprite icon;
-
-
-
     }
 
     [System.Serializable]
@@ -398,6 +421,7 @@ namespace SA
         public List<SpellAction> actions = new List<SpellAction>();
         public GameObject projecttile;
         public GameObject particlePrefab;
+        public string spell_effect;
         public SpellAction GetAction(List<SpellAction> l, ActionInput inp)
         {
             if (l == null)

@@ -943,10 +943,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 13af51ac-c0a2-4744-941a-1b4cfcfc8b8a
+  cloudProjectId: 6926b18f-1e72-4fab-8854-e78dc06cdc8e
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: "\u0E17\u0E14\u0E25\u0E2D\u0E07"
+  projectName: LootCodeRPG
   organizationId: interonline72
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

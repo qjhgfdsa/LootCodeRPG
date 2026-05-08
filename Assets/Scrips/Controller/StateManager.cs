@@ -378,6 +378,8 @@ namespace SA
                 return;
             }
 
+            SpellEffectManager.singleton.UseSpellEffect(s_inst.spell_effect, this);
+
             isSpellCasting = true;
             spellCastingTime = 0;
             max_spellCastTime = s_slot.castTime;
@@ -396,6 +398,9 @@ namespace SA
             anim.SetBool(StaticStrings.spellcasting, true);
             //anim.SetBool(StaticStrings.mirror, s_slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
+
+            if (spellCast_start != null)
+                spellCast_start();
         }
         float spellCastingTime;
         float max_spellCastTime;
@@ -403,18 +408,29 @@ namespace SA
         bool spellIsMirrored;
         SpellType curSpellType;
         GameObject projectileCanidate;
+
+        public delegate void SpellCast_Start();
+        public delegate void SpellCast_Loop();
+        public delegate void SpellCast_Stop();
+        public SpellCast_Start spellCast_start;
+        public SpellCast_Loop spellCast_loop;
+        public SpellCast_Stop spellCast_stop;
+
         void HandleSpellCasting()
         {
             if (curSpellType == SpellType.looping)
             {
-              
-                inventoryManager.currentSpell.p_hook.Emit(1);
+                if (spellCast_loop != null)
+                    spellCast_loop();
+
                 if (rb == false && lb == false)
                 {
-                 
                     isSpellCasting = false;
+
+                    if (spellCast_stop != null)
+                        spellCast_stop();
                 }
-              
+
                 return;
             }
             spellCastingTime += delta;
@@ -755,6 +771,10 @@ namespace SA
         public void IsGettingParried()
         {
 
+        }
+        public void AddHealth()
+        {
+            characterStats.fp++;
         }
     }
 }

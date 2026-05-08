@@ -25,6 +25,7 @@ MonoBehaviour:
       castTime: 1
     projecttile: {fileID: 7065235007049495403, guid: 8f86e7c93fcaf7a4b8865a33f26c63f2, type: 3}
     particlePrefab: {fileID: 3743199259833680333, guid: 46844748098a5dd4f80d25b5da1d7a35, type: 3}
+    spell_effect: fireball
   - itemName: firebreath
     itemDescription: 
     icon: {fileID: 21300000, guid: 7d15f3365b401f1458e65e7dcde25252, type: 3}
@@ -37,3 +38,17 @@ MonoBehaviour:
       castTime: 0
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 2122438717319349008, guid: fb5d506cc434e314eb0d27ca5cce7757, type: 3}
+    spell_effect: firebreath
+  - itemName: Fire Shield
+    itemDescription: 
+    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
+    spellType: 2
+    spellClass: 0
+    actions:
+    - input: 0
+      targetAnim: hold_spell_start
+      throwAnim: 
+      castTime: 0
+    projecttile: {fileID: 0}
+    particlePrefab: {fileID: 100000, guid: d459e09d95395f943b997b06b807b346, type: 3}
+    spell_effect: fireshield
