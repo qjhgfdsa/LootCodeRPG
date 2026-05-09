@@ -15,8 +15,13 @@ namespace SA
         bool rolling;
         float roll_t;
         float delta;
-        public AnimationCurve rollCurve;
+        AnimationCurve rollCurve;
 
+        public Transform ikTarget;
+        public Transform bodyTarget;
+        HandelIK ik_handler;
+        public bool useIk;
+        public AvatarIKGoal currentHand;
 
         public void Init(StateManager st, EnemyStates eSt)
         {
@@ -37,6 +42,8 @@ namespace SA
                 rigid = eSt.rigid;
                 delta = eSt.delta;
             }
+            ik_handler = gameObject.AddComponent<HandelIK>();
+            ik_handler.Init(anim, ikTarget, bodyTarget);
 
             // rollCurve = states.roll_curve;
         }
@@ -118,7 +125,24 @@ namespace SA
             }
 
         }
-
+        void OnAnimatorIK()
+        {
+            if (!useIk)
+            {
+                if (ik_handler.t > 0)
+                {
+                    ik_handler.IKTick(currentHand, 0);
+                }
+                else
+                {
+                    ik_handler.t = 0;
+                }
+            }
+            else
+            {
+                ik_handler.IKTick(currentHand, 1);
+            }
+        }
         public void OpenDamageColliders()
         {
             if (states)
@@ -186,7 +210,7 @@ namespace SA
         }
         public void InitiateThrowForProjecttile()
         {
-            if(states)
+            if (states)
             {
                 states.ThrowProjectile();
             }

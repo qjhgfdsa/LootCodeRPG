@@ -19,6 +19,18 @@ namespace SA
 
         public void UpdateActionsOneHanded()
         {
+            if (states == null || states.inventoryManager == null)
+            {
+                Debug.LogWarning("ActionManager: inventoryManager is not ready, skip one-handed action refresh.");
+                return;
+            }
+
+            if (states.inventoryManager.rightHandWeapon == null || states.inventoryManager.rightHandWeapon.instance == null)
+            {
+                Debug.LogWarning("ActionManager: right-hand weapon is missing, skip one-handed action refresh.");
+                return;
+            }
+
             EmptyAllSlot();
 
             StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rb, ActionInput.rb, actionSlots);
@@ -37,8 +49,19 @@ namespace SA
         }
         public void UpdateActionsTwoHanded()
         {
+            if (states == null || states.inventoryManager == null)
+            {
+                Debug.LogWarning("ActionManager: inventoryManager is not ready, skip two-handed action refresh.");
+                return;
+            }
 
             EmptyAllSlot();
+            if (states.inventoryManager.rightHandWeapon == null)
+            {
+                Debug.LogWarning("ActionManager: rightHandWeapon is null in two-handed refresh.");
+                return;
+            }
+
             Weapon w = states.inventoryManager.rightHandWeapon.instance;
 
             if (w == null)

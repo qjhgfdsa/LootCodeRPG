@@ -101,9 +101,8 @@ namespace SA
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
             inventoryManager = GetComponent<InventoryManager>();
-
             actionManager = GetComponent<ActionManager>();
-            actionManager.Init(this);
+            
 
             // ===== สำคัญ: ต้อง Init a_hook ก่อน inventoryManager =====
             a_hook = activeModel.GetComponent<AnimatorHook>();
@@ -113,6 +112,7 @@ namespace SA
 
             // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
             inventoryManager.Init(this);
+            actionManager.Init(this);
 
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
@@ -420,12 +420,17 @@ namespace SA
         {
             if (curSpellType == SpellType.looping)
             {
+                a_hook.useIk = true;
+                a_hook.currentHand = (spellIsMirrored)? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
+
                 if (spellCast_loop != null)
                     spellCast_loop();
 
                 if (rb == false && lb == false)
                 {
                     isSpellCasting = false;
+
+                    a_hook.useIk = false;
 
                     if (spellCast_stop != null)
                         spellCast_stop();

@@ -101,6 +101,10 @@ namespace SA
             InitAllDamageCollider(states);
             CloseAllDamageColliders();
 
+            // Make sure action slots always reflect the startup equipment load order.
+            if (states != null && states.actionManager != null)
+                states.actionManager.UpdateActionsOneHanded();
+
 
         }
         public RuntimeSpellItems SpellToRuntimeSpell(Spell s, bool isLeft = false)

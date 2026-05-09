@@ -155,37 +155,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &9994168
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9994169}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9994169
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9994168}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.377, z: 0.366}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 459074583}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &11380501
 GameObject:
   m_ObjectHideFlags: 0
@@ -2038,12 +2007,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rm_Mutil: 0
-  rollCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  ikTarget: {fileID: 0}
+  bodyTarget: {fileID: 0}
+  useIk: 0
+  currentHand: 0
 --- !u!136 &230056146
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2452,6 +2419,39 @@ CapsuleCollider:
   m_Height: 0.18913417
   m_Direction: 1
   m_Center: {x: 0, y: 0.09456708, z: 0}
+--- !u!1 &273465994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 273465995}
+  m_Layer: 0
+  m_Name: IK references
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &273465995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273465994}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2005835168}
+  - {fileID: 2080270143}
+  m_Father: {fileID: 459074583}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283489729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3572,7 +3572,7 @@ Transform:
   m_Children:
   - {fileID: 1932919186}
   - {fileID: 1161855768}
-  - {fileID: 9994169}
+  - {fileID: 273465995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &459074584
@@ -3696,23 +3696,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rh_weapons:
-  - sword
   - Pyromancy Flame
+  - sword
   lh_weapons:
-  - shied
-  - sword
   - Pyromancy Flame
+  - sword
   spell_items:
-  - fireball
   - firebreath
+  - fireball
   - Fire Shield
   r_index: 2
-  l_index: 3
+  l_index: 2
   s_index: 3
   currentSpell: {fileID: 400226246}
-  rightHandWeapon: {fileID: 1975116925}
+  rightHandWeapon: {fileID: 670239404}
   hasLeftHandWeapon: 1
-  leftHandWeapon: {fileID: 1766253517}
+  leftHandWeapon: {fileID: 670239404}
   parryCollider: {fileID: 1842171381}
   breathCollider: {fileID: 795328681}
   blockCollider: {fileID: 559149952}
@@ -3833,7 +3832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &559149953
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4955,7 +4954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &795328682
 Transform:
   m_ObjectHideFlags: 0
@@ -7673,12 +7672,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rm_Mutil: 0
-  rollCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  ikTarget: {fileID: 0}
+  bodyTarget: {fileID: 0}
+  useIk: 0
+  currentHand: 0
 --- !u!136 &1698828092
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8794,7 +8791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1842171382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9223,12 +9220,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rm_Mutil: 0
-  rollCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  ikTarget: {fileID: 0}
+  bodyTarget: {fileID: 0}
+  useIk: 0
+  currentHand: 0
 --- !u!1 &1861304115 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7400054554405559878, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -10119,12 +10114,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rm_Mutil: 0
-  rollCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  ikTarget: {fileID: 2005835168}
+  bodyTarget: {fileID: 2080270143}
+  useIk: 0
+  currentHand: 0
 --- !u!1 &1975116924
 GameObject:
   m_ObjectHideFlags: 0
@@ -10355,6 +10348,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1984579105}
   m_CullTransparentMesh: 1
+--- !u!1 &2005835167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2005835168}
+  m_Layer: 0
+  m_Name: IK Hand Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2005835168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005835167}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5726259, y: -0.03973046, z: -0.027799612, w: 0.81838155}
+  m_LocalPosition: {x: 0.262, y: 0.122, z: 0.607}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 273465995}
+  m_LocalEulerAnglesHint: {x: -69.961, y: -5.559, z: 0}
 --- !u!1001 &2023257638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10581,6 +10605,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063272534}
   m_CullTransparentMesh: 1
+--- !u!1 &2080270142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2080270143}
+  m_Layer: 0
+  m_Name: IK Body Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2080270143
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080270142}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 273465995}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2080789967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4421c3c2ad02dc64497959fb17c50ca6, type: 3}
