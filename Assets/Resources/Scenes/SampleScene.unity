@@ -2009,6 +2009,9 @@ MonoBehaviour:
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
+  headTarget: {fileID: 0}
+  ikTargetShield: {fileID: 0}
+  ikTargetBodyshield: {fileID: 0}
   useIk: 0
   currentHand: 0
 --- !u!136 &230056146
@@ -2419,39 +2422,6 @@ CapsuleCollider:
   m_Height: 0.18913417
   m_Direction: 1
   m_Center: {x: 0, y: 0.09456708, z: 0}
---- !u!1 &273465994
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 273465995}
-  m_Layer: 0
-  m_Name: IK references
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &273465995
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273465994}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2005835168}
-  - {fileID: 2080270143}
-  m_Father: {fileID: 459074583}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283489729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3346,6 +3316,7 @@ MonoBehaviour:
   inAction: 0
   canMove: 0
   isSpellCasting: 0
+  enableIK: 0
   isTwoHanded: 0
   usingItem: 0
   isBlocking: 0
@@ -3572,7 +3543,6 @@ Transform:
   m_Children:
   - {fileID: 1932919186}
   - {fileID: 1161855768}
-  - {fileID: 273465995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &459074584
@@ -3696,22 +3666,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rh_weapons:
-  - Pyromancy Flame
+  - shield
   - sword
+  - Pyromancy Flame
   lh_weapons:
-  - Pyromancy Flame
   - sword
+  - Pyromancy Flame
+  - shield
   spell_items:
   - firebreath
   - fireball
   - Fire Shield
-  r_index: 2
-  l_index: 2
-  s_index: 3
+  r_index: 0
+  l_index: 0
+  s_index: 0
   currentSpell: {fileID: 400226246}
-  rightHandWeapon: {fileID: 670239404}
+  rightHandWeapon: {fileID: 1766253517}
   hasLeftHandWeapon: 1
-  leftHandWeapon: {fileID: 670239404}
+  leftHandWeapon: {fileID: 1975116925}
   parryCollider: {fileID: 1842171381}
   breathCollider: {fileID: 795328681}
   blockCollider: {fileID: 559149952}
@@ -4738,6 +4710,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3910d452d77a232498857be043651e9f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1932919188}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3910d452d77a232498857be043651e9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1932919190}
   m_SourcePrefab: {fileID: 100100000, guid: 3910d452d77a232498857be043651e9f, type: 3}
 --- !u!1 &697429454
 GameObject:
@@ -7674,6 +7649,9 @@ MonoBehaviour:
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
+  headTarget: {fileID: 0}
+  ikTargetShield: {fileID: 0}
+  ikTargetBodyshield: {fileID: 0}
   useIk: 0
   currentHand: 0
 --- !u!136 &1698828092
@@ -8078,10 +8056,10 @@ MonoBehaviour:
         fire: 0
         lightning: 0
         dark: 0
-    - input: 2
+    - input: 0
       actionType: 3
       spellClass: 0
-      targetAnim: parry
+      targetAnim: 
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -9222,6 +9200,9 @@ MonoBehaviour:
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
+  headTarget: {fileID: 0}
+  ikTargetShield: {fileID: 0}
+  ikTargetBodyshield: {fileID: 0}
   useIk: 0
   currentHand: 0
 --- !u!1 &1861304115 stripped
@@ -10114,10 +10095,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rm_Mutil: 0
-  ikTarget: {fileID: 2005835168}
-  bodyTarget: {fileID: 2080270143}
+  ikTarget: {fileID: 0}
+  bodyTarget: {fileID: 0}
+  headTarget: {fileID: 0}
+  ikTargetShield: {fileID: 0}
+  ikTargetBodyshield: {fileID: 0}
   useIk: 0
   currentHand: 0
+--- !u!114 &1932919190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661144851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6f13c4d04305446a0bdd9181127f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SA.HandelIK
+  weight: 0
+  iKSnapShots:
+  - type: 0
+    handPos: {x: 0.06251346, y: -0.04187074, z: 0.517}
+    hand_eulers: {x: -69.961, y: -5.559, z: 0}
+    bodyPos: {x: -0.04063619, y: -0.08990226, z: 0.02656585}
+    overwritHeadPos: 0
+    headPos: {x: 0, y: 0, z: 0}
+  - type: 1
+    handPos: {x: -0.001, y: -0.157, z: 0.426}
+    hand_eulers: {x: 278.02936, y: 298.21368, z: 243.60123}
+    bodyPos: {x: -0.04063619, y: -0.08990226, z: 0.02656585}
+    overwritHeadPos: 0
+    headPos: {x: 0, y: 0, z: 0}
+  - type: 2
+    handPos: {x: 0.389, y: -0.022, z: 0.46}
+    hand_eulers: {x: 358.9994, y: 309.38336, z: 294.0152}
+    bodyPos: {x: -0.04063619, y: -0.08990226, z: 0.02656585}
+    overwritHeadPos: 0
+    headPos: {x: 0, y: 0, z: 0}
+  defaultHeadPos: {x: -1.414653, y: -0.2513197, z: 0.1383769}
 --- !u!1 &1975116924
 GameObject:
   m_ObjectHideFlags: 0
@@ -10348,37 +10365,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1984579105}
   m_CullTransparentMesh: 1
---- !u!1 &2005835167
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2005835168}
-  m_Layer: 0
-  m_Name: IK Hand Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2005835168
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2005835167}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.5726259, y: -0.03973046, z: -0.027799612, w: 0.81838155}
-  m_LocalPosition: {x: 0.262, y: 0.122, z: 0.607}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 273465995}
-  m_LocalEulerAnglesHint: {x: -69.961, y: -5.559, z: 0}
 --- !u!1001 &2023257638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10605,37 +10591,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063272534}
   m_CullTransparentMesh: 1
---- !u!1 &2080270142
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2080270143}
-  m_Layer: 0
-  m_Name: IK Body Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2080270143
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080270142}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 273465995}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2080789967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4421c3c2ad02dc64497959fb17c50ca6, type: 3}

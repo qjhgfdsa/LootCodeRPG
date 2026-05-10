@@ -19,10 +19,14 @@ namespace SA
 
         public Transform ikTarget;
         public Transform bodyTarget;
+        public Transform headTarget;
+
+        public Transform ikTargetShield;
+        public Transform ikTargetBodyshield;
+
         HandelIK ik_handler;
         public bool useIk;
         public AvatarIKGoal currentHand;
-
         public void Init(StateManager st, EnemyStates eSt)
         {
             states = st;
@@ -42,20 +46,16 @@ namespace SA
                 rigid = eSt.rigid;
                 delta = eSt.delta;
             }
-            ik_handler = gameObject.AddComponent<HandelIK>();
-            ik_handler.Init(anim, ikTarget, bodyTarget);
 
-            // rollCurve = states.roll_curve;
+            ik_handler = gameObject.GetComponent<HandelIK>();
+            if (ik_handler != null)
+                ik_handler.Init(anim);
         }
-
-
-
         public void InitForRoll()
         {
             rolling = true;
             roll_t = 0;
         }
-
         public void CloseRoll()
         {
             if (rolling == false)
@@ -64,9 +64,12 @@ namespace SA
             rm_Mutil = 1;
             rolling = false;
         }
-
         void OnAnimatorMove()
         {
+            if(ik_handler != null)
+            {
+                ik_handler.OnAnimatorMoveTick((currentHand == AvatarIKGoal.LeftHand));
+            }
             if (states == null && eStates == null)
                 return;
 
@@ -127,21 +130,31 @@ namespace SA
         }
         void OnAnimatorIK()
         {
+            if (ik_handler == null)
+                return;
+
             if (!useIk)
             {
-                if (ik_handler.t > 0)
+                if (ik_handler.weight > 0)
                 {
                     ik_handler.IKTick(currentHand, 0);
                 }
                 else
                 {
-                    ik_handler.t = 0;
+                    ik_handler.weight = 0;
                 }
             }
             else
             {
                 ik_handler.IKTick(currentHand, 1);
             }
+        }
+        void LateUpdate()
+        {
+            if (ik_handler == null)
+                return;
+
+            ik_handler.LateTick();
         }
         public void OpenDamageColliders()
         {
@@ -161,7 +174,6 @@ namespace SA
             }
             CloseParryFlag();
         }
-
         public void OpenParryCollider()
         {
             if (states == null)
@@ -186,7 +198,6 @@ namespace SA
                 eStates.parryIsOn = true;
             }
         }
-
         public void CloseParryFlag()
         {
             if (states)
@@ -217,5 +228,14 @@ namespace SA
 
         }
 
+        public void InitIKForShield(bool isLeft)
+        {
+            ik_handler.UpdateIKTargets((isLeft) ? IKSnapShotType.shield_l : IKSnapShotType.shield_r, isLeft);
+        }
+
+        public void InitIKForBreathSpell(bool isLeft)
+        {
+            ik_handler.UpdateIKTargets(IKSnapShotType.breath, isLeft);
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace SA
         public bool inAction;
         public bool canMove;
         public bool isSpellCasting;
+        public bool enableIK;
         public bool isTwoHanded;
         public bool usingItem;
         public bool isBlocking;
@@ -102,7 +103,7 @@ namespace SA
 
             inventoryManager = GetComponent<InventoryManager>();
             actionManager = GetComponent<ActionManager>();
-            
+
 
             // ===== สำคัญ: ต้อง Init a_hook ก่อน inventoryManager =====
             a_hook = activeModel.GetComponent<AnimatorHook>();
@@ -170,6 +171,14 @@ namespace SA
 
             anim.SetBool(StaticStrings.blocking, isBlocking);
             anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
+
+            if(isBlocking == false && isSpellCasting == false)
+            {
+                enableIK = false;
+            }
+
+            a_hook.useIk = enableIK;
+           //a_hook.useIk = true;
 
             if (inAction)
             {
@@ -266,7 +275,6 @@ namespace SA
             transform.rotation = targetRotation;
         }
 
-
         public void DetectItemAction()
         {
             if (!canMove || usingItem || isBlocking)
@@ -285,7 +293,6 @@ namespace SA
             usingItem = true;
             anim.Play(targetAnim);
         }
-
 
         public void DetectAction()
         {
@@ -399,6 +406,8 @@ namespace SA
             //anim.SetBool(StaticStrings.mirror, s_slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
 
+            a_hook.InitIKForBreathSpell(spellIsMirrored);
+
             if (spellCast_start != null)
                 spellCast_start();
         }
@@ -420,8 +429,8 @@ namespace SA
         {
             if (curSpellType == SpellType.looping)
             {
-                a_hook.useIk = true;
-                a_hook.currentHand = (spellIsMirrored)? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
+                enableIK = true;
+                a_hook.currentHand = (spellIsMirrored) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
 
                 if (spellCast_loop != null)
                     spellCast_loop();
@@ -430,7 +439,7 @@ namespace SA
                 {
                     isSpellCasting = false;
 
-                    a_hook.useIk = false;
+                    enableIK = false;
 
                     if (spellCast_stop != null)
                         spellCast_stop();
@@ -544,7 +553,6 @@ namespace SA
             return false;
 
         }
-
         bool CheckForBackstab(Action slot)
         {
             if (slot.canBackStab == false)
@@ -592,9 +600,10 @@ namespace SA
         void BlockAction(Action slot)
         {
             isBlocking = true;
+            enableIK = true;
             isLeftHand = slot.mirror;
-
-
+            a_hook.currentHand = (slot.mirror) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
+            a_hook.InitIKForShield(slot.mirror);
         }
 
         void ParryAction(Action slot)
@@ -678,9 +687,9 @@ namespace SA
 
             anim.CrossFade(StaticStrings.Rolls, 0.2f);
 
+            isBlocking = false;
 
         }
-
 
         void HandleMovementAnimations()
         {
