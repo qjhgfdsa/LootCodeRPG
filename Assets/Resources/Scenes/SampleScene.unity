@@ -7474,12 +7474,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SA.UIManager
   lerpSpeed: 2
   health: {fileID: 1888208876}
-  h_visual: {fileID: 0}
+  h_visual: {fileID: 1119647335}
   focus: {fileID: 2145285619}
-  f_visual: {fileID: 0}
+  f_visual: {fileID: 1522669824}
   stamina: {fileID: 297811256}
-  s_visual: {fileID: 0}
-  sizeMultiplier: 2
+  s_visual: {fileID: 1542274037}
+  sizeMultiplier: 5
 --- !u!1 &1336801791
 GameObject:
   m_ObjectHideFlags: 0
