@@ -6,6 +6,7 @@ namespace SA.UI
 {
     public class QuickSlot : MonoBehaviour
     {
+      
         public List<QSlots> slots = new List<QSlots>();
 
         public void Init()

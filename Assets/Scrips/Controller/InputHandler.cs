@@ -34,6 +34,7 @@ namespace SA
 
         StateManager states;
         CameraManager camManager;
+        UIManager uiManager;
         float delta;
 
         void Awake()
@@ -72,11 +73,12 @@ namespace SA
             }
 
             camManager.Init(states);
+            uiManager = UIManager.singleton;
         }
         void FixedUpdate()
         {
             delta = Time.fixedDeltaTime;
-           // states.FixedTick(delta);
+            // states.FixedTick(delta);
             camManager.Tick(delta);
         }
 
@@ -86,8 +88,9 @@ namespace SA
             GetInput();
             UpdateStates();
             states.Tick(delta);
-            ResetInputNStates();
             states.FixedTick(delta);//สลับจาก FixedUpdate เป็น Update
+            ResetInputNStates();
+            uiManager.Tick(states.characterStats, delta);
         }
 
         void GetInput()
@@ -204,11 +207,11 @@ namespace SA
         {
             if (states.isSpellCasting || states.usingItem)
                 return;
-           
+
             if (d_up)
                 states.inventoryManager.ChangeToNextSpell();
 
-             if (states.canMove == false)
+            if (states.canMove == false)
                 return;
             if (states.isTwoHanded)
                 return;

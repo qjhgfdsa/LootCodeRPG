@@ -119,6 +119,9 @@ namespace SA
             ignoreLayers = ~(1 << 9);
 
             anim.SetBool(StaticStrings.OnGround, true);
+
+            characterStats.InitCurrent();
+            UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
         }
 
         void SetupAnimator()

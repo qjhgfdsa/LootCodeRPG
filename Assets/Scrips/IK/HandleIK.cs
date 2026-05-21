@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace SA
 {
@@ -57,8 +55,16 @@ namespace SA
         public void UpdateIKTargets(IKSnapShotType type, bool isLeft)
         {
             IKSnapShot snap = GetSnapshot(type);
+            if (snap == null)
+            {
+                Debug.LogWarning($"HandelIK: no snapshot for {type}");
+                return;
+            }
 
             Vector3 targetBodyPos = snap.bodyPos;
+            // เป้า Look At ชิดไหล่เกินไปจะไม่เห็นลำตัวหมุน — ดันไปข้างหน้าถ้า offset สั้นมาก
+            if (targetBodyPos.sqrMagnitude < 0.1f)
+                targetBodyPos += new Vector3(0f, -0.15f, 0.6f);
             if (isLeft)
                 targetBodyPos.x = -targetBodyPos.x;
 
@@ -77,7 +83,7 @@ namespace SA
             Transform shoulder = anim.GetBoneTransform(
               (isLeft) ? HumanBodyBones.LeftShoulder : HumanBodyBones.RightShoulder);
             
-            shoulderHelper.transform.position = shoulder.position;
+            shoulderHelper.SetPositionAndRotation(shoulder.position, anim.transform.rotation);
         }
         public void IKTick(AvatarIKGoal goal, float w)
         {
@@ -101,11 +107,8 @@ namespace SA
             anim.SetIKRotation(goal, ikRot);
 
 
-            //หาก clamp เต็ม เลยแทบไม่หมุน “ตัว” แม้ Hand IK จะทำงานปกติ
-            //ค่าตัวสุดท้าย (clampWeight = 1) คือบังคับไม่ให้หมุนเกือบทั้งหมด
-            //ผลคือ LookAt (ลำตัว/หัว/ตา) ดูเหมือนไม่ทำงาน
-            //ให้ลองปรับเป็นแบบนี้: anim.SetLookAtWeight(b_w, 0.8f, 1f, 0f, 0.2f);
-            anim.SetLookAtWeight(weight, 0.2f, 1, 1, 1f);
+            // bodyWeight สูง + clamp ต่ำ = ลำตัวหมุนตามเป้า; หัวจัดการใน LateTick
+            anim.SetLookAtWeight(weight, 0.8f, 0f, 0f, 0.2f);
             anim.SetLookAtPosition(bodyHelper.position);
         }
 

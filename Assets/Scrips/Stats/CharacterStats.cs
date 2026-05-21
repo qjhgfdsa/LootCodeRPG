@@ -5,6 +5,11 @@ namespace SA
     [System.Serializable]
     public class CharacterStats
     {
+        [Header("Current")]
+        public int _health;
+        public int _focus;
+        public float _stamina;
+
         [Header("Base Power")]
         public int hp = 100;
         public int fp = 100;
@@ -37,6 +42,31 @@ namespace SA
         public int curse = 100;
 
         public int attunemntSlots = 0;
+
+        public void InitCurrent()
+        {
+            
+            if(statEffect != null)
+            {
+                statEffect();
+            }
+            
+            _health = hp;
+            _focus = fp;
+            _stamina = stamina;
+
+        }
+        public delegate void StatEffect();
+        public StatEffect statEffect;
+        public void AddHealth()
+        {
+            hp += 5;
+
+        }
+        public void RemoveHealth()
+        {
+            hp -= 5;
+        }
     }
 
     [System.Serializable]
