@@ -175,13 +175,13 @@ namespace SA
             anim.SetBool(StaticStrings.blocking, isBlocking);
             anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
 
-            if(isBlocking == false && isSpellCasting == false)
+            if (isBlocking == false && isSpellCasting == false)
             {
                 enableIK = false;
             }
 
             a_hook.useIk = enableIK;
-           //a_hook.useIk = true;
+            //a_hook.useIk = true;
 
             if (inAction)
             {
@@ -330,6 +330,11 @@ namespace SA
 
         void AttackAction(Action slot)
         {
+            if (characterStats._stamina < slot.staminaCost)
+            {
+                Debug.Log("Not enough stamina");
+                return;
+            }
 
             if (CheckForParry(slot))
                 return;
@@ -359,21 +364,22 @@ namespace SA
             anim.SetFloat(StaticStrings.animSpeed, targetSpeed);
             anim.SetBool(StaticStrings.mirror, slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
-
+            characterStats._stamina -= slot.staminaCost;
+            characterStats._focus -= slot.focusCost;
         }
 
         void SpellAction(Action slot)
         {
-
-
-            if (slot.spellClass != inventoryManager.currentSpell.instance.spellClass)
+            if (slot.spellClass != inventoryManager.currentSpell.instance.spellClass ||
+            characterStats._stamina < slot.staminaCost || characterStats._focus < slot.focusCost)
             {
-                //targetAnim = "Cast_Failed";
-                Debug.Log("Spell class does not match");
-                //anim.CrossFade(targetAnim, 0.2f);
-
+                Debug.Log("Not enough stamina or focus");
+                anim.CrossFade("cant_spell", 0.2f);
+                canMove = false;
+                inAction = true;
                 return;
             }
+
             ActionInput inp = actionManager.GetActionInput(this);
             if (inp == ActionInput.lb)
                 inp = ActionInput.rb;
@@ -389,6 +395,9 @@ namespace SA
             }
 
             SpellEffectManager.singleton.UseSpellEffect(s_inst.spell_effect, this);
+
+            characterStats._stamina -= slot.staminaCost;
+            characterStats._focus -= slot.focusCost;
 
             isSpellCasting = true;
             spellCastingTime = 0;
@@ -433,20 +442,27 @@ namespace SA
             if (curSpellType == SpellType.looping)
             {
                 enableIK = true;
-                a_hook.currentHand = (spellIsMirrored) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
+                a_hook.currentHand = (spellIsMirrored) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;                
 
-                if (spellCast_loop != null)
-                    spellCast_loop();
-
-                if (rb == false && lb == false)
+                if ((rb == false && lb == false) || characterStats._focus <= 1)
                 {
                     isSpellCasting = false;
 
                     enableIK = false;
 
+                    inventoryManager.breathCollider.SetActive(false);
+                    inventoryManager.blockCollider.SetActive(false);
+
                     if (spellCast_stop != null)
                         spellCast_stop();
+                        
+                    return;
                 }
+                
+                if (spellCast_loop != null)
+                    spellCast_loop();
+
+                characterStats._focus -= 0.25f;
 
                 return;
             }
@@ -792,6 +808,23 @@ namespace SA
         public void AddHealth()
         {
             characterStats.fp++;
+        }
+        public void MonitorStats()
+        {
+            if (run && moveAmount > 0)
+            {
+                characterStats._stamina -= delta * 10;
+            }
+            else
+            {
+                characterStats._stamina += delta;
+            }
+            if (characterStats._stamina > characterStats.fp)
+                characterStats._stamina = characterStats.fp;
+
+            characterStats._health = Mathf.Clamp(characterStats._health, 0, characterStats.hp);
+            characterStats._focus = Mathf.Clamp(characterStats._focus, 0, characterStats.fp);
+           // characterStats._stamina = Mathf.Clamp(characterStats._stamina, 0, characterStats.stamina);
         }
     }
 }

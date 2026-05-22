@@ -53,6 +53,8 @@ namespace SA
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
             a.canBackStab = w_a.canBackStab;
+            a.staminaCost = w_a.staminaCost;
+            a.focusCost = w_a.focusCost;
             a.ovverideDamageAnim = w_a.ovverideDamageAnim;
             a.damageAnim = w_a.damageAnim;
 
@@ -75,6 +77,8 @@ namespace SA
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
             a.canBackStab = w_a.canBackStab;
+            a.staminaCost = w_a.staminaCost;
+            a.focusCost = w_a.focusCost;
             a.ovverideDamageAnim = w_a.ovverideDamageAnim;
             a.damageAnim = w_a.damageAnim;
             a.parryMultiplier = w.parryMultiplier;

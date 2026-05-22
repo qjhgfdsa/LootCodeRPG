@@ -88,6 +88,8 @@ namespace SA
                     a.animSpeed = source.animSpeed;
                     a.canParry = source.canParry;
                     a.canBackStab = source.canBackStab;
+                    a.staminaCost = source.staminaCost;
+                    a.focusCost = source.focusCost;
                     a.ovverideDamageAnim = source.ovverideDamageAnim;
                     a.damageAnim = source.damageAnim;
                     a.parryMultiplier = source.parryMultiplier;
@@ -188,6 +190,8 @@ namespace SA
         public float animSpeed = 1;
         public bool canParry = false;
         public bool canBackStab = false;
+        public float staminaCost = 5;
+        public int focusCost = 0;
 
         [HideInInspector]
         public float parryMultiplier;

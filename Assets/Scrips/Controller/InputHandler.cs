@@ -78,7 +78,6 @@ namespace SA
         void FixedUpdate()
         {
             delta = Time.fixedDeltaTime;
-            // states.FixedTick(delta);
             camManager.Tick(delta);
         }
 
@@ -86,10 +85,11 @@ namespace SA
         {
             delta = Time.deltaTime;
             GetInput();
-            UpdateStates();
+            UpdateStates();//ลองสลับมาไว้ที่ FixedUpdate
             states.Tick(delta);
             states.FixedTick(delta);//สลับจาก FixedUpdate เป็น Update
             ResetInputNStates();
+            states.MonitorStats();
             uiManager.Tick(states.characterStats, delta);
         }
 
@@ -154,7 +154,7 @@ namespace SA
                 b_input = false;
 
             if (b_input && b_timer > 0.5f)
-                states.run = (states.moveAmount > 0);
+                states.run = (states.moveAmount > 0) && states.characterStats._stamina > 0;
 
             if (b_input == false && b_timer > 0 && b_timer < 0.5f)
                 states.rollInput = true;
@@ -202,7 +202,6 @@ namespace SA
 
             HandleQuickSlotChanges();
         }
-
         void HandleQuickSlotChanges()
         {
             if (states.isSpellCasting || states.usingItem)
@@ -222,7 +221,6 @@ namespace SA
                 states.inventoryManager.ChangeToNextWeapon(false);
 
         }
-
         void TryLockOn()
         {
             // เช็ค EnemyManager ก่อน
@@ -250,7 +248,6 @@ namespace SA
             camManager.lockonTransform = targetTransform;
             camManager.lockon = true;
         }
-
         void ClearLockOn()
         {
             states.lockOn = false;
@@ -261,9 +258,6 @@ namespace SA
             camManager.lockonTarget = null;
             camManager.lockonTransform = null;
         }
-
-
-
         void ResetInputNStates()
         {
 

@@ -19,7 +19,6 @@ namespace SA
 
 
             eStates.DoDamage(states.currentAction);
-
         }
     }
 }

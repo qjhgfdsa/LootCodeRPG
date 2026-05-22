@@ -7479,7 +7479,7 @@ MonoBehaviour:
   f_visual: {fileID: 1522669824}
   stamina: {fileID: 297811256}
   s_visual: {fileID: 1542274037}
-  sizeMultiplier: 5
+  sizeMultiplier: 3
 --- !u!1 &1336801791
 GameObject:
   m_ObjectHideFlags: 0

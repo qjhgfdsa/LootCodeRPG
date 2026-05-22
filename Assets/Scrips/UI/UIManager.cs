@@ -45,7 +45,7 @@ namespace SA
             RectTransform r = s.GetComponent<RectTransform>();
             RectTransform r_v = v.GetComponent<RectTransform>();
             float value_actual = value * sizeMultiplier;
-            value_actual = Mathf.Clamp(value_actual, 0, 500);
+            value_actual = Mathf.Clamp(value_actual, 0, 1000);
 
             r.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);
             r_v.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);

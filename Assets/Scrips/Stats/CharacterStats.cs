@@ -7,7 +7,7 @@ namespace SA
     {
         [Header("Current")]
         public int _health;
-        public int _focus;
+        public float _focus;
         public float _stamina;
 
         [Header("Base Power")]
