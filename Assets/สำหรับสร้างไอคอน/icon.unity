@@ -218,7 +218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &124792132
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -330,7 +330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &136157713
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -560,6 +560,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &533409763
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8133399767090564659, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_Name
+      value: PP_Theme_06_Sword_Two-Handed_001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.24607761
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 23.958134
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.19535722
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.23942551
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.1334008
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.25217298
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.92805624
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 32.137
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 8.616
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904869160435963017, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 153.554
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
 --- !u!1001 &582829697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -963,15 +1020,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052224793}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.86, y: 0.08, z: 9.35}
+  m_LocalRotation: {x: 0.31178164, y: -0, z: 7.821655e-10, w: 0.9501538}
+  m_LocalPosition: {x: 0.31, y: 23.138, z: 8.783}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1964999402}
   - {fileID: 1906734498}
   m_Father: {fileID: 1362878822}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 36.333, y: 0, z: 0}
 --- !u!1 &1362878820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,7 +1061,7 @@ MonoBehaviour:
   create: 0
   ren: {fileID: 8400000, guid: 6e4f7f31cd90f3145be7328870aee5ef, type: 2}
   bakeCam: {fileID: 1906734495}
-  spriteName: "\u0E44\u0E2D\u0E04\u0E2D\u0E19\u0E1E\u0E25\u0E31\u0E07\u0E1E\u0E48\u0E19\u0E44\u0E1F"
+  spriteName: BigSword_IC
 --- !u!4 &1362878822
 Transform:
   m_ObjectHideFlags: 0
@@ -1833,3 +1890,4 @@ SceneRoots:
   - {fileID: 88141006}
   - {fileID: 1412082837}
   - {fileID: 124792135}
+  - {fileID: 533409763}

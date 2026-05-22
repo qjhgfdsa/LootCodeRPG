@@ -449,13 +449,14 @@ namespace SA
                     isSpellCasting = false;
 
                     enableIK = false;
+                    
 
                     inventoryManager.breathCollider.SetActive(false);
                     inventoryManager.blockCollider.SetActive(false);
 
                     if (spellCast_stop != null)
                         spellCast_stop();
-                        
+
                     return;
                 }
                 

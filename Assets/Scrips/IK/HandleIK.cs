@@ -157,7 +157,7 @@ namespace SA
     }
     public enum IKSnapShotType
     {
-        breath, shield_r, shield_l
+        breath, shield_r, shield_l,sword_r,sword_l
     }
     [System.Serializable]
     public class IKSnapShot
