@@ -66,7 +66,7 @@ namespace SA
         }
         void OnAnimatorMove()
         {
-            if(ik_handler != null)
+            if (ik_handler != null)
             {
                 ik_handler.OnAnimatorMoveTick((currentHand == AvatarIKGoal.LeftHand));
             }
@@ -79,7 +79,7 @@ namespace SA
 
             if (states != null)
             {
-                if (states.canMove)
+                if (states.onEmpty)
                     return;
 
                 delta = states.delta;
@@ -102,8 +102,8 @@ namespace SA
             if (rolling == false)
             {
                 Vector3 delta2 = anim.deltaPosition;
-                delta2.y = 0;
                 Vector3 v = (delta2 * rm_Mutil) / delta;
+                v += Physics.gravity;
 
                 if (!rigid.isKinematic)
                     rigid.linearVelocity = v;
@@ -124,6 +124,7 @@ namespace SA
                 Vector3 v1 = Vector3.forward * zValue;
                 Vector3 relative = transform.TransformDirection(v1);
                 Vector3 v2 = (relative * rm_Mutil);
+                v2 += Physics.gravity;
                 rigid.linearVelocity = v2;
             }
 
@@ -156,6 +157,20 @@ namespace SA
 
             ik_handler.LateTick();
         }
+        public void OpenAttack()
+        {
+            if (states)
+            {
+                states.canAttack = true;
+            }
+        }
+        public void OpenCanMove()
+        {
+            if (states)
+            {
+                states.canMove = true;
+            }
+        }
         public void OpenDamageColliders()
         {
             if (states)
@@ -165,7 +180,6 @@ namespace SA
             OpenParryFlag();
 
         }
-
         public void CloseDamageColliders()
         {
             if (states)
@@ -227,15 +241,17 @@ namespace SA
             }
 
         }
-
         public void InitIKForShield(bool isLeft)
         {
             ik_handler.UpdateIKTargets((isLeft) ? IKSnapShotType.shield_l : IKSnapShotType.shield_r, isLeft);
         }
-
         public void InitIKForBreathSpell(bool isLeft)
         {
             ik_handler.UpdateIKTargets(IKSnapShotType.breath, isLeft);
+        }
+        public void InitIKForSword(bool isLeft)//ยังไม่ได้ใช้
+        {
+            ik_handler.UpdateIKTargets((isLeft) ? IKSnapShotType.sword_l : IKSnapShotType.sword_r, isLeft);
         }
     }
 }

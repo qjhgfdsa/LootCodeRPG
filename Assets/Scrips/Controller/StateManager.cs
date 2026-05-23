@@ -22,7 +22,7 @@ namespace SA
         public float horizontal;
         public float moveAmount;
         public Vector3 moveDir;
-        public bool rt, rb, lt, lb;
+        public bool r, f, q, e;
         public bool rollInput;
         public bool itemInput;
 
@@ -43,6 +43,7 @@ namespace SA
         public bool lockOn;
         public bool inAction;
         public bool canMove;
+        public bool canAttack;
         public bool isSpellCasting;
         public bool enableIK;
         public bool isTwoHanded;
@@ -51,6 +52,7 @@ namespace SA
         public bool isLeftHand;
         public bool canBeParried;
         public bool parryIsOn;
+        public bool onEmpty;
 
 
 
@@ -81,6 +83,9 @@ namespace SA
 
         [HideInInspector]
         public Action currentAction;
+
+        [HideInInspector]
+        public float airTimer;
 
 
         float actionDelay;
@@ -162,8 +167,6 @@ namespace SA
             isBlocking = false;
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             anim.SetBool(StaticStrings.spellcasting, isSpellCasting);
-            DetectAction();
-            DetectItemAction();
 
             if (inventoryManager != null &&
                 inventoryManager.rightHandWeapon != null &&
@@ -181,7 +184,7 @@ namespace SA
             }
 
             a_hook.useIk = enableIK;
-            //a_hook.useIk = true;
+            //a_hook.useIk = true; สำหรับปรับการใช้ IK
 
             if (inAction)
             {
@@ -198,19 +201,55 @@ namespace SA
                     return;
                 }
             }
-            canMove = anim.GetBool(StaticStrings.canMove);
+           // anim.applyRootMotion = false;
 
-            anim.applyRootMotion = false;
+            onEmpty = anim.GetBool(StaticStrings.onEmpty);
+            anim.applyRootMotion = !onEmpty;
+            //canMove = anim.GetBool(StaticStrings.canMove)
+            
+            if (onEmpty)
+            {
+                canAttack = true;
+                canMove = true;
+            }
+
+            if (!onEmpty && !canMove && !canAttack)
+                return;
+
+            if (canMove && !onEmpty)
+            {
+                if (moveAmount > 0.3f)
+                {
+                    anim.CrossFade("Empty Override", 0.2f);
+                    onEmpty = true;
+                }
+            }
+            if (canAttack)
+            {
+                if (IsInput())
+                {
+                    //anim.CrossFade("Empty Override", 0.2f);
+                    //onEmpty = true; ยังไม่เปลี่ยนค่า onEmpty
+                }
+            }
+
+            if (canAttack)
+            {
+                DetectAction();
+            }
 
             if (!canMove)
-                return;
+            {
+                DetectItemAction();
+            }
+
+
             // ตรงนี้ใน FixedTick() ก่อนเรียก a_hook
             if (a_hook == null)
             {
                 Debug.LogError("❌ a_hook is NULL!");
                 return;
             }
-            anim.applyRootMotion = false;
             rigid.linearDamping = (moveAmount > 0 || onGround == false) ? 0 : 4;
 
             float targetSpeed = moveSpeed;
@@ -223,13 +262,14 @@ namespace SA
             if (run)
                 targetSpeed = runSpeed;
 
-            if (onGround)
+            if (onGround && canMove)
                 rigid.linearVelocity = moveDir * (targetSpeed * moveAmount);
 
             if (run)
                 lockOn = false;
 
             HandleRotation();
+
             anim.SetBool(StaticStrings.lockon, lockOn);
 
             if (!lockOn)
@@ -257,7 +297,13 @@ namespace SA
             a_hook.CloseRoll();
             HandleRolls();
         }
+        public bool IsInput()
+        {
+            if (r || f || q || e || rollInput)
+                return true;
 
+            return false;
+        }
         void HandleRotation()
         {
             Vector3 targetDir;
@@ -280,7 +326,7 @@ namespace SA
 
         public void DetectItemAction()
         {
-            if (!canMove || usingItem || isBlocking)
+            if (!onEmpty || usingItem || isBlocking || isSpellCasting)
                 return;
 
             if (!itemInput)
@@ -299,12 +345,12 @@ namespace SA
 
         public void DetectAction()
         {
-            if (!canMove || usingItem || isSpellCasting)
-                return;
-            if (!rb && !rt && !lb && !lt)
+            if (canAttack == false && (!onEmpty || usingItem || isSpellCasting))
                 return;
 
-
+            if (!f && !r && !e && !q)
+                return;
+                
             Action slot = actionManager.GetActionSlot(this);
             if (slot == null)
                 return;
@@ -350,7 +396,9 @@ namespace SA
 
             currentAction = slot;
 
+            onEmpty = false;
             canMove = false;
+            canAttack = false;
             inAction = true;
 
             float targetSpeed = 1;
@@ -375,16 +423,18 @@ namespace SA
             {
                 Debug.Log("Not enough stamina or focus");
                 anim.CrossFade("cant_spell", 0.2f);
+                onEmpty = false;
                 canMove = false;
+                canAttack = true;
                 inAction = true;
                 return;
             }
 
             ActionInput inp = actionManager.GetActionInput(this);
-            if (inp == ActionInput.lb)
-                inp = ActionInput.rb;
-            if (inp == ActionInput.lt)
-                inp = ActionInput.rt;
+            if (inp == ActionInput.e)
+                inp = ActionInput.f;
+            if (inp == ActionInput.q)
+                inp = ActionInput.r;
 
             Spell s_inst = inventoryManager.currentSpell.instance;
             SpellAction s_slot = s_inst.GetAction(s_inst.actions, inp);
@@ -442,14 +492,14 @@ namespace SA
             if (curSpellType == SpellType.looping)
             {
                 enableIK = true;
-                a_hook.currentHand = (spellIsMirrored) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;                
+                a_hook.currentHand = (spellIsMirrored) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
 
-                if ((rb == false && lb == false) || characterStats._focus <= 1)
+                if ((f == false && e == false) || characterStats._focus <= 1)
                 {
                     isSpellCasting = false;
 
                     enableIK = false;
-                    
+
 
                     inventoryManager.breathCollider.SetActive(false);
                     inventoryManager.blockCollider.SetActive(false);
@@ -459,7 +509,7 @@ namespace SA
 
                     return;
                 }
-                
+
                 if (spellCast_loop != null)
                     spellCast_loop();
 
@@ -474,7 +524,9 @@ namespace SA
 
             if (spellCastingTime > max_spellCastTime)
             {
+                onEmpty = false;
                 canMove = false;
+                canAttack = true;
                 inAction = true;
                 isSpellCasting = false;
 
@@ -559,10 +611,13 @@ namespace SA
 
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = ourRot;
+
                 parryTarget.parriedBy = this;
                 parryTarget.IsGettingParried(slot);
 
+                onEmpty = false;
                 canMove = false;
+                canAttack = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
                 anim.CrossFade(StaticStrings.parry_attack, 0.2f);
@@ -606,7 +661,9 @@ namespace SA
                 backstab.transform.rotation = transform.rotation;
                 backstab.IsGettingBackStabbed(slot);
 
+                onEmpty = false;
                 canMove = false;
+                canAttack = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
                 anim.CrossFade(StaticStrings.parry_attack, 0.2f);
@@ -645,7 +702,9 @@ namespace SA
             anim.SetFloat(StaticStrings.animSpeed, targetSpeed);
 
             canBeParried = slot.canBeParried;
+            onEmpty = false;
             canMove = false;
+            canAttack = false;
             inAction = true;
             anim.SetBool(StaticStrings.mirror, slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
@@ -655,6 +714,15 @@ namespace SA
             delta = d;
             onGround = OnGround();
             anim.SetBool(StaticStrings.OnGround, onGround);
+
+            if (!onGround)
+            {
+                airTimer += delta;
+            }
+            else
+            {
+                airTimer = 0;
+            }
         }
 
         void HandleRolls()
@@ -667,20 +735,6 @@ namespace SA
             v = (moveAmount > 0.3) ? 1 : 0;
             h = 0;
 
-            /*  if (lockOn == false)
-                  {
-                      v = (moveAmount > 0.3) ? 1 : 0;
-                      h = 0;
-                  }
-                  else
-                  {
-                      if (Mathf.Abs(v) > 0.3f)
-                          v = 0;
-                      if (Mathf.Abs(h) > 0.3f)
-                          h = 0;
-
-                  } */
-
             if (v != 0)
             {
                 if (moveDir == Vector3.zero)
@@ -689,26 +743,22 @@ namespace SA
                 transform.rotation = targetRot;
                 a_hook.InitForRoll();
                 a_hook.rm_Mutil = rollSpeed;
-
             }
             else
             {
                 a_hook.rm_Mutil = 1.3f;
             }
 
-
-
             anim.SetFloat(StaticStrings.Vertical_Axis, v);
             anim.SetFloat(StaticStrings.Horizontal_Axis, h);
 
-
-            inAction = true;
+            onEmpty = false;
             canMove = false;
+            canAttack = false;
+            inAction = true;
 
             anim.CrossFade(StaticStrings.Rolls, 0.2f);
-
             isBlocking = false;
-
         }
 
         void HandleMovementAnimations()
@@ -825,7 +875,7 @@ namespace SA
 
             characterStats._health = Mathf.Clamp(characterStats._health, 0, characterStats.hp);
             characterStats._focus = Mathf.Clamp(characterStats._focus, 0, characterStats.fp);
-           // characterStats._stamina = Mathf.Clamp(characterStats._stamina, 0, characterStats.stamina);
+            // characterStats._stamina = Mathf.Clamp(characterStats._stamina, 0, characterStats.stamina);
         }
     }
 }

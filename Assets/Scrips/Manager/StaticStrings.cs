@@ -8,17 +8,17 @@ namespace SA
         // Input Manager Axes and Keys
         public static string Vertical = "Vertical";
         public static string Horizontal = "Horizontal";
-        
-        public static string RunKey = "left shift";
-        public static string JumpKey = "space";
-        public static string TwoHandedKey = "t";
-        public static string UseItemKey = "x";  
-        public static string lockOnKey = "tab";
 
-        public static string AttackKey1 = "q";
-        public static string AttackKey2 = "e";
-        public static string AttackKey3 = "r";
-        public static string AttackKey4 = "f";
+        public static string KeyShift = "left shift";   // วิ่ง
+        public static string KeySpace = "space";         // กระโดด / ม้วน
+        public static string KeyT = "t";                 // สองมือ
+        public static string KeyX = "x";                 // ใช้ไอเทม
+        public static string KeyTab = "tab";             // lock-on (สำรอง)
+
+        public static string KeyQ = "q";                 // โจมตี Q
+        public static string KeyE = "e";                 // โจมตี E
+        public static string KeyR = "r";                 // โจมตี R
+        public static string KeyF = "f";                 // โจมตี F
 
         //Animation Parameters
         public static string Vertical_Axis = "vertical";
@@ -27,6 +27,7 @@ namespace SA
         public static string parry_attack = "parry_attack";
         public static string isInteracting = "interacting";
         public static string canMove = "canMove";
+        public static string onEmpty = "onEmpty";
         public static string two_handed = "two_handed";
         public static string run = "run";
         public static string blocking = "blocking";

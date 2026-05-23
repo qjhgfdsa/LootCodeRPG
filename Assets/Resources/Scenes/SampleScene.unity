@@ -2219,6 +2219,7 @@ MonoBehaviour:
   dontDoAnything: 0
   canMove: 0
   isDead: 0
+  airTimer: 0
   parriedBy: {fileID: 0}
   anim: {fileID: 0}
   rigid: {fileID: 0}
@@ -3522,10 +3523,10 @@ MonoBehaviour:
   horizontal: 0
   moveAmount: 0
   moveDir: {x: 0, y: 0, z: 0}
-  rt: 0
-  rb: 0
-  lt: 0
-  lb: 0
+  r: 0
+  f: 0
+  q: 0
+  e: 0
   rollInput: 0
   itemInput: 0
   moveSpeed: 3.5
@@ -3540,6 +3541,7 @@ MonoBehaviour:
   lockOn: 0
   inAction: 0
   canMove: 0
+  canAttack: 0
   isSpellCasting: 0
   enableIK: 0
   isTwoHanded: 0
@@ -3548,6 +3550,7 @@ MonoBehaviour:
   isLeftHand: 0
   canBeParried: 0
   parryIsOn: 0
+  onEmpty: 0
   lockOnTarget: {fileID: 0}
   lockOnTransform: {fileID: 0}
   roll_curve:
@@ -3636,6 +3639,7 @@ MonoBehaviour:
       fire: 0
       lightning: 0
       dark: 0
+  airTimer: 0
 --- !u!114 &459074578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3764,7 +3768,7 @@ Transform:
   m_GameObject: {fileID: 459074576}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3.052}
+  m_LocalPosition: {x: 12.83, y: 4.73, z: -9.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3904,10 +3908,12 @@ MonoBehaviour:
   - BigSword
   - shield
   - Pyromancy Flame
+  - sword
   lh_weapons:
   - BigSword
   - Pyromancy Flame
   - shield
+  - sword
   spell_items:
   - firebreath
   - fireball
@@ -6302,6 +6308,118 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1010223829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1010223833}
+  - component: {fileID: 1010223832}
+  - component: {fileID: 1010223831}
+  - component: {fileID: 1010223830}
+  m_Layer: 0
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1010223830
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010223829}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1010223831
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010223829}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 522a1bb0ab7c69149961801f3dd6fe8c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1010223832
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010223829}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1010223833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010223829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.57485795, y: -0, z: -0, w: 0.8182532}
+  m_LocalPosition: {x: 12.67, y: 0.95, z: -20.81}
+  m_LocalScale: {x: 5, y: 20, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 70.179, y: 0, z: 0}
 --- !u!1 &1013895199 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2989751060765130902, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -8610,6 +8728,7 @@ MonoBehaviour:
   dontDoAnything: 0
   canMove: 0
   isDead: 0
+  airTimer: 0
   parriedBy: {fileID: 0}
   anim: {fileID: 0}
   rigid: {fileID: 0}
@@ -10005,6 +10124,7 @@ MonoBehaviour:
   dontDoAnything: 0
   canMove: 0
   isDead: 0
+  airTimer: 0
   parriedBy: {fileID: 0}
   anim: {fileID: 0}
   rigid: {fileID: 0}
@@ -11017,7 +11137,7 @@ MonoBehaviour:
     headPos: {x: 0, y: 0, z: 0}
   - type: 1
     handPos: {x: -0.001, y: -0.157, z: 0.426}
-    hand_eulers: {x: 278.02936, y: 298.21368, z: 243.60123}
+    hand_eulers: {x: -278.0294, y: 298.21368, z: 243.60123}
     bodyPos: {x: -0.04063619, y: -0.08990226, z: 0.02656585}
     overwritHeadPos: 0
     headPos: {x: 0, y: 0, z: 0}
@@ -12036,6 +12156,7 @@ SceneRoots:
   - {fileID: 459074583}
   - {fileID: 1927398509}
   - {fileID: 1883296250}
+  - {fileID: 1010223833}
   - {fileID: 2058660828}
   - {fileID: 1859414285}
   - {fileID: 1698828096}

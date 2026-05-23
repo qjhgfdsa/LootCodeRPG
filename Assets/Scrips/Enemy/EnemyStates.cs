@@ -16,6 +16,7 @@ namespace SA
         public bool dontDoAnything;
         public bool canMove;
         public bool isDead;
+        public float airTimer;
 
         public StateManager parriedBy;
 

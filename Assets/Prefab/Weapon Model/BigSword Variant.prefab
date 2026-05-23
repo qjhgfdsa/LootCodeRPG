@@ -74,6 +74,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5493169743178423087, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8133399767090564659, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
       propertyPath: m_Name
       value: BigSword Variant

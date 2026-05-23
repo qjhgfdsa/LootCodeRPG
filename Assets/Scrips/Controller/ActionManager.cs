@@ -33,18 +33,18 @@ namespace SA
 
             EmptyAllSlot();
 
-            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rb, ActionInput.rb, actionSlots);
-            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rt, ActionInput.rt, actionSlots);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.f, ActionInput.f, actionSlots);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.r, ActionInput.r, actionSlots);
 
             if (states.inventoryManager.hasLeftHandWeapon)
             {
-                StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rb, ActionInput.lb, actionSlots, true);
-                StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rt, ActionInput.lt, actionSlots, true);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.f, ActionInput.e, actionSlots, true);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.r, ActionInput.q, actionSlots, true);
             }
             else
             {
-                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lb, ActionInput.lb, actionSlots);
-                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lt, ActionInput.lt, actionSlots);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.e, ActionInput.e, actionSlots);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.q, ActionInput.q, actionSlots);
             }
         }
         public void UpdateActionsTwoHanded()
@@ -101,15 +101,15 @@ namespace SA
 
             // Keep Q/E usable in two-handed mode by mirroring right-hand
             // slots when left-hand slots are not explicitly configured.
-            Action rb = StaticFunctions.GetAction(ActionInput.rb, actionSlots);
-            Action rt = StaticFunctions.GetAction(ActionInput.rt, actionSlots);
-            Action lb = StaticFunctions.GetAction(ActionInput.lb, actionSlots);
-            Action lt = StaticFunctions.GetAction(ActionInput.lt, actionSlots);
+            Action a_f = StaticFunctions.GetAction(ActionInput.f, actionSlots);
+            Action a_r = StaticFunctions.GetAction(ActionInput.r, actionSlots);
+            Action a_e = StaticFunctions.GetAction(ActionInput.e, actionSlots);
+            Action a_q = StaticFunctions.GetAction(ActionInput.q, actionSlots);
 
-            if (lb != null && string.IsNullOrEmpty(lb.targetAnim) && rb != null && !string.IsNullOrEmpty(rb.targetAnim))
-                StaticFunctions.DeepCopyActionToAction(lb, rb);
-            if (lt != null && string.IsNullOrEmpty(lt.targetAnim) && rt != null && !string.IsNullOrEmpty(rt.targetAnim))
-                StaticFunctions.DeepCopyActionToAction(lt, rt);
+            if (a_e != null && string.IsNullOrEmpty(a_e.targetAnim) && a_f != null && !string.IsNullOrEmpty(a_f.targetAnim))
+                StaticFunctions.DeepCopyActionToAction(a_e, a_f);
+            if (a_q != null && string.IsNullOrEmpty(a_q.targetAnim) && a_r != null && !string.IsNullOrEmpty(a_r.targetAnim))
+                StaticFunctions.DeepCopyActionToAction(a_q, a_r);
         }
 
 
@@ -143,26 +143,25 @@ namespace SA
         }
         public ActionInput GetActionInput(StateManager st)
         {
+            if (st.f)
+                return ActionInput.f;
+            if (st.r)
+                return ActionInput.r;
+            if (st.e)
+                return ActionInput.e;
+            if (st.q)
+                return ActionInput.q;
 
-            if (st.rb)
-                return ActionInput.rb;
-            if (st.rt)
-                return ActionInput.rt;
-            if (st.lb)
-                return ActionInput.lb;
-            if (st.lt)
-                return ActionInput.lt;
-
-            return ActionInput.rb;
+            return ActionInput.f;
         }
         public bool IsLeftHandslot(Action slot)
         {
-            return (slot.input == ActionInput.lb || slot.input == ActionInput.lt);
+            return (slot.input == ActionInput.e || slot.input == ActionInput.q);
         }
     }
     public enum ActionInput
     {
-        rb, lb, rt, lt,
+        f, e, r, q,
     }
 
     public enum ActionType

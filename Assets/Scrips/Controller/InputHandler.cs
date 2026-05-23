@@ -8,27 +8,24 @@ namespace SA
     {
         float vertical;
         float horizontal;
-        bool b_input;
-        bool a_input;
+        bool shift_input;
+        bool space_input;
         bool rolls_input;
         bool t_input;
         bool x_input;
 
-        bool d_up;
-        bool d_down;
-        bool d_right;
-        bool d_left;
+        bool key1_input;
+        bool key2_input;
+        bool key3_input;
+        bool key4_input;
 
-
-        bool rb_input;
-        bool rt_input;
-        float rt_axis;
-        bool lb_input;
-        float lt_axis;
-        bool lt_input;
+        bool f_input;
+        bool r_input;
+        bool e_input;
+        bool q_input;
         bool lockon_input;
 
-        float b_timer;
+        float shift_timer;
 
 
 
@@ -98,29 +95,24 @@ namespace SA
             vertical = Input.GetAxis(StaticStrings.Vertical);
             horizontal = Input.GetAxis(StaticStrings.Horizontal);
 
-            b_input = Input.GetKey(StaticStrings.RunKey);//run
-            a_input = Input.GetKeyDown(StaticStrings.JumpKey);//jump
-            //rolls_input = Input.GetKeyDown(KeyCode.LeftControl);
-            t_input = Input.GetKeyDown(StaticStrings.TwoHandedKey);//two handed
-            x_input = Input.GetKeyDown(StaticStrings.UseItemKey); //using item
-                                                                  // lockon_input = Input.GetKeyDown(StaticStrings.lockOnKey); ไม่ได้ใช้
+            shift_input = Input.GetKey(StaticStrings.KeyShift);
+            space_input = Input.GetKeyDown(StaticStrings.KeySpace);
+            t_input = Input.GetKeyDown(StaticStrings.KeyT);
+            x_input = Input.GetKeyDown(StaticStrings.KeyX);
+            // lockon_input = Input.GetKeyDown(StaticStrings.KeyTab); // ไม่ได้ใช้
 
-            // rt_axis = Input.GetAxis("RT");
-            //rt_axis = Input.GetAxis("RT");
+            q_input = Input.GetKey(StaticStrings.KeyQ);
+            e_input = Input.GetKey(StaticStrings.KeyE);
+            r_input = Input.GetKey(StaticStrings.KeyR);
+            f_input = Input.GetKey(StaticStrings.KeyF);
 
-            lt_input = Input.GetKey(StaticStrings.AttackKey1);
-            lb_input = Input.GetKey(StaticStrings.AttackKey2);
-            rt_input = Input.GetKey(StaticStrings.AttackKey3);
-            rb_input = Input.GetKey(StaticStrings.AttackKey4);
+            if (shift_input)
+                shift_timer += delta;
 
-
-            if (b_input)
-                b_timer += delta;
-
-            d_up = Input.GetKeyDown(KeyCode.Alpha1);
-            d_down = Input.GetKeyDown(KeyCode.Alpha2);
-            d_left = Input.GetKeyDown(KeyCode.Alpha3);
-            d_right = Input.GetKeyDown(KeyCode.Alpha4);
+            key1_input = Input.GetKeyDown(KeyCode.Alpha1);
+            key2_input = Input.GetKeyDown(KeyCode.Alpha2);
+            key3_input = Input.GetKeyDown(KeyCode.Alpha3);
+            key4_input = Input.GetKeyDown(KeyCode.Alpha4);
         }
 
         void UpdateStates()
@@ -151,19 +143,19 @@ namespace SA
             states.moveAmount = Mathf.Clamp01(m);
 
             if (x_input)
-                b_input = false;
+                shift_input = false;
 
-            if (b_input && b_timer > 0.5f)
+            if (shift_input && shift_timer > 0.5f)
                 states.run = (states.moveAmount > 0) && states.characterStats._stamina > 0;
 
-            if (b_input == false && b_timer > 0 && b_timer < 0.5f)
+            if (shift_input == false && shift_timer > 0 && shift_timer < 0.5f)
                 states.rollInput = true;
 
             states.itemInput = x_input;
-            states.rt = rt_input;
-            states.lt = lt_input;
-            states.rb = rb_input;
-            states.lb = lb_input;
+            states.r = r_input;
+            states.q = q_input;
+            states.f = f_input;
+            states.e = e_input;
 
             if (t_input)
             {
@@ -207,17 +199,17 @@ namespace SA
             if (states.isSpellCasting || states.usingItem)
                 return;
 
-            if (d_up)
+            if (key1_input)
                 states.inventoryManager.ChangeToNextSpell();
 
-            if (states.canMove == false)
+            if (states.onEmpty == false)
                 return;
             if (states.isTwoHanded)
                 return;
 
-            if (d_left)
+            if (key3_input)
                 states.inventoryManager.ChangeToNextWeapon(true);
-            if (d_right)
+            if (key4_input)
                 states.inventoryManager.ChangeToNextWeapon(false);
 
         }
@@ -260,9 +252,8 @@ namespace SA
         }
         void ResetInputNStates()
         {
-
-            if (b_input == false)
-                b_timer = 0;
+            if (shift_input == false)
+                shift_timer = 0;
 
             if (states.rollInput)
                 states.rollInput = false;

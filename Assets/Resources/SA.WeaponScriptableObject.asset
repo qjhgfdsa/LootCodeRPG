@@ -29,7 +29,7 @@ MonoBehaviour:
       animSpeed: 0
       canParry: 1
       canBackStab: 1
-      staminaCost: 50
+      staminaCost: 15
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 50
+      staminaCost: 15
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
       canParry: 0
       canBackStab: 0
       staminaCost: 5
-      focusCost: 65
+      focusCost: 20
       parryMultiplier: 0
       backstabMultiplier: 0
       ovverideDamageAnim: 0
@@ -240,7 +240,7 @@ MonoBehaviour:
     itemDescription: 
     icon: {fileID: 21300000, guid: 53421475a649a4e4aa127602a2ad9573, type: 3}
     oh_idle: gs_oh_idle
-    th_idle: th_idle
+    th_idle: gs_th_idle
     actions:
     - input: 0
       actionType: 0
@@ -257,7 +257,7 @@ MonoBehaviour:
       parryMultiplier: 0
       backstabMultiplier: 0
       ovverideDamageAnim: 0
-      damageAnim: 
+      damageAnim: damage_1
       weaponStats:
         physical: 0
         strike: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
       parryMultiplier: 0
       backstabMultiplier: 0
       ovverideDamageAnim: 0
-      damageAnim: 
+      damageAnim: damage_3
       weaponStats:
         physical: 0
         strike: 0
@@ -296,14 +296,14 @@ MonoBehaviour:
     - input: 2
       actionType: 0
       spellClass: 0
-      targetAnim: 'gh_th_attack_1 '
+      targetAnim: gs_th_to_pose
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 0
+      staminaCost: 5
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
@@ -319,6 +319,56 @@ MonoBehaviour:
         lightning: 0
         dark: 0
     - input: 0
+      actionType: 0
+      spellClass: 0
+      targetAnim: gs_attack_from_pose
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 25
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: damage_3
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 1
+      actionType: 0
+      spellClass: 0
+      targetAnim: th_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 25
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      ovverideDamageAnim: 0
+      damageAnim: damage_3
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 3
       actionType: 0
       spellClass: 0
       targetAnim: th_attack_2
