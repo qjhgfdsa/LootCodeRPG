@@ -96,7 +96,7 @@ namespace SA
         void Update()
         {
             delta = Time.deltaTime;
-            canMove = anim.GetBool(StaticStrings.canMove);
+            // canMove = anim.GetBool(StaticStrings.canMove);
 
             if (spellEffect_loop != null)
                 spellEffect_loop();
@@ -168,7 +168,7 @@ namespace SA
 
             if (canMove || characterStats.poise > 100)
             {
-                if (a.ovverideDamageAnim)
+                if (a.overrideDamageAnim)
                     anim.Play(a.damageAnim);
                 else
                 {

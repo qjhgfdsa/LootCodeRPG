@@ -23,17 +23,18 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: oh_attack_1
+      steps: []
       mirror: 0
       canBeParried: 1
       changeSpeed: 0
       animSpeed: 0
       canParry: 1
       canBackStab: 1
-      staminaCost: 15
+      staminaCost: 5
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
         physical: 0
@@ -48,17 +49,18 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: oh_attack_3
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 15
+      staminaCost: 5
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 1
+      overrideDamageAnim: 1
       damageAnim: 
       weaponStats:
         physical: 0
@@ -74,6 +76,7 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: th_attack_1
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -84,7 +87,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
         physical: 50
@@ -99,6 +102,7 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: th_attack_2
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -109,7 +113,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 1
+      overrideDamageAnim: 1
       damageAnim: damage_3
       weaponStats:
         physical: 150
@@ -139,6 +143,7 @@ MonoBehaviour:
       actionType: 3
       spellClass: 0
       targetAnim: parry
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -149,7 +154,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
         physical: 0
@@ -163,18 +168,19 @@ MonoBehaviour:
     - input: 0
       actionType: 1
       spellClass: 0
-      targetAnim: 
+      targetAnim: shield
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
-      canParry: 1
+      canParry: 0
       canBackStab: 0
       staminaCost: 5
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
         physical: 0
@@ -205,17 +211,18 @@ MonoBehaviour:
       actionType: 2
       spellClass: 0
       targetAnim: oh_attack_1
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 5
-      focusCost: 20
+      staminaCost: 0
+      focusCost: 5
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
         physical: 0
@@ -245,7 +252,14 @@ MonoBehaviour:
     - input: 0
       actionType: 0
       spellClass: 0
-      targetAnim: gs_oh_attack_2
+      targetAnim: 
+      steps:
+      - branches:
+        - input: 0
+          targetAnim: gs_oh_attack_1
+      - branches:
+        - input: 0
+          targetAnim: gs_oh_attack_2
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -256,7 +270,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: damage_1
       weaponStats:
         physical: 0
@@ -270,18 +284,25 @@ MonoBehaviour:
     - input: 2
       actionType: 0
       spellClass: 0
-      targetAnim: gs_oh_attack_1
+      targetAnim: 
+      steps:
+      - branches:
+        - input: 2
+          targetAnim: gs_th_to_pose
+      - branches:
+        - input: 2
+          targetAnim: gs_attack_from_pose
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 20
+      staminaCost: 10
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: damage_3
       weaponStats:
         physical: 0
@@ -297,6 +318,7 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: gs_th_to_pose
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -307,7 +329,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 1
+      overrideDamageAnim: 1
       damageAnim: 
       weaponStats:
         physical: 0
@@ -322,6 +344,7 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: gs_attack_from_pose
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -332,7 +355,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: damage_3
       weaponStats:
         physical: 0
@@ -347,6 +370,7 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: th_attack_1
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -357,7 +381,7 @@ MonoBehaviour:
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: damage_3
       weaponStats:
         physical: 0
@@ -372,17 +396,18 @@ MonoBehaviour:
       actionType: 0
       spellClass: 0
       targetAnim: th_attack_2
+      steps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 0
+      staminaCost: 25
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      ovverideDamageAnim: 0
+      overrideDamageAnim: 0
       damageAnim: damage_3
       weaponStats:
         physical: 0
@@ -402,3 +427,80 @@ MonoBehaviour:
     r_model_eulers: {x: 354.1571, y: 324.81235, z: 269.03992}
     l_model_eulers: {x: 350.51245, y: 352.92935, z: 36.554886}
     model_scale: {x: 0.3, y: 0.3, z: 0.3}
+  - itemName: Spear
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 698c5e9feaa63e54c8fd20932cfb6136, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      actionType: 0
+      spellClass: 0
+      targetAnim: 
+      steps:
+      - branches:
+        - input: 0
+          targetAnim: rap_oh_attack_1
+      - branches:
+        - input: 0
+          targetAnim: rap_oh_attack_2
+      - branches:
+        - input: 0
+          targetAnim: rap_oh_attack_3
+      mirror: 0
+      canBeParried: 1
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 1
+      canBackStab: 1
+      staminaCost: 5
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
+      damageAnim: damage_1
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    - input: 2
+      actionType: 0
+      spellClass: 0
+      targetAnim: oh_attack_3
+      steps: []
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 20
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
+      damageAnim: damage_3
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    LeftHandMirror: 1
+    modelPrefab: {fileID: 1553089565951534173, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
+    r_model_pos: {x: 0.03, y: 0.05, z: 0.021}
+    l_model_pos: {x: 0.061, y: 0.01, z: 0.034}
+    r_model_eulers: {x: 1.4, y: -46.684, z: -63.968}
+    l_model_eulers: {x: 283.8677, y: 8.8954, z: 35.738194}
+    model_scale: {x: 0.4, y: 0.4, z: 0.4}

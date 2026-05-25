@@ -72309,8 +72309,22 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.5
+    functionName: OpenCanRotate
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.6333333
     functionName: OpenDamageColliders
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.7
+    functionName: CloseCanRotate
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -72323,8 +72337,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.8333334
-    functionName: OpenCanMove
+  - time: 1.1333333
+    functionName: OpenAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

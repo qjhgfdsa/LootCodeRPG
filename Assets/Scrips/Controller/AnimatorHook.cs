@@ -16,6 +16,8 @@ namespace SA
         float roll_t;
         float delta;
         AnimationCurve rollCurve;
+        Vector3 rollDirection = Vector3.forward;
+        bool stepBack;
 
         public Transform ikTarget;
         public Transform bodyTarget;
@@ -51,10 +53,14 @@ namespace SA
             if (ik_handler != null)
                 ik_handler.Init(anim);
         }
-        public void InitForRoll()
+        public void InitForRoll(Vector3 worldDirection, bool isStepBack = false)
         {
             rolling = true;
+            stepBack = isStepBack;
             roll_t = 0;
+            rollDirection = worldDirection.sqrMagnitude > 0.01f
+                ? worldDirection.normalized
+                : transform.forward;
         }
         public void CloseRoll()
         {
@@ -63,6 +69,7 @@ namespace SA
 
             rm_Mutil = 1;
             rolling = false;
+            stepBack = false;
         }
         void OnAnimatorMove()
         {
@@ -79,7 +86,7 @@ namespace SA
 
             if (states != null)
             {
-                if (states.onEmpty)
+                if (states.onEmpty && !rolling)
                     return;
 
                 delta = states.delta;
@@ -99,34 +106,37 @@ namespace SA
             if (rm_Mutil == 0)
                 rm_Mutil = 1;
 
-            if (rolling == false)
-            {
-                Vector3 delta2 = anim.deltaPosition;
-                Vector3 v = (delta2 * rm_Mutil) / delta;
-                v += Physics.gravity;
-
-                if (!rigid.isKinematic)
-                    rigid.linearVelocity = v;
-            }
-            else
+            if (rolling)
             {
                 roll_t += delta / 0.6f;
-
                 if (roll_t > 1)
-                {
                     roll_t = 1;
+
+                if (stepBack)
+                {
+                    Vector3 stepDelta = anim.deltaPosition;
+                    Vector3 stepVel = (stepDelta * rm_Mutil) / delta;
+                    stepVel += Physics.gravity;
+                    rigid.linearVelocity = stepVel;
+                    return;
                 }
 
-                if (states == null)
+                if (rollCurve != null)
+                {
+                    float zValue = rollCurve.Evaluate(roll_t);
+                    Vector3 v2 = rollDirection * (zValue * rm_Mutil);
+                    v2 += Physics.gravity;
+                    rigid.linearVelocity = v2;
                     return;
-
-                float zValue = rollCurve.Evaluate(roll_t);
-                Vector3 v1 = Vector3.forward * zValue;
-                Vector3 relative = transform.TransformDirection(v1);
-                Vector3 v2 = (relative * rm_Mutil);
-                v2 += Physics.gravity;
-                rigid.linearVelocity = v2;
+                }
             }
+
+            Vector3 delta2 = anim.deltaPosition;
+            Vector3 v = (delta2 * rm_Mutil) / delta;
+            v += Physics.gravity;
+
+            if (!rigid.isKinematic)
+                rigid.linearVelocity = v;
 
         }
         void OnAnimatorIK()

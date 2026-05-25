@@ -43,6 +43,8 @@ namespace SA
         public bool lockOn;
         public bool inAction;
         public bool canMove;
+        public bool damageIsOn;
+        public bool canRotate;
         public bool canAttack;
         public bool isSpellCasting;
         public bool enableIK;
@@ -86,6 +88,8 @@ namespace SA
 
         [HideInInspector]
         public float airTimer;
+        public ActionInput storePrevInput;
+        public ActionInput storeActionInput;
 
 
         float actionDelay;
@@ -175,15 +179,11 @@ namespace SA
                 inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
             }
 
-            anim.SetBool(StaticStrings.blocking, isBlocking);
-            anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
-
             if (isBlocking == false && isSpellCasting == false)
             {
                 enableIK = false;
             }
 
-            a_hook.useIk = enableIK;
             //a_hook.useIk = true; สำหรับปรับการใช้ IK
 
             if (inAction)
@@ -201,37 +201,34 @@ namespace SA
                     return;
                 }
             }
-           // anim.applyRootMotion = false;
 
             onEmpty = anim.GetBool(StaticStrings.onEmpty);
-            anim.applyRootMotion = !onEmpty;
+            //anim.applyRootMotion = !onEmpty;
             //canMove = anim.GetBool(StaticStrings.canMove)
-            
+
             if (onEmpty)
             {
                 canAttack = true;
                 canMove = true;
+                actionManager.actionIndex = 0;
+            }
+            if(canRotate)
+            {
+                HandleRotation();
             }
 
-            if (!onEmpty && !canMove && !canAttack)
+            if (!onEmpty && !canMove && !canAttack)//aniamtion is playing
                 return;
 
             if (canMove && !onEmpty)
             {
                 if (moveAmount > 0.3f)
                 {
-                    anim.CrossFade("Empty Override", 0.2f);
+                    anim.CrossFade("Empty Override", 0.1f);
                     onEmpty = true;
                 }
             }
-            if (canAttack)
-            {
-                if (IsInput())
-                {
-                    //anim.CrossFade("Empty Override", 0.2f);
-                    //onEmpty = true; ยังไม่เปลี่ยนค่า onEmpty
-                }
-            }
+
 
             if (canAttack)
             {
@@ -243,6 +240,7 @@ namespace SA
                 DetectItemAction();
             }
 
+            anim.applyRootMotion = false;
 
             // ตรงนี้ใน FixedTick() ก่อนเรียก a_hook
             if (a_hook == null)
@@ -251,7 +249,6 @@ namespace SA
                 return;
             }
             rigid.linearDamping = (moveAmount > 0 || onGround == false) ? 0 : 4;
-
             float targetSpeed = moveSpeed;
             if (usingItem || isSpellCasting)
             {
@@ -279,16 +276,18 @@ namespace SA
             else
             {
                 if (lockOnTransform != null)
-                {
                     HandleLockOnAnimations(moveDir);
-
-                }
                 else
-                {
                     // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
                     HandleMovementAnimations();
-                }
             }
+
+            a_hook.useIk = enableIK;
+            // anim.SetBool(StaticStrings.blocking, isBlocking);
+            anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
+
+            HanddleBlocking();
+
             if (isSpellCasting)
             {
                 HandleSpellCasting();
@@ -350,8 +349,19 @@ namespace SA
 
             if (!f && !r && !e && !q)
                 return;
-                
-            Action slot = actionManager.GetActionSlot(this);
+
+            ActionInput targetInput = actionManager.GetActionInput(this);
+            storeActionInput = targetInput;
+
+            if (!onEmpty)
+            {
+                a_hook.CloseRoll();
+                targetInput = storePrevInput;
+            }
+
+            storePrevInput = targetInput;
+            Action slot = actionManager.GetActionFromInput(targetInput);
+
             if (slot == null)
                 return;
 
@@ -389,7 +399,9 @@ namespace SA
                 return;
 
             string targetAnim = null;
-            targetAnim = slot.targetAnim;
+            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).GetBranch(storeActionInput).targetAnim;
+
+            Debug.Log("storeActionInput: " + storeActionInput);
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
@@ -418,8 +430,14 @@ namespace SA
 
         void SpellAction(Action slot)
         {
+            if (characterStats._stamina < slot.staminaCost)
+            {
+                Debug.Log("Not enough stamina");
+                return;
+            }
+
             if (slot.spellClass != inventoryManager.currentSpell.instance.spellClass ||
-            characterStats._stamina < slot.staminaCost || characterStats._focus < slot.focusCost)
+           characterStats._focus < slot.focusCost)
             {
                 Debug.Log("Not enough stamina or focus");
                 anim.CrossFade("cant_spell", 0.2f);
@@ -446,8 +464,6 @@ namespace SA
 
             SpellEffectManager.singleton.UseSpellEffect(s_inst.spell_effect, this);
 
-            characterStats._stamina -= slot.staminaCost;
-            characterStats._focus -= slot.focusCost;
 
             isSpellCasting = true;
             spellCastingTime = 0;
@@ -465,14 +481,19 @@ namespace SA
             projectileCanidate = inventoryManager.currentSpell.instance.projecttile;
             inventoryManager.CreateSpellParticle(inventoryManager.currentSpell, spellIsMirrored, (s_inst.spellType == SpellType.looping));
             anim.SetBool(StaticStrings.spellcasting, true);
-            //anim.SetBool(StaticStrings.mirror, s_slot.mirror);
+            anim.SetBool(StaticStrings.mirror, spellIsMirrored);//เพิ่มเพื่อทำให้ตรงกับการทำงานของฟังก์ชั่น HandleSpellCasting() ทดลองเปลี่ยนค่าเป็น spellIsMirrored
             anim.CrossFade(targetAnim, 0.2f);
+
+            cur_staminaCost = s_slot.staminaCost;
+            cur_focusCost = s_slot.focusCost;
 
             a_hook.InitIKForBreathSpell(spellIsMirrored);
 
             if (spellCast_start != null)
                 spellCast_start();
         }
+        float cur_focusCost;
+        float cur_staminaCost;
         float spellCastingTime;
         float max_spellCastTime;
         string spellTargetAnim;
@@ -499,7 +520,6 @@ namespace SA
                     isSpellCasting = false;
 
                     enableIK = false;
-
 
                     inventoryManager.breathCollider.SetActive(false);
                     inventoryManager.blockCollider.SetActive(false);
@@ -536,6 +556,24 @@ namespace SA
             }
 
         }
+        bool blockAnim;
+        string block_idle_anim;
+        void HanddleBlocking()
+        {
+            if (isBlocking == false)
+            {
+                if (blockAnim)
+                {
+                    anim.CrossFade(block_idle_anim, 0.1f);
+                    blockAnim = false;
+                }
+
+            }
+            else
+            {
+
+            }
+        }
         public void ThrowProjectile()
         {
             if (projectileCanidate == null)
@@ -552,6 +590,9 @@ namespace SA
 
             Projectile proj = go.GetComponent<Projectile>();
             proj.Init();
+
+            characterStats._stamina -= cur_staminaCost;
+            characterStats._focus -= cur_focusCost;
         }
         bool CheckForParry(Action slot)
         {
@@ -681,12 +722,26 @@ namespace SA
             isLeftHand = slot.mirror;
             a_hook.currentHand = (slot.mirror) ? AvatarIKGoal.LeftHand : AvatarIKGoal.RightHand;
             a_hook.InitIKForShield(slot.mirror);
+
+            if (blockAnim == false)
+            {
+                block_idle_anim = (isTwoHanded == false) ?
+                inventoryManager.GetCurrentWeapon(isLeftHand).oh_idle :
+                inventoryManager.GetCurrentWeapon(isLeftHand).th_idle;
+
+                block_idle_anim += (isLeftHand) ? "_l" : "_r";
+
+                string targetAnim = slot.targetAnim;
+                targetAnim += (isLeftHand) ? "_l" : "_r";
+                anim.CrossFade(targetAnim, 0.1f);
+                blockAnim = true;
+            }
         }
 
         void ParryAction(Action slot)
         {
             string targetAnim = null;
-            targetAnim = slot.targetAnim;
+            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).GetBranch(storeActionInput).targetAnim;
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
@@ -730,24 +785,47 @@ namespace SA
             if (!rollInput || usingItem)
                 return;
 
-            float v = vertical;
-            float h = horizontal;
-            v = (moveAmount > 0.3) ? 1 : 0;
-            h = 0;
+            rollInput = false;
 
-            if (v != 0)
+            float v;
+            float h;
+
+            if (lockOn && lockOnTransform != null)
             {
-                if (moveDir == Vector3.zero)
-                    moveDir = transform.forward;
-                Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
-                transform.rotation = targetRot;
-                a_hook.InitForRoll();
-                a_hook.rm_Mutil = rollSpeed;
+                if (moveAmount > 0.3f)
+                {
+                    Vector3 relativeDir = transform.InverseTransformDirection(moveDir);
+                    h = Mathf.Clamp(relativeDir.x, -1f, 1f);
+                    v = Mathf.Clamp(relativeDir.z, -1f, 1f);
+                }
+                else
+                {
+                    v = 0f;
+                    h = 0f;
+                }
             }
             else
             {
-                a_hook.rm_Mutil = 1.3f;
+                h = 0f;
+                v = (moveAmount > 0.3f) ? 1f : 0f;
+
+                if (v != 0f)
+                {
+                    if (moveDir == Vector3.zero)
+                        moveDir = transform.forward;
+                    Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
+                    transform.rotation = targetRot;
+                }
             }
+
+            bool isStepBack = Mathf.Approximately(v, 0f) && Mathf.Approximately(h, 0f);
+            a_hook.rm_Mutil = isStepBack ? 1f : rollSpeed;
+
+            Vector3 localDir = isStepBack
+                ? Vector3.back
+                : new Vector3(h, 0f, v).normalized;
+            Vector3 worldDir = transform.TransformDirection(localDir);
+            a_hook.InitForRoll(worldDir, isStepBack);
 
             anim.SetFloat(StaticStrings.Vertical_Axis, v);
             anim.SetFloat(StaticStrings.Horizontal_Axis, h);
@@ -756,6 +834,8 @@ namespace SA
             canMove = false;
             canAttack = false;
             inAction = true;
+            anim.SetBool(StaticStrings.onEmpty, false);
+            anim.applyRootMotion = true;
 
             anim.CrossFade(StaticStrings.Rolls, 0.2f);
             isBlocking = false;
@@ -876,6 +956,23 @@ namespace SA
             characterStats._health = Mathf.Clamp(characterStats._health, 0, characterStats.hp);
             characterStats._focus = Mathf.Clamp(characterStats._focus, 0, characterStats.fp);
             // characterStats._stamina = Mathf.Clamp(characterStats._stamina, 0, characterStats.stamina);
+        }
+
+        public void SubstractStaminaOverTime()
+        {
+            characterStats._stamina -= cur_staminaCost;
+        }
+        public void SubstractFocusOverTime()
+        {
+            characterStats._focus -= cur_focusCost;
+        }
+        public void AffectBlocking()
+        {
+            isBlocking = true;
+        }
+        public void StopAffectinBlocking()
+        {
+            isBlocking = false;
         }
     }
 }

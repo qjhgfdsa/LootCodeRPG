@@ -54,13 +54,18 @@ namespace SA
         {
             c.spellCast_start = c.inventoryManager.OpenBreathCollider;
             c.spellCast_loop = c.inventoryManager.EmitSpellParticle;
+            c.spellCast_loop += c.SubstractFocusOverTime;
+
             c.spellCast_stop = c.inventoryManager.CloseBreathCollider;
         }
         void FireShield(StateManager c)
         {
             c.spellCast_start = c.inventoryManager.OpenBlockCollider;
             c.spellCast_loop = c.inventoryManager.EmitSpellParticle;
+            c.spellCast_loop += c.SubstractFocusOverTime;
+            c.spellCast_loop += c.AffectBlocking;
             c.spellCast_stop = c.inventoryManager.CloseBlockCollider;
+            c.spellCast_stop += c.StopAffectinBlocking;
         }
         void HealingSmall(StateManager c)
         {

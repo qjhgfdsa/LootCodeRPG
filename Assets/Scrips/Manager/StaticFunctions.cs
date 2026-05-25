@@ -55,23 +55,58 @@ namespace SA
             a.canBackStab = w_a.canBackStab;
             a.staminaCost = w_a.staminaCost;
             a.focusCost = w_a.focusCost;
-            a.ovverideDamageAnim = w_a.ovverideDamageAnim;
+            a.overrideDamageAnim = w_a.overrideDamageAnim;
             a.damageAnim = w_a.damageAnim;
 
+            DeepCopyStepList(w_a, a);
+
             DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
+        }
+        public static void DeepCopyStepList(Action from, Action to)
+        {
+            to.steps = new List<ActionSteps>();
+            if (from.steps == null)
+                return;
+
+            for (int i = 0; i < from.steps.Count; i++)
+            {
+                ActionSteps step = new ActionSteps();
+                DeepCopyStep(from.steps[i], step);
+                to.steps.Add(step);
+            }
+        }
+
+        public static void DeepCopyStep(ActionSteps from, ActionSteps to)
+        {
+            to.branches = new List<ActionAnim>();
+            for (int i = 0; i < from.branches.Count; i++)
+            {
+                ActionAnim a = new ActionAnim();
+                a.input = from.branches[i].input;
+                a.targetAnim = from.branches[i].targetAnim;
+                to.branches.Add(a);
+            }
         }
 
         public static void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
         {
-            Action a = GetAction(assing, actionList);
+            int slotIndex = (int)assing;
+            if (slotIndex < 0 || slotIndex >= actionList.Count || actionList[slotIndex] == null)
+                return;
+
+            Action a = actionList[slotIndex];
             Action w_a = w.GetAction(w.actions, inp);
             if (w_a == null)
             {
                 Debug.Log("no weapon action found");
                 return;
             }
-            a.actionType = w_a.actionType;
+
+            DeepCopyActionToAction(a, w_a);
+            a.input = assing;
+
             a.targetAnim = w_a.targetAnim;
+            a.actionType = w_a.actionType;
             a.spellClass = w_a.spellClass;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;
@@ -79,22 +114,25 @@ namespace SA
             a.canBackStab = w_a.canBackStab;
             a.staminaCost = w_a.staminaCost;
             a.focusCost = w_a.focusCost;
-            a.ovverideDamageAnim = w_a.ovverideDamageAnim;
+            a.overrideDamageAnim = w_a.overrideDamageAnim;
             a.damageAnim = w_a.damageAnim;
             a.parryMultiplier = w.parryMultiplier;
             a.backstabMultiplier = w.backstabMultiplier;
-
 
             if (isLeftHand)
             {
                 a.mirror = true;
             }
 
-            DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
+            if (w_a.weaponStats != null && a.weaponStats != null)
+                DeepCopyWeaponStats(w_a.weaponStats, a.weaponStats);
         }
 
         public static void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)
         {
+            if (from == null || to == null)
+                return;
+
             to.physical = from.physical;
             to.slash = from.slash;
             to.strike = from.strike;
@@ -142,6 +180,8 @@ namespace SA
             to.targetAnim = from.targetAnim;
             to.throwAnim = from.throwAnim;
             to.castTime = from.castTime;
+            to.staminaCost = from.staminaCost;
+            to.focusCost = from.focusCost;
         }
     }
 }
