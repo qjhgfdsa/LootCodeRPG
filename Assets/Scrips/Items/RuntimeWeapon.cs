@@ -7,5 +7,6 @@ namespace SA
         public Weapon instance;
         public GameObject weaponModel;
         public WeaponHook w_Hook;
+        public WeaponStats weaponStats;
     }
 }

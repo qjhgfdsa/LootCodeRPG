@@ -19,11 +19,12 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - input: 0
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: oh_attack_1
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 1
       changeSpeed: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -45,11 +47,12 @@ MonoBehaviour:
         fire: 0
         lightning: 0
         dark: 0
-    - input: 2
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: oh_attack_3
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -63,6 +66,7 @@ MonoBehaviour:
       overrideDamageAnim: 1
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -72,11 +76,12 @@ MonoBehaviour:
         lightning: 0
         dark: 0
     two_handedActions:
-    - input: 0
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: th_attack_1
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -90,6 +95,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 50
         strike: 0
         slash: 0
@@ -98,11 +104,12 @@ MonoBehaviour:
         fire: 0
         lightning: 0
         dark: 0
-    - input: 2
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: th_attack_2
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -116,6 +123,7 @@ MonoBehaviour:
       overrideDamageAnim: 1
       damageAnim: damage_3
       weaponStats:
+        weaponId: 
         physical: 150
         strike: 0
         slash: 0
@@ -139,11 +147,12 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - input: 2
-      actionType: 3
+    - actionType: 3
       spellClass: 0
-      targetAnim: parry
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -157,6 +166,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -165,11 +175,12 @@ MonoBehaviour:
         fire: 0
         lightning: 0
         dark: 0
-    - input: 0
-      actionType: 1
+    - actionType: 1
       spellClass: 0
-      targetAnim: shield
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -183,6 +194,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -207,11 +219,12 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - input: 0
-      actionType: 2
+    - actionType: 2
       spellClass: 0
-      targetAnim: oh_attack_1
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -225,6 +238,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -249,17 +263,12 @@ MonoBehaviour:
     oh_idle: gs_oh_idle
     th_idle: gs_th_idle
     actions:
-    - input: 0
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: 
-      steps:
-      - branches:
-        - input: 0
-          targetAnim: gs_oh_attack_1
-      - branches:
-        - input: 0
-          targetAnim: gs_oh_attack_2
+      fristStep:
+        input: 2
+        targetAnim: gs_oh_attack_1
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -273,38 +282,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: damage_1
       weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    - input: 2
-      actionType: 0
-      spellClass: 0
-      targetAnim: 
-      steps:
-      - branches:
-        - input: 2
-          targetAnim: gs_th_to_pose
-      - branches:
-        - input: 2
-          targetAnim: gs_attack_from_pose
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 0
-      canParry: 0
-      canBackStab: 0
-      staminaCost: 10
-      focusCost: 0
-      parryMultiplier: 0
-      backstabMultiplier: 0
-      overrideDamageAnim: 0
-      damageAnim: damage_3
-      weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -314,11 +292,12 @@ MonoBehaviour:
         lightning: 0
         dark: 0
     two_handedActions:
-    - input: 2
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: gs_th_to_pose
-      steps: []
+      fristStep:
+        input: 2
+        targetAnim: gh_th_attack_1
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -332,6 +311,7 @@ MonoBehaviour:
       overrideDamageAnim: 1
       damageAnim: 
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -340,76 +320,28 @@ MonoBehaviour:
         fire: 0
         lightning: 0
         dark: 0
-    - input: 0
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: gs_attack_from_pose
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: gs_th_to_pose
+      comboSteps:
+      - input: 2
+        targetAnim: gs_attack_from_pose
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 25
+      staminaCost: 5
       focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
-      overrideDamageAnim: 0
-      damageAnim: damage_3
+      overrideDamageAnim: 1
+      damageAnim: 
       weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    - input: 1
-      actionType: 0
-      spellClass: 0
-      targetAnim: th_attack_1
-      steps: []
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 0
-      canParry: 0
-      canBackStab: 0
-      staminaCost: 25
-      focusCost: 0
-      parryMultiplier: 0
-      backstabMultiplier: 0
-      overrideDamageAnim: 0
-      damageAnim: damage_3
-      weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
-    - input: 3
-      actionType: 0
-      spellClass: 0
-      targetAnim: th_attack_2
-      steps: []
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 0
-      canParry: 0
-      canBackStab: 0
-      staminaCost: 25
-      focusCost: 0
-      parryMultiplier: 0
-      backstabMultiplier: 0
-      overrideDamageAnim: 0
-      damageAnim: damage_3
-      weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -433,20 +365,12 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - input: 0
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: 
-      steps:
-      - branches:
-        - input: 0
-          targetAnim: rap_oh_attack_1
-      - branches:
-        - input: 0
-          targetAnim: rap_oh_attack_2
-      - branches:
-        - input: 0
-          targetAnim: rap_oh_attack_3
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 1
       changeSpeed: 0
@@ -460,6 +384,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: damage_1
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -468,11 +393,12 @@ MonoBehaviour:
         fire: 0
         lightning: 0
         dark: 0
-    - input: 2
-      actionType: 0
+    - actionType: 0
       spellClass: 0
-      targetAnim: oh_attack_3
-      steps: []
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -486,6 +412,7 @@ MonoBehaviour:
       overrideDamageAnim: 0
       damageAnim: damage_3
       weaponStats:
+        weaponId: 
         physical: 0
         strike: 0
         slash: 0
@@ -504,3 +431,22 @@ MonoBehaviour:
     r_model_eulers: {x: 1.4, y: -46.684, z: -63.968}
     l_model_eulers: {x: 283.8677, y: 8.8954, z: 35.738194}
     model_scale: {x: 0.4, y: 0.4, z: 0.4}
+  weaponStats_all:
+  - weaponId: sword
+    physical: 0
+    strike: 0
+    slash: 0
+    thrust: 0
+    magic: 0
+    fire: 0
+    lightning: 0
+    dark: 0
+  - weaponId: BigSword
+    physical: 50
+    strike: 0
+    slash: 0
+    thrust: 0
+    magic: 0
+    fire: 0
+    lightning: 0
+    dark: 0

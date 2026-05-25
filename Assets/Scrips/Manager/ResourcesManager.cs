@@ -6,6 +6,7 @@ public class ResourcesManager : MonoBehaviour
 {
     Dictionary<string, int> spell_ids = new Dictionary<string, int>();
     Dictionary<string, int> weapon_ids = new Dictionary<string, int>();
+    Dictionary<string, int> weaponStats_ids = new Dictionary<string, int>();
     public static ResourcesManager singleton;
     void Awake()
     {
@@ -13,7 +14,6 @@ public class ResourcesManager : MonoBehaviour
         LoadWeaponId();
         LoadSpellIds();
     }
-
     void LoadSpellIds()
     {
         SpellItemScriptableObject obj = Resources.Load("SA.SpellItemScriptableObject") as SpellItemScriptableObject;
@@ -35,8 +35,6 @@ public class ResourcesManager : MonoBehaviour
             }
         }
     }
-
-
     void LoadWeaponId()
     {
         WeaponScriptableObject obj = Resources.Load("SA.WeaponScriptableObject") as WeaponScriptableObject;
@@ -58,13 +56,33 @@ public class ResourcesManager : MonoBehaviour
                 weapon_ids.Add(obj.weapons_all[i].itemName, i);
             }
         }
-
+        for (int i = 0; i < obj.weaponStats_all.Count; i++)
+        {
+            if (weaponStats_ids.ContainsKey(obj.weaponStats_all[i].weaponId))
+            {
+                Debug.Log(obj.weaponStats_all[i].weaponId + "weaponStats is duplicate");
+            }
+            else
+            {
+                weaponStats_ids.Add(obj.weaponStats_all[i].weaponId, i);
+            }
+        }
     }
 
     int GetWeaponIdFromString(string id)
     {
         int index = -1;
         if (weapon_ids.TryGetValue(id, out index))
+        {
+            return index;
+        }
+        return -1;
+    }
+
+     int GetWeaponStatsIdFromString(string id)
+    {
+        int index = -1;
+        if (weaponStats_ids.TryGetValue(id, out index))
         {
             return index;
         }
@@ -85,6 +103,22 @@ public class ResourcesManager : MonoBehaviour
             return null;
 
         return obj.weapons_all[index];
+    }
+
+        public WeaponStats GetWeaponStats(string id)
+    {
+        WeaponScriptableObject obj = Resources.Load("SA.WeaponScriptableObject") as WeaponScriptableObject;
+        int index = GetWeaponStatsIdFromString(id);
+         if (obj == null)
+        {
+            Debug.Log("SA.WeaponStatsScriptableObject cant be loaded!");
+            return null;
+        }
+
+        if (index == -1)
+            return null;
+
+        return obj.weaponStats_all[index];
     }
 
     int GetSpellIdFromString(string id)

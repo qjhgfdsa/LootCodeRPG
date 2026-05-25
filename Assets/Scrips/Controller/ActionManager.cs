@@ -19,7 +19,8 @@ namespace SA
                 for (int i = 0; i < 4; i++)
                 {
                     Action a = new Action();
-                    a.input = (ActionInput)i;
+                    a.fristStep = new ActionAnim();
+                    a.fristStep.input = (ActionInput)i;
                     a.weaponStats = new WeaponStats();
                     actionSlots.Add(a);
                 }
@@ -60,114 +61,56 @@ namespace SA
             }
 
             for (int i = 0; i < 4; i++)
-                actionSlots[i].input = (ActionInput)i;
+                actionSlots[i].fristStep.input = (ActionInput)i;
         }
         public void UpdateActionsTwoHanded()
         {
-            if (states == null || states.inventoryManager == null)
-            {
-                Debug.LogWarning("ActionManager: inventoryManager is not ready, skip two-handed action refresh.");
-                return;
-            }
 
             EmptyAllSlot();
-            if (states.inventoryManager.rightHandWeapon == null)
-            {
-                Debug.LogWarning("ActionManager: rightHandWeapon is null in two-handed refresh.");
-                return;
-            }
 
             Weapon w = states.inventoryManager.rightHandWeapon.instance;
 
             if (w == null)
                 return;
 
-            if (w.two_handedActions == null || w.two_handedActions.Count == 0)
-            {
-                Debug.LogWarning("Two-handed mode enabled but weapon has no two_handedActions.");
-                return;
-            }
-
             for (int i = 0; i < w.two_handedActions.Count; i++)
             {
-                Action source = w.two_handedActions[i];
-                int slotIndex = (int)source.input;
-                if (slotIndex < 0 || slotIndex >= actionSlots.Count)
-                    continue;
+                Action a = StaticFunctions.GetAction(w.two_handedActions[i].GetfirstInput(), actionSlots);
 
-                Action a = actionSlots[slotIndex];
-                if (a != null)
-                {
-                    a.steps = source.steps;
-                    a.actionType = source.actionType;
-                    a.spellClass = source.spellClass;
-                    a.mirror = source.mirror;
-                    a.canBeParried = source.canBeParried;
-                    a.changeSpeed = source.changeSpeed;
-                    a.animSpeed = source.animSpeed;
-                    a.canParry = source.canParry;
-                    a.canBackStab = source.canBackStab;
-                    a.staminaCost = source.staminaCost;
-                    a.focusCost = source.focusCost;
-                    a.overrideDamageAnim = source.overrideDamageAnim;
-                    a.damageAnim = source.damageAnim;
-                    a.parryMultiplier = source.parryMultiplier;
-                    a.backstabMultiplier = source.backstabMultiplier;
-                    if (source.weaponStats != null && a.weaponStats != null)
-                        StaticFunctions.DeepCopyWeaponStats(source.weaponStats, a.weaponStats);
-                }
+                StaticFunctions.DeepCopyStepList(w.two_handedActions[i], a);
+                a.actionType = w.two_handedActions[i].actionType;
             }
 
-            // Keep Q/E usable in two-handed mode by mirroring right-hand
-            // slots when left-hand slots are not explicitly configured.
-            Action a_f = actionSlots[(int)ActionInput.f];
-            Action a_r = actionSlots[(int)ActionInput.r];
-            Action a_e = actionSlots[(int)ActionInput.e];
-            Action a_q = actionSlots[(int)ActionInput.q];
 
-            if (a_e != null && (a_e.steps == null || a_e.steps.Count == 0) && a_f != null && a_f.steps != null && a_f.steps.Count > 0)
-            {
-                StaticFunctions.DeepCopyActionToAction(a_e, a_f);
-                a_e.input = ActionInput.e;
-            }
-            if (a_q != null && (a_q.steps == null || a_q.steps.Count == 0) && a_r != null && a_r.steps != null && a_r.steps.Count > 0)
-            {
-                StaticFunctions.DeepCopyActionToAction(a_q, a_r);
-                a_q.input = ActionInput.q;
-            }
         }
-
-
-
 
         void EmptyAllSlot()
         {
-            while (actionSlots.Count < 4)
-            {
-                int i = actionSlots.Count;
-                Action slot = new Action();
-                slot.input = (ActionInput)i;
-                slot.weaponStats = new WeaponStats();
-                actionSlots.Add(slot);
-            }
-
             for (int i = 0; i < 4; i++)
             {
-                if (actionSlots[i] == null)
-                {
-                    actionSlots[i] = new Action();
-                    actionSlots[i].input = (ActionInput)i;
-                }
+                Action a = StaticFunctions.GetAction((ActionInput)i, actionSlots);
 
-                if (actionSlots[i].weaponStats == null)
-                    actionSlots[i].weaponStats = new WeaponStats();
-
-                Action a = actionSlots[i];
-                a.steps = null;
+                if (a == null)
+                    return;
+                    
+                a.fristStep = null;
+                a.comboSteps = null;
                 a.mirror = false;
                 a.actionType = ActionType.attack;
             }
         }
+
+        ActionManager()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Action a = new Action();
+                //  a.input = (ActionInput)i;
+                actionSlots.Add(a);
+            }
+        }
+
+
 
         public Action GetActionSlot(StateManager st)
         {
@@ -197,7 +140,7 @@ namespace SA
         }
         public bool IsLeftHandslot(Action slot)
         {
-            return slot == actionSlots[(int)ActionInput.e] || slot == actionSlots[(int)ActionInput.q];
+            return (slot.GetfirstInput() == ActionInput.e || slot.GetfirstInput() == ActionInput.q);
         }
     }
     public enum ActionInput
@@ -220,11 +163,12 @@ namespace SA
     [System.Serializable]
     public class Action
     {
-        public ActionInput input;
         public ActionType actionType;
         public SpellClass spellClass;
-        public string targetAnim;
-        public List<ActionSteps> steps;
+
+        public ActionAnim fristStep;
+        public List<ActionAnim> comboSteps;
+
         public bool mirror = false;
         public bool canBeParried = true;
         public bool changeSpeed = false;
@@ -234,28 +178,25 @@ namespace SA
         public float staminaCost = 5;
         public int focusCost = 0;
 
-        ActionSteps defaultStep;
-
-        public ActionSteps GetActionStep(ref int indx)
+        public ActionInput GetfirstInput()
         {
-            if (steps == null || steps.Count == 0)
-            {
-                defaultStep = new ActionSteps();
-                defaultStep.branches = new List<ActionAnim>();
-                ActionAnim aa = new ActionAnim();
-                aa.input = input;
-                aa.targetAnim = targetAnim;
-                defaultStep.branches.Add(aa);
-                return defaultStep;
-            }
+            if (fristStep == null)
+                fristStep = new ActionAnim();
 
+            return fristStep.input;
+        }
 
-            if (indx > steps.Count - 1)
+        public ActionAnim GetActionStep(ref int indx)
+        {
+            if (comboSteps.Count == 0)
+                return fristStep;
+
+            if (indx > comboSteps.Count - 1)
                 indx = 0;
 
-            ActionSteps retVal = steps[indx];
+            ActionAnim retVal = comboSteps[indx];
 
-            if (indx < steps.Count - 1)
+            if (indx < comboSteps.Count - 1)
                 indx++;
             else
                 indx = 0;
@@ -307,8 +248,8 @@ namespace SA
         public string throwAnim;
         public float castTime;
         public float focusCost;
-        public float staminaCost;       
-       
+        public float staminaCost;
+
     }
 
     [System.Serializable]

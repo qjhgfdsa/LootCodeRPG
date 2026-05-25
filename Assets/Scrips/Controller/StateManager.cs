@@ -399,7 +399,7 @@ namespace SA
                 return;
 
             string targetAnim = null;
-            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).GetBranch(storeActionInput).targetAnim;
+            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).targetAnim;
 
             Debug.Log("storeActionInput: " + storeActionInput);
 
@@ -731,7 +731,7 @@ namespace SA
 
                 block_idle_anim += (isLeftHand) ? "_l" : "_r";
 
-                string targetAnim = slot.targetAnim;
+                string targetAnim = slot.fristStep.targetAnim;
                 targetAnim += (isLeftHand) ? "_l" : "_r";
                 anim.CrossFade(targetAnim, 0.1f);
                 blockAnim = true;
@@ -741,7 +741,7 @@ namespace SA
         void ParryAction(Action slot)
         {
             string targetAnim = null;
-            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).GetBranch(storeActionInput).targetAnim;
+            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).targetAnim;
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;

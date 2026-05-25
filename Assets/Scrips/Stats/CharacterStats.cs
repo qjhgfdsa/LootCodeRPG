@@ -87,7 +87,8 @@ namespace SA
 
     [System.Serializable]
     public class WeaponStats
-    {
+    { 
+        public string weaponId;
         public int physical;
         public int strike;
         public int slash;

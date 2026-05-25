@@ -173,6 +173,10 @@ namespace SA
             inst.instance = new Weapon();
             StaticFunctions.DeepCopyWeapon(w, inst.instance);
 
+            inst.weaponStats = new WeaponStats();
+            WeaponStats w_stats = ResourcesManager.singleton.GetWeaponStats(w.itemName);
+            StaticFunctions.DeepCopyWeaponStats(w_stats, inst.weaponStats);
+
             inst.weaponModel = Instantiate(inst.instance.modelPrefab) as GameObject;
             Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
             inst.weaponModel.transform.parent = p;
@@ -384,7 +388,6 @@ namespace SA
         public bool LeftHandMirror;
 
         public GameObject modelPrefab;
-
         public Vector3 r_model_pos;
         public Vector3 l_model_pos;
         public Vector3 r_model_eulers;
@@ -401,7 +404,7 @@ namespace SA
 
             for (int i = 0; i < l.Count; i++)
             {
-                if (l[i].input == inp)
+                if (l[i].GetfirstInput() == inp)
                 {
                     return l[i];
                 }
