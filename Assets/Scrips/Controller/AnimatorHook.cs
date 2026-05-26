@@ -181,6 +181,20 @@ namespace SA
                 states.canMove = true;
             }
         }
+        public void OpenCanRotate()
+        {
+            if (states)
+            {
+                states.canRotate = true;
+            }
+        }
+        public void CloseCanRotate()
+        {
+            if (states)
+            {
+                states.canRotate = false;
+            }
+        }
         public void OpenDamageColliders()
         {
             if (states)

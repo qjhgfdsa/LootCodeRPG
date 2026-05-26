@@ -7,6 +7,9 @@ namespace SA
 {
     public class InventoryManager : MonoBehaviour
     {
+        public string unarmedId = "unarmed";
+        RuntimeWeapon unarmedRuntime;
+
         public List<string> rh_weapons;
         public List<string> lh_weapons;
         public List<string> spell_items;
@@ -50,12 +53,14 @@ namespace SA
         {
             for (int i = 0; i < rh_weapons.Count; i++)
             {
-                WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
+                RuntimeWeapon rw =WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
+                r_r_weapons.Add(rw);
             }
 
             for (int i = 0; i < lh_weapons.Count; i++)
             {
-                WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
+                RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
+                r_l_weapons.Add(lw);
             }
 
             if (r_r_weapons.Count > 0)
@@ -190,15 +195,6 @@ namespace SA
 
             inst.w_Hook = inst.weaponModel.GetComponentInChildren<WeaponHook>();
             inst.w_Hook.InitDamageCollider(states);
-
-            if (isLeft)
-            {
-                r_l_weapons.Add(inst);
-            }
-            else
-            {
-                r_r_weapons.Add(inst);
-            }
 
             inst.weaponModel.SetActive(false);
             return inst;

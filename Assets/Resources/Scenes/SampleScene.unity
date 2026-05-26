@@ -3616,16 +3616,6 @@ MonoBehaviour:
     backstabMultiplier: 0
     overrideDamageAnim: 0
     damageAnim: 
-    weaponStats:
-      weaponId: 
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
   airTimer: 0
   storePrevInput: 0
   storeActionInput: 0
@@ -3797,16 +3787,6 @@ MonoBehaviour:
     backstabMultiplier: 0
     overrideDamageAnim: 0
     damageAnim: 
-    weaponStats:
-      weaponId: 
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
   - actionType: 0
     spellClass: 0
     fristStep:
@@ -3825,16 +3805,6 @@ MonoBehaviour:
     backstabMultiplier: 0
     overrideDamageAnim: 0
     damageAnim: 
-    weaponStats:
-      weaponId: 
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
   - actionType: 0
     spellClass: 0
     fristStep:
@@ -3853,16 +3823,6 @@ MonoBehaviour:
     backstabMultiplier: 0
     overrideDamageAnim: 0
     damageAnim: 
-    weaponStats:
-      weaponId: 
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
   - actionType: 0
     spellClass: 0
     fristStep:
@@ -3881,16 +3841,6 @@ MonoBehaviour:
     backstabMultiplier: 0
     overrideDamageAnim: 0
     damageAnim: 
-    weaponStats:
-      weaponId: 
-      physical: 0
-      strike: 0
-      slash: 0
-      thrust: 0
-      magic: 0
-      fire: 0
-      lightning: 0
-      dark: 0
   consumableItem:
     targetAnim: bestus
     item_id: 
@@ -3906,6 +3856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f842fab3281e247b942df80d40bef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unarmedId: unarmed
   rh_weapons:
   - BigSword
   lh_weapons:
@@ -4545,7 +4496,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &650193801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4553,14 +4504,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 650193800}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fd949b0d70f9dd41989be5c00d1f2b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.WeaponPlacer
-  weaponId: sword
-  weaponModel: {fileID: 0}
-  leftHand: 1
+  weaponId: Unarmed
+  weaponModel: {fileID: 515330515761076357}
+  leftHand: 0
   saveWeapon: 0
 --- !u!4 &650193802
 Transform:
@@ -4636,16 +4587,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions: []
     parryMultiplier: 0
     backstabMultiplier: 0
@@ -5027,10 +4968,7 @@ PrefabInstance:
       addedObject: {fileID: 1416862129}
     - targetCorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1090860233}
-    - targetCorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 912661508}
+      addedObject: {fileID: 515330515761076358}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3910d452d77a232498857be043651e9f, type: 3}
       insertIndex: -1
@@ -5759,11 +5697,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.10986622, y: 0.24, z: 0.17293471}
   m_Center: {x: -0.0067660287, y: -0.04, z: 0.000016719103}
---- !u!4 &912661508 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-  m_PrefabInstance: {fileID: 9131386817589694376}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &920205701 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 913311529831766493, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -6542,11 +6475,6 @@ CapsuleCollider:
 Transform:
   m_CorrespondingSourceObject: {fileID: -3610508273376233776, guid: 3910d452d77a232498857be043651e9f, type: 3}
   m_PrefabInstance: {fileID: 689017859}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1090860233 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-  m_PrefabInstance: {fileID: 3537369205811501168}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1106415920 stripped
 GameObject:
@@ -8296,11 +8224,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -1638537578192808081, guid: 3910d452d77a232498857be043651e9f, type: 3}
   m_PrefabInstance: {fileID: 149464993}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1579333044 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4571662790211751818, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-  m_PrefabInstance: {fileID: 3537369205811501168}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1651371022 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -252863088108727780, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -9032,16 +8955,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 3
       spellClass: 0
       fristStep:
@@ -9060,16 +8973,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 80
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions:
     - actionType: 0
       spellClass: 0
@@ -9089,16 +8992,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 50
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -9117,16 +9010,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: damage_3
-      weaponStats:
-        weaponId: 
-        physical: 150
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     parryMultiplier: 5
     backstabMultiplier: 5
     LeftHandMirror: 1
@@ -11247,16 +11130,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 30
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -11275,16 +11148,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: damage_3
-      weaponStats:
-        weaponId: 
-        physical: 80
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions:
     - actionType: 0
       spellClass: 0
@@ -11304,16 +11167,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 50
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -11332,16 +11185,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: damage_3
-      weaponStats:
-        weaponId: 
-        physical: 150
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     parryMultiplier: 5
     backstabMultiplier: 5
     LeftHandMirror: 1
@@ -12135,7 +11978,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &3537369205811501168
+--- !u!1001 &515330515761076356
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -12143,124 +11986,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1482730879}
     m_Modifications:
-    - target: {fileID: 3907934298038997149, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_Name
-      value: BigSword
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.05510699
       objectReference: {fileID: 0}
-    - target: {fileID: 3907934298038997149, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.03021377
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.009908844
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.105820484
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.3141167
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.21791962
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.91795635
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -27.811
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 36.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 183.719
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228200440138636739, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+      propertyPath: m_Name
+      value: Unarmed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228200440138636739, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.0086
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0337
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.0305
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.67078173
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.5885605
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.43445784
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.122044384
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 63.59
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 99.096
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427061684017711655, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 51.415
-      objectReference: {fileID: 0}
-    - target: {fileID: 8768721867425859580, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
-      propertyPath: 'damageColliders.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1579333044}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2ba27df2c23b1164eb660b5c4e6e9611, type: 3}
---- !u!1001 &9131386817589694376
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1482730879}
-    m_Modifications:
-    - target: {fileID: 1553089565951534173, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_Name
-      value: Spear
-      objectReference: {fileID: 0}
-    - target: {fileID: 1553089565951534173, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.021
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.78128123
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.21936883
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.33010575
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.4821899
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -46.684
-      objectReference: {fileID: 0}
-    - target: {fileID: 2217598507271356135, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -63.968
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0f0137f4511faff468e751e4936f6d45, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+--- !u!1 &515330515761076357 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3228200440138636739, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+  m_PrefabInstance: {fileID: 515330515761076356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &515330515761076358 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1695307437314832516, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+  m_PrefabInstance: {fileID: 515330515761076356}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

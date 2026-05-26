@@ -71,6 +71,8 @@ namespace SA
 
             camManager.Init(states);
             uiManager = UIManager.singleton;
+            if (uiManager == null)
+                Debug.LogWarning("InputHandler: UIManager is missing from the scene — HUD will not update.");
         }
         void FixedUpdate()
         {
@@ -87,7 +89,8 @@ namespace SA
             states.FixedTick(delta);//สลับจาก FixedUpdate เป็น Update
             ResetInputNStates();
             states.MonitorStats();
-            uiManager.Tick(states.characterStats, delta);
+            if (uiManager != null)
+                uiManager.Tick(states.characterStats, delta);
         }
 
         void GetInput()

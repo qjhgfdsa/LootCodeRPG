@@ -130,7 +130,8 @@ namespace SA
             anim.SetBool(StaticStrings.OnGround, true);
 
             characterStats.InitCurrent();
-            UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
+            if (UIManager.singleton != null)
+                UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
         }
 
         void SetupAnimator()
@@ -411,6 +412,7 @@ namespace SA
             onEmpty = false;
             canMove = false;
             canAttack = false;
+            canRotate = false;
             inAction = true;
 
             float targetSpeed = 1;

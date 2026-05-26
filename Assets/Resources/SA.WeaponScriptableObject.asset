@@ -37,16 +37,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -65,16 +55,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions:
     - actionType: 0
       spellClass: 0
@@ -94,16 +74,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 50
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -122,16 +92,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: damage_3
-      weaponStats:
-        weaponId: 
-        physical: 150
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     parryMultiplier: 0
     backstabMultiplier: 0
     LeftHandMirror: 1
@@ -141,6 +101,58 @@ MonoBehaviour:
     r_model_eulers: {x: -26.952, y: 42.042, z: 92.93}
     l_model_eulers: {x: -26.952, y: -140, z: 92.93}
     model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
+  - itemName: Unarmed
+    itemDescription: 
+    icon: {fileID: 0}
+    oh_idle: empty
+    th_idle: Empty Both
+    actions:
+    - actionType: 0
+      spellClass: 0
+      fristStep:
+        input: 0
+        targetAnim: punch 1
+      comboSteps: []
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 5
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
+      damageAnim: 
+    - actionType: 0
+      spellClass: 0
+      fristStep:
+        input: 2
+        targetAnim: kick 1
+      comboSteps: []
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 5
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 1
+      damageAnim: attack_interrupt
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    LeftHandMirror: 1
+    modelPrefab: {fileID: 3228200440138636739, guid: 0a110ff22de2d5f4693dc6f10e5ee101, type: 3}
+    r_model_pos: {x: -0.05510699, y: 0.03021377, z: -0.009908844}
+    l_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: 332.1887, y: 36.85992, z: 183.71913}
+    l_model_eulers: {x: -26.952, y: -140, z: 92.93}
+    model_scale: {x: 0.1550004, y: 0.1550004, z: 0.15500037}
   - itemName: shield
     itemDescription: 
     icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
@@ -165,16 +177,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 1
       spellClass: 0
       fristStep:
@@ -193,16 +195,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions: []
     parryMultiplier: 0
     backstabMultiplier: 0
@@ -237,16 +229,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions: []
     parryMultiplier: 0
     backstabMultiplier: 0
@@ -281,16 +263,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: damage_1
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions:
     - actionType: 0
       spellClass: 0
@@ -310,16 +282,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -340,16 +302,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: 
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     parryMultiplier: 0
     backstabMultiplier: 0
     LeftHandMirror: 1
@@ -383,16 +335,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: damage_1
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     - actionType: 0
       spellClass: 0
       fristStep:
@@ -411,16 +353,6 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: damage_3
-      weaponStats:
-        weaponId: 
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
     two_handedActions: []
     parryMultiplier: 0
     backstabMultiplier: 0
@@ -432,8 +364,8 @@ MonoBehaviour:
     l_model_eulers: {x: 283.8677, y: 8.8954, z: 35.738194}
     model_scale: {x: 0.4, y: 0.4, z: 0.4}
   weaponStats_all:
-  - weaponId: sword
-    physical: 0
+  - weaponId: Unarmed
+    physical: 15
     strike: 0
     slash: 0
     thrust: 0
@@ -443,6 +375,15 @@ MonoBehaviour:
     dark: 0
   - weaponId: BigSword
     physical: 50
+    strike: 0
+    slash: 0
+    thrust: 0
+    magic: 0
+    fire: 0
+    lightning: 0
+    dark: 0
+  - weaponId: sword
+    physical: 30
     strike: 0
     slash: 0
     thrust: 0

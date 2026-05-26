@@ -161,7 +161,7 @@ namespace SA
             if (isInvicible)
                 return;
 
-            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+            int damage = StatsCalculations.CalculateBaseDamage(null, characterStats); //ยังไม่ได้ใช้ weaponStats
 
             characterStats.poise += damage;
             health -= damage;
@@ -214,7 +214,7 @@ namespace SA
         }
         public void IsGettingParried(Action a)
         {
-            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.parryMultiplier);
+            int damage = StatsCalculations.CalculateBaseDamage(null, characterStats, a.parryMultiplier); //ยังไม่ได้ใช้ weaponStats
             health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
@@ -225,7 +225,7 @@ namespace SA
         public void IsGettingBackStabbed(Action a)
         {
 
-            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.backstabMultiplier);
+            int damage = StatsCalculations.CalculateBaseDamage(null, characterStats, a.backstabMultiplier);
             health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);

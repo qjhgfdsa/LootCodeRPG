@@ -16,7 +16,7 @@ namespace SA
             for (int i = 0; i < from.actions.Count; i++)
             {
                 Action a = new Action();
-                a.weaponStats = new WeaponStats();
+                //a.weaponStats = new WeaponStats();
                 DeepCopyActionToAction(a, from.actions[i]);
                 to.actions.Add(a);
             }
@@ -25,7 +25,7 @@ namespace SA
             for (int i = 0; i < from.two_handedActions.Count; i++)
             {
                 Action a = new Action();
-                a.weaponStats = new WeaponStats();
+               // a.weaponStats = new WeaponStats();
                 DeepCopyActionToAction(a, from.two_handedActions[i]);
                 to.two_handedActions.Add(a);
             }
@@ -47,6 +47,8 @@ namespace SA
             to.fristStep.input = from.fristStep.input;
             to.fristStep.targetAnim = from.fristStep.targetAnim;
 
+            to.comboSteps = new List<ActionAnim>();
+
             to.actionType = from.actionType;
             to.spellClass = from.spellClass;
             to.mirror = from.mirror;
@@ -65,8 +67,6 @@ namespace SA
         public static void DeepCopyStepList(Action from, Action to)
         {
 
-            to.comboSteps = new List<ActionAnim>();
-
             if (from.comboSteps == null)
                 return;
 
@@ -82,26 +82,46 @@ namespace SA
 
         public static void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
         {
+            if (w == null || actionList == null)
+                return;
+
             Action a = GetAction(assing, actionList);
-            Action w_a = w.GetAction(w.actions, inp);
-            if (w_a == null)
+            if (a == null)
+            {
+                Debug.LogWarning("no action slot found for " + assing);
+                return;
+            }
+
+            Action from = w.GetAction(w.actions, inp);
+            if (from == null)
             {
                 Debug.Log("no weapon action found");
                 return;
             }
 
-            DeepCopyStepList(w_a, a);
+            if (from.fristStep == null)
+            {
+                Debug.LogWarning("weapon action has no first step for " + inp);
+                return;
+            }
+
+            a.fristStep = new ActionAnim();
+            a.fristStep.input = from.fristStep.input;
+            a.fristStep.targetAnim = from.fristStep.targetAnim;
+            a.comboSteps = new List<ActionAnim>();
+
+            DeepCopyStepList(from, a);
          
-            a.actionType = w_a.actionType;
-            a.spellClass = w_a.spellClass;
-            a.canBeParried = w_a.canBeParried;
-            a.changeSpeed = w_a.changeSpeed;
-            a.animSpeed = w_a.animSpeed;
-            a.canBackStab = w_a.canBackStab;
-            a.staminaCost = w_a.staminaCost;
-            a.focusCost = w_a.focusCost;
-            a.overrideDamageAnim = w_a.overrideDamageAnim;
-            a.damageAnim = w_a.damageAnim;
+            a.actionType = from.actionType;
+            a.spellClass = from.spellClass;
+            a.canBeParried = from.canBeParried;
+            a.changeSpeed = from.changeSpeed;
+            a.animSpeed = from.animSpeed;
+            a.canBackStab = from.canBackStab;
+            a.staminaCost = from.staminaCost;
+            a.focusCost = from.focusCost;
+            a.overrideDamageAnim = from.overrideDamageAnim;
+            a.damageAnim = from.damageAnim;
             a.parryMultiplier = w.parryMultiplier;
             a.backstabMultiplier = w.backstabMultiplier;
 
@@ -132,6 +152,12 @@ namespace SA
 
         public static Action GetAction(ActionInput input, List<Action> actionSlots)
         {
+            if (actionSlots == null)
+                return null;
+
+            int index = (int)input;
+            if (index >= 0 && index < actionSlots.Count)
+                return actionSlots[index];
 
             for (int i = 0; i < actionSlots.Count; i++)
             {

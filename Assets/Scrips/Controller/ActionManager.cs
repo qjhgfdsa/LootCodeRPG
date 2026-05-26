@@ -21,7 +21,7 @@ namespace SA
                     Action a = new Action();
                     a.fristStep = new ActionAnim();
                     a.fristStep.input = (ActionInput)i;
-                    a.weaponStats = new WeaponStats();
+                   // a.weaponStats = new WeaponStats();
                     actionSlots.Add(a);
                 }
             }
@@ -76,6 +76,8 @@ namespace SA
             for (int i = 0; i < w.two_handedActions.Count; i++)
             {
                 Action a = StaticFunctions.GetAction(w.two_handedActions[i].GetfirstInput(), actionSlots);
+                if (a == null)
+                    continue;
 
                 StaticFunctions.DeepCopyStepList(w.two_handedActions[i], a);
                 a.actionType = w.two_handedActions[i].actionType;
@@ -86,14 +88,17 @@ namespace SA
 
         void EmptyAllSlot()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4 && i < actionSlots.Count; i++)
             {
-                Action a = StaticFunctions.GetAction((ActionInput)i, actionSlots);
-
+                Action a = actionSlots[i];
                 if (a == null)
-                    return;
-                    
-                a.fristStep = null;
+                    continue;
+
+                if (a.fristStep == null)
+                    a.fristStep = new ActionAnim();
+                a.fristStep.input = (ActionInput)i;
+                a.fristStep.targetAnim = null;
+
                 a.comboSteps = null;
                 a.mirror = false;
                 a.actionType = ActionType.attack;
@@ -188,7 +193,7 @@ namespace SA
 
         public ActionAnim GetActionStep(ref int indx)
         {
-            if (comboSteps.Count == 0)
+            if (comboSteps.Count == 0 || indx == 0)
                 return fristStep;
 
             if (indx > comboSteps.Count - 1)
@@ -213,7 +218,7 @@ namespace SA
         public bool overrideDamageAnim;
         public string damageAnim;
 
-        public WeaponStats weaponStats;
+       // public WeaponStats weaponStats;
     }
 
     [System.Serializable]
