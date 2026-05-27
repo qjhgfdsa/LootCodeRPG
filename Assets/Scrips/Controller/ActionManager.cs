@@ -31,21 +31,16 @@ namespace SA
         public void UpdateActionsOneHanded()
         {
             if (states == null || states.inventoryManager == null)
-            {
-                Debug.LogWarning("ActionManager: inventoryManager is not ready, skip one-handed action refresh.");
                 return;
-            }
 
-            if (states.inventoryManager.rightHandWeapon == null || states.inventoryManager.rightHandWeapon.instance == null)
-            {
-                Debug.LogWarning("ActionManager: right-hand weapon is missing, skip one-handed action refresh.");
+            Weapon rhWeapon = GetRightHandWeaponInstance();
+            if (rhWeapon == null)
                 return;
-            }
 
             EmptyAllSlot();
 
-            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.f, ActionInput.f, actionSlots);
-            StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.r, ActionInput.r, actionSlots);
+            StaticFunctions.DeepCopyAction(rhWeapon, ActionInput.f, ActionInput.f, actionSlots);
+            StaticFunctions.DeepCopyAction(rhWeapon, ActionInput.r, ActionInput.r, actionSlots);
 
             if (states.inventoryManager.hasLeftHandWeapon &&
                 states.inventoryManager.leftHandWeapon != null &&
@@ -54,7 +49,7 @@ namespace SA
                 StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.f, ActionInput.e, actionSlots, true);
                 StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.r, ActionInput.q, actionSlots, true);
             }
-            else
+            else if (states.inventoryManager.unarmedRuntime?.instance != null)
             {
                 StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.e, actionSlots, true);
                 StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.q, actionSlots, true);
@@ -65,6 +60,11 @@ namespace SA
         }
         public void UpdateActionsTwoHanded()
         {
+            if (states?.inventoryManager?.rightHandWeapon?.instance == null)
+            {
+                UpdateActionsOneHanded();
+                return;
+            }
 
             EmptyAllSlot();
 
@@ -96,10 +96,26 @@ namespace SA
                 a.mirror = false;
                 a.actionType = ActionType.attack;
             }
-            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.f, actionSlots);
-            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.r, actionSlots);
-            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.e, actionSlots, true);
-            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.q, actionSlots, true);
+
+            Weapon unarmed = states?.inventoryManager?.unarmedRuntime?.instance;
+            if (unarmed == null)
+                return;
+
+            StaticFunctions.DeepCopyAction(unarmed, ActionInput.f, ActionInput.f, actionSlots);
+            StaticFunctions.DeepCopyAction(unarmed, ActionInput.r, ActionInput.r, actionSlots);
+            StaticFunctions.DeepCopyAction(unarmed, ActionInput.f, ActionInput.e, actionSlots, true);
+            StaticFunctions.DeepCopyAction(unarmed, ActionInput.r, ActionInput.q, actionSlots, true);
+        }
+
+        Weapon GetRightHandWeaponInstance()
+        {
+            if (states?.inventoryManager == null)
+                return null;
+
+            if (states.inventoryManager.rightHandWeapon?.instance != null)
+                return states.inventoryManager.rightHandWeapon.instance;
+
+            return states.inventoryManager.unarmedRuntime?.instance;
         }
 
         public Action GetActionSlot(StateManager st)

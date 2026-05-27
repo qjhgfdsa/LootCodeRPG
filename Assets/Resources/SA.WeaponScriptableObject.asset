@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SA.WeaponScriptableObject
   m_EditorClassIdentifier: Assembly-CSharp::SA.WeaponScriptableObject
   weapons_all:
-  - itemName: sword
+  - itemName: Sword
     itemDescription: 
     icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
     oh_idle: oh_idle
@@ -171,7 +171,7 @@ MonoBehaviour:
     r_model_eulers: {x: 332.1887, y: 36.85992, z: 183.71913}
     l_model_eulers: {x: -26.952, y: -140, z: 92.93}
     model_scale: {x: 0.1550004, y: 0.1550004, z: 0.15500037}
-  - itemName: shield
+  - itemName: Shield
     itemDescription: 
     icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
     oh_idle: oh_idle
@@ -232,8 +232,8 @@ MonoBehaviour:
     - actionType: 2
       spellClass: 0
       fristStep:
-        input: 2
-        targetAnim: oh_attack_1
+        input: 0
+        targetAnim: 
       comboSteps: []
       mirror: 0
       canBeParried: 0

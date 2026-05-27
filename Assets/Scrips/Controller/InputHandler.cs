@@ -155,6 +155,8 @@ namespace SA
 
             if (shift_input && shift_timer > 0.5f)
                 states.run = (states.moveAmount > 0) && states.characterStats._stamina > 0;
+            else
+                states.run = false;
 
             if (shift_input == false && shift_timer > 0 && shift_timer < 0.5f)
                 states.rollInput = true;
@@ -262,9 +264,6 @@ namespace SA
         {
             if (shift_input == false)
                 shift_timer = 0;
-
-            if (states.run)
-                states.run = false;
         }
     }
 }

@@ -535,7 +535,7 @@ namespace SA
                 if (spellCast_loop != null)
                     spellCast_loop();
 
-                characterStats._focus -= 0.25f;
+                characterStats._focus -= 0.25f * delta;
 
                 return;
             }
@@ -962,11 +962,11 @@ namespace SA
 
         public void SubstractStaminaOverTime()
         {
-            characterStats._stamina -= cur_staminaCost;
+            characterStats._stamina -= cur_staminaCost * delta;
         }
         public void SubstractFocusOverTime()
         {
-            characterStats._focus -= cur_focusCost;
+            characterStats._focus -= cur_focusCost * delta;
         }
         public void AffectBlocking()
         {

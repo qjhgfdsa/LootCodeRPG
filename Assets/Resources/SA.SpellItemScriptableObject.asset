@@ -38,8 +38,8 @@ MonoBehaviour:
       targetAnim: hold_spell_start
       throwAnim: 
       castTime: 0
-      focusCost: 0
-      staminaCost: 0
+      focusCost: 4
+      staminaCost: 5
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 2122438717319349008, guid: fb5d506cc434e314eb0d27ca5cce7757, type: 3}
     spell_effect: firebreath
@@ -53,7 +53,7 @@ MonoBehaviour:
       targetAnim: hold_spell_start
       throwAnim: 
       castTime: 0
-      focusCost: 5
+      focusCost: 2
       staminaCost: 5
     projecttile: {fileID: 0}
     particlePrefab: {fileID: 100000, guid: d459e09d95395f943b997b06b807b346, type: 3}
