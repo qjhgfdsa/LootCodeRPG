@@ -80,38 +80,32 @@ namespace SA
         }
 
 
-        public static void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
+        public static bool TryDeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
         {
             if (w == null || actionList == null)
-                return;
+                return false;
 
             Action a = GetAction(assing, actionList);
             if (a == null)
             {
                 Debug.LogWarning("no action slot found for " + assing);
-                return;
+                return false;
             }
 
             Action from = w.GetAction(w.actions, inp);
             if (from == null)
-            {
-                Debug.Log("no weapon action found");
-                return;
-            }
+                return false;
 
             if (from.fristStep == null)
             {
                 Debug.LogWarning("weapon action has no first step for " + inp);
-                return;
+                return false;
             }
 
-            a.fristStep = new ActionAnim();
-            a.fristStep.input = from.fristStep.input;
             a.fristStep.targetAnim = from.fristStep.targetAnim;
             a.comboSteps = new List<ActionAnim>();
-
             DeepCopyStepList(from, a);
-         
+
             a.actionType = from.actionType;
             a.spellClass = from.spellClass;
             a.canBeParried = from.canBeParried;
@@ -124,12 +118,15 @@ namespace SA
             a.damageAnim = from.damageAnim;
             a.parryMultiplier = w.parryMultiplier;
             a.backstabMultiplier = w.backstabMultiplier;
+            a.mirror = isLeftHand;
 
-            if (isLeftHand)
-            {
-                a.mirror = true;
-            }
+            return true;
+        }
 
+        public static void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
+        {
+            if (!TryDeepCopyAction(w, inp, assing, actionList, isLeftHand))
+                Debug.Log("no weapon action found for " + inp);
         }
 
         public static void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)

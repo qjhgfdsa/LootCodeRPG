@@ -3457,8 +3457,8 @@ GameObject:
   - component: {fileID: 459074579}
   - component: {fileID: 459074578}
   - component: {fileID: 459074577}
-  - component: {fileID: 459074584}
   - component: {fileID: 459074585}
+  - component: {fileID: 459074584}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -3772,11 +3772,11 @@ MonoBehaviour:
   - actionType: 0
     spellClass: 0
     fristStep:
-      input: 0
+      input: 2
       targetAnim: 
     comboSteps: []
     mirror: 0
-    canBeParried: 0
+    canBeParried: 1
     changeSpeed: 0
     animSpeed: 1
     canParry: 0
@@ -3808,10 +3808,10 @@ MonoBehaviour:
   - actionType: 0
     spellClass: 0
     fristStep:
-      input: 0
+      input: 3
       targetAnim: 
     comboSteps: []
-    mirror: 0
+    mirror: 1
     canBeParried: 0
     changeSpeed: 0
     animSpeed: 1
@@ -3826,7 +3826,7 @@ MonoBehaviour:
   - actionType: 0
     spellClass: 0
     fristStep:
-      input: 0
+      input: 1
       targetAnim: 
     comboSteps: []
     mirror: 0
@@ -3856,11 +3856,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f842fab3281e247b942df80d40bef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unarmedId: unarmed
+  unarmedId: Unarmed
+  unarmedRuntime: {fileID: 0}
   rh_weapons:
   - BigSword
+  - Pyromancy Flame
   lh_weapons:
-  - BigSword
+  - shield
   spell_items:
   - fireball
   - firebreath
@@ -3871,7 +3873,7 @@ MonoBehaviour:
   currentSpell: {fileID: 400226246}
   rightHandWeapon: {fileID: 1766253517}
   hasLeftHandWeapon: 1
-  leftHandWeapon: {fileID: 1975116925}
+  leftHandWeapon: {fileID: 0}
   parryCollider: {fileID: 1842171381}
   breathCollider: {fileID: 795328681}
   blockCollider: {fileID: 559149952}

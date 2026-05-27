@@ -103,7 +103,7 @@ MonoBehaviour:
     model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
   - itemName: Unarmed
     itemDescription: 
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: 0db2246a02b4b304291742b5b69f4ecb, type: 3}
     oh_idle: empty
     th_idle: Empty Both
     actions:
@@ -143,7 +143,25 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: attack_interrupt
-    two_handedActions: []
+    two_handedActions:
+    - actionType: 0
+      spellClass: 0
+      fristStep:
+        input: 0
+        targetAnim: 
+      comboSteps: []
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 0
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
+      damageAnim: 
     parryMultiplier: 0
     backstabMultiplier: 0
     LeftHandMirror: 1
@@ -159,11 +177,11 @@ MonoBehaviour:
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
-    - actionType: 3
+    - actionType: 1
       spellClass: 0
       fristStep:
-        input: 0
-        targetAnim: 
+        input: 2
+        targetAnim: shield
       comboSteps: []
       mirror: 0
       canBeParried: 0
@@ -177,11 +195,11 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 0
       damageAnim: 
-    - actionType: 1
+    - actionType: 3
       spellClass: 0
       fristStep:
         input: 0
-        targetAnim: 
+        targetAnim: parry
       comboSteps: []
       mirror: 0
       canBeParried: 0
@@ -214,8 +232,8 @@ MonoBehaviour:
     - actionType: 2
       spellClass: 0
       fristStep:
-        input: 0
-        targetAnim: 
+        input: 2
+        targetAnim: oh_attack_1
       comboSteps: []
       mirror: 0
       canBeParried: 0
@@ -224,7 +242,7 @@ MonoBehaviour:
       canParry: 0
       canBackStab: 0
       staminaCost: 0
-      focusCost: 5
+      focusCost: 0
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -262,13 +280,31 @@ MonoBehaviour:
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
+      damageAnim: 
+    - actionType: 0
+      spellClass: 0
+      fristStep:
+        input: 0
+        targetAnim: gs_oh_attack_2
+      comboSteps: []
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canParry: 0
+      canBackStab: 0
+      staminaCost: 20
+      focusCost: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
       damageAnim: damage_1
     two_handedActions:
     - actionType: 0
       spellClass: 0
       fristStep:
         input: 2
-        targetAnim: gh_th_attack_1
+        targetAnim: 'gh_th_attack_1 '
       comboSteps: []
       mirror: 0
       canBeParried: 0

@@ -21,7 +21,7 @@ namespace SA
                     Action a = new Action();
                     a.fristStep = new ActionAnim();
                     a.fristStep.input = (ActionInput)i;
-                   // a.weaponStats = new WeaponStats();
+                    // a.weaponStats = new WeaponStats();
                     actionSlots.Add(a);
                 }
             }
@@ -56,8 +56,8 @@ namespace SA
             }
             else
             {
-                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.f, ActionInput.e, actionSlots);
-                StaticFunctions.DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.r, ActionInput.q, actionSlots);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.e, actionSlots, true);
+                StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.q, actionSlots, true);
             }
 
             for (int i = 0; i < 4; i++)
@@ -70,15 +70,11 @@ namespace SA
 
             Weapon w = states.inventoryManager.rightHandWeapon.instance;
 
-            if (w == null)
-                return;
-
             for (int i = 0; i < w.two_handedActions.Count; i++)
             {
                 Action a = StaticFunctions.GetAction(w.two_handedActions[i].GetfirstInput(), actionSlots);
-                if (a == null)
-                    continue;
 
+                a.fristStep.targetAnim = w.two_handedActions[i].fristStep.targetAnim;
                 StaticFunctions.DeepCopyStepList(w.two_handedActions[i], a);
                 a.actionType = w.two_handedActions[i].actionType;
             }
@@ -88,38 +84,28 @@ namespace SA
 
         void EmptyAllSlot()
         {
-            for (int i = 0; i < 4 && i < actionSlots.Count; i++)
+            for (int i = 0; i < 4; i++)
             {
-                Action a = actionSlots[i];
+                Action a = StaticFunctions.GetAction((ActionInput)i, actionSlots);
+
                 if (a == null)
-                    continue;
+                    return;
 
-                if (a.fristStep == null)
-                    a.fristStep = new ActionAnim();
-                a.fristStep.input = (ActionInput)i;
-                a.fristStep.targetAnim = null;
-
+                // a.fristStep = null;
                 a.comboSteps = null;
                 a.mirror = false;
                 a.actionType = ActionType.attack;
             }
+            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.f, actionSlots);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.r, actionSlots);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.e, actionSlots, true);
+            StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.q, actionSlots, true);
         }
-
-        ActionManager()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Action a = new Action();
-                //  a.input = (ActionInput)i;
-                actionSlots.Add(a);
-            }
-        }
-
-
 
         public Action GetActionSlot(StateManager st)
         {
-            return GetActionFromInput(GetActionInput(st));
+            ActionInput a_input = GetActionInput(st);
+            return StaticFunctions.GetAction(a_input, actionSlots);
         }
 
         public Action GetActionFromInput(ActionInput a_input)
@@ -193,19 +179,25 @@ namespace SA
 
         public ActionAnim GetActionStep(ref int indx)
         {
-            if (comboSteps.Count == 0 || indx == 0)
+            if (indx == 0)
+            {
+                if (comboSteps.Count == 0)
+                {
+                    indx = 0;
+                }
+                else
+                {
+                    indx++;
+                }
                 return fristStep;
+            }
 
+            ActionAnim retVal = comboSteps[indx-1];
+            indx++;
             if (indx > comboSteps.Count - 1)
+            {
                 indx = 0;
-
-            ActionAnim retVal = comboSteps[indx];
-
-            if (indx < comboSteps.Count - 1)
-                indx++;
-            else
-                indx = 0;
-
+            }
             return retVal;
         }
 
@@ -218,7 +210,7 @@ namespace SA
         public bool overrideDamageAnim;
         public string damageAnim;
 
-       // public WeaponStats weaponStats;
+        // public WeaponStats weaponStats;
     }
 
     [System.Serializable]

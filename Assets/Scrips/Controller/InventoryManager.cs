@@ -7,8 +7,8 @@ namespace SA
 {
     public class InventoryManager : MonoBehaviour
     {
-        public string unarmedId = "unarmed";
-        RuntimeWeapon unarmedRuntime;
+        public string unarmedId = "Unarmed";
+        public RuntimeWeapon unarmedRuntime;
 
         public List<string> rh_weapons;
         public List<string> lh_weapons;
@@ -51,6 +51,13 @@ namespace SA
 
         public void LoadInventory()
         {
+            unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
+            if (unarmedRuntime == null)
+            {
+                Debug.LogError($"InventoryManager: Could not load unarmed weapon id '{unarmedId}'. itemName in WeaponScriptableObject must match exactly (case-sensitive).");
+                return;
+            }
+
             for (int i = 0; i < rh_weapons.Count; i++)
             {
                 RuntimeWeapon rw =WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
@@ -259,35 +266,29 @@ namespace SA
         }
         public void OpenAllDamageColliders()
         {
-            if (rightHandWeapon.w_Hook != null)
+            if (rightHandWeapon != null && rightHandWeapon.w_Hook != null)
                 rightHandWeapon.w_Hook.OpenDamageColliders();
 
-
-            if (leftHandWeapon.w_Hook != null)
+            if (leftHandWeapon != null && leftHandWeapon.w_Hook != null)
                 leftHandWeapon.w_Hook.OpenDamageColliders();
-
         }
+
         public void CloseAllDamageColliders()
         {
-
-            if (rightHandWeapon.w_Hook != null)
+            if (rightHandWeapon != null && rightHandWeapon.w_Hook != null)
                 rightHandWeapon.w_Hook.CloseDamageColliders();
 
-
-            if (leftHandWeapon.w_Hook != null)
+            if (leftHandWeapon != null && leftHandWeapon.w_Hook != null)
                 leftHandWeapon.w_Hook.CloseDamageColliders();
         }
 
         public void InitAllDamageCollider(StateManager state)
         {
+            if (rightHandWeapon != null && rightHandWeapon.w_Hook != null)
+                rightHandWeapon.w_Hook.InitDamageCollider(state);
 
-            if (rightHandWeapon.w_Hook != null)
-                rightHandWeapon.w_Hook.InitDamageCollider(states);
-
-
-            if (leftHandWeapon.w_Hook != null)
-                leftHandWeapon.w_Hook.InitDamageCollider(states);
-
+            if (leftHandWeapon != null && leftHandWeapon.w_Hook != null)
+                leftHandWeapon.w_Hook.InitDamageCollider(state);
         }
 
         public void CloseParryCollider()

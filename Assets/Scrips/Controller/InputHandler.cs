@@ -76,17 +76,22 @@ namespace SA
         }
         void FixedUpdate()
         {
+            if (camManager == null)
+                return;
+            
             delta = Time.fixedDeltaTime;
             camManager.Tick(delta);
+            states.FixedTick(delta);
         }
 
         void Update()
         {
             delta = Time.deltaTime;
+
             GetInput();
-            UpdateStates();//ลองสลับมาไว้ที่ FixedUpdate
+            UpdateStates();
             states.Tick(delta);
-            states.FixedTick(delta);//สลับจาก FixedUpdate เป็น Update
+
             ResetInputNStates();
             states.MonitorStats();
             if (uiManager != null)
@@ -102,7 +107,7 @@ namespace SA
             space_input = Input.GetKeyDown(StaticStrings.KeySpace);
             t_input = Input.GetKeyDown(StaticStrings.KeyT);
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
-            // lockon_input = Input.GetKeyDown(StaticStrings.KeyTab); // ไม่ได้ใช้
+           
 
             q_input = Input.GetKey(StaticStrings.KeyQ);
             e_input = Input.GetKey(StaticStrings.KeyE);

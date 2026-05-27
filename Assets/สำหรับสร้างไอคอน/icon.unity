@@ -419,8 +419,8 @@ Transform:
   m_GameObject: {fileID: 136157712}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.85845, y: 0, z: -4.06375}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 50, y: 50, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -453,8 +453,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 774851192}
+  m_Children: []
   m_Father: {fileID: 1362878822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &189406672
@@ -486,6 +485,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 774851192}
   - {fileID: 1057001427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 32.137, y: 8.616, z: 153.554}
@@ -821,47 +821,47 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 153390341}
+    m_TransformParent: {fileID: 189406673}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.2059495
+      value: -0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4308399
+      value: 1.661
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.991998
+      value: -0.662
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9999435
+      value: 0.17786716
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0015738615
+      value: 0.06832974
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.010514413
+      value: 0.29566616
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00001654916
+      value: -0.9360961
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -215.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -181.597
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 21.009003
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3910d452d77a232498857be043651e9f, type: 3}
       propertyPath: m_Name
@@ -902,6 +902,10 @@ PrefabInstance:
     - target: {fileID: 1000012600307132, guid: 20c0f7e297297fc468f9740f6bb08cb1, type: 3}
       propertyPath: m_Name
       value: RocketTrailEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012600307132, guid: 20c0f7e297297fc468f9740f6bb08cb1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000010049649436, guid: 20c0f7e297297fc468f9740f6bb08cb1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1077,6 +1081,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PP_Theme_07_Spear_002
       objectReference: {fileID: 0}
+    - target: {fileID: 8264137675185652934, guid: 87a7691b577e73842977fe43683577b1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789845333852905084, guid: 87a7691b577e73842977fe43683577b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1159,7 +1167,7 @@ MonoBehaviour:
   create: 0
   ren: {fileID: 8400000, guid: 6e4f7f31cd90f3145be7328870aee5ef, type: 2}
   bakeCam: {fileID: 1906734495}
-  spriteName: Spear_IC
+  spriteName: Arm_IC
 --- !u!4 &1362878822
 Transform:
   m_ObjectHideFlags: 0
