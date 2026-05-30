@@ -7,7 +7,7 @@ namespace SA
     {
         public int actionIndex;
         public List<Action> actionSlots = new List<Action>();
-        public ItemAction consumableItem;
+      
         StateManager states;
 
         public void Init(StateManager st)
@@ -265,12 +265,6 @@ namespace SA
 
     }
 
-    [System.Serializable]
-    public class ItemAction
-    {
-        public string targetAnim;
-        public string item_id;
-    }
 }
 
 

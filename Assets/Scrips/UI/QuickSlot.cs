@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using SA;
+using SA.UI.Icons;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,27 +8,28 @@ namespace SA.UI
 {
     public class QuickSlot : MonoBehaviour
     {
-      
+        const string DefaultProfilePath = "SA.QuickSlotIconProfile";
+
+        public IconDisplayProfile slotProfile;
         public List<QSlots> slots = new List<QSlots>();
 
         public void Init()
         {
-          ClearIcons();
+            EnsureProfile();
+            ClearIcons();
         }
 
         public void ClearIcons()
         {
+            EnsureProfile();
             for (int i = 0; i < slots.Count; i++)
             {
                 if (slots[i].icon != null)
-                {
-                    EnsureSlotClipsOverflow(slots[i].icon);
-                    slots[i].icon.gameObject.SetActive(false);
-                }
+                    IconPresenter.Clear(slots[i].icon);
             }
         }
 
-        public void UpdateSlot(QSlotType stype, Sprite i)
+        public void UpdateSlot(QSlotType stype, IconId iconId)
         {
             QSlots q = GetSlot(stype);
             if (q == null)
@@ -42,32 +45,23 @@ namespace SA.UI
                 return;
             }
 
-            if (i == null)
+            EnsureProfile();
+
+            if (iconId.IsEmpty)
             {
-                q.icon.sprite = null;
-                q.icon.gameObject.SetActive(false);
+                IconPresenter.Clear(q.icon);
                 return;
             }
 
-            EnsureSlotClipsOverflow(q.icon);
-            q.icon.sprite = i;
-            q.icon.gameObject.SetActive(true);
+            IconPresenter.Show(q.icon, iconId, slotProfile);
         }
 
-        void EnsureSlotClipsOverflow(Image icon)
+        void EnsureProfile()
         {
-            RectTransform iconRect = icon.rectTransform;
-            if (iconRect == null || iconRect.parent == null)
-                return;
-
-            RectMask2D clipMask = iconRect.parent.GetComponent<RectMask2D>();
-            if (clipMask == null)
-                iconRect.parent.gameObject.AddComponent<RectMask2D>();
-
-            // Ensure icon participates in masking.
-            icon.maskable = true;
+            if (slotProfile == null)
+                slotProfile = Resources.Load<IconDisplayProfile>(DefaultProfilePath);
         }
-        
+
         public QSlots GetSlot(QSlotType t)
         {
             for (int i = 0; i < slots.Count; i++)
@@ -77,18 +71,18 @@ namespace SA.UI
             }
 
             return null;
-            
         }
-        
+
         public static QuickSlot singleton;
+
         void Awake()
         {
             singleton = this;
+            EnsureProfile();
         }
     }
 
     public enum QSlotType
-
     {
         rh, lh, item, spell
     }
@@ -98,6 +92,5 @@ namespace SA.UI
     {
         public QSlotType type;
         public Image icon;
-        //public Text amount;
     }
 }

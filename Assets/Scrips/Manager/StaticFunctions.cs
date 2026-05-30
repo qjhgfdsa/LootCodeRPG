@@ -8,6 +8,7 @@ namespace SA
     {
         public static void DeepCopyWeapon(Weapon from, Weapon to)
         {
+            to.iconId = from.iconId;
             to.icon = from.icon;
             to.oh_idle = from.oh_idle;
             to.th_idle = from.th_idle;
@@ -25,7 +26,7 @@ namespace SA
             for (int i = 0; i < from.two_handedActions.Count; i++)
             {
                 Action a = new Action();
-               // a.weaponStats = new WeaponStats();
+                // a.weaponStats = new WeaponStats();
                 DeepCopyActionToAction(a, from.two_handedActions[i]);
                 to.two_handedActions.Add(a);
             }
@@ -166,9 +167,11 @@ namespace SA
         }
 
         public static void DeepCopySpell(Spell from, Spell to)
+
         {
             to.itemName = from.itemName;
             to.itemDescription = from.itemDescription;
+            to.iconId = from.iconId;
             to.icon = from.icon;
             to.spellType = from.spellType;
             to.spellClass = from.spellClass;
@@ -192,6 +195,20 @@ namespace SA
             to.castTime = from.castTime;
             to.staminaCost = from.staminaCost;
             to.focusCost = from.focusCost;
+        }
+        public static void DeepCopyConsumable(Consumable from, Consumable to)
+        {
+            to.consumableEffect = from.consumableEffect;
+            to.targetAnim = from.targetAnim;
+            to.iconId = from.iconId;
+            to.icon = from.icon;
+            to.itemDescription = from.itemDescription;
+            to.itemName = from.itemName;
+            to.itemPrefab = from.itemPrefab;
+            to.r_model_pos = from.r_model_pos;
+            to.r_model_eulers = from.r_model_eulers;
+            to.model_scale = from.model_scale;
+
         }
     }
 }

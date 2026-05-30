@@ -161,7 +161,8 @@ namespace SA
             if (shift_input == false && shift_timer > 0 && shift_timer < 0.5f)
                 states.rollInput = true;
 
-            states.itemInput = x_input;
+            if (x_input)
+                states.itemInputPending = true;
             states.r = r_input;
             states.q = q_input;
             states.f = f_input;

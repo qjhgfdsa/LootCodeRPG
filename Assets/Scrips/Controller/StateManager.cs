@@ -25,6 +25,7 @@ namespace SA
         public bool r, f, q, e;
         public bool rollInput;
         public bool itemInput;
+        public bool itemInputPending;
 
 
 
@@ -170,6 +171,7 @@ namespace SA
             }
 
             isBlocking = false;
+            itemInput = itemInputPending;
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             anim.SetBool(StaticStrings.spellcasting, isSpellCasting);
 
@@ -178,6 +180,12 @@ namespace SA
                 inventoryManager.rightHandWeapon.weaponModel != null)
             {
                 inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
+            }
+
+            if (inventoryManager.currentConsumable != null )
+            {
+                if(inventoryManager.currentConsumable.itemModel != null)
+                    inventoryManager.currentConsumable.itemModel.SetActive(usingItem);
             }
 
             if (isBlocking == false && isSpellCasting == false)
@@ -236,10 +244,10 @@ namespace SA
                 DetectAction();
             }
 
-            if (!canMove)
-            {
+            if (canMove || itemInput)
                 DetectItemAction();
-            }
+
+            itemInput = false;
 
             anim.applyRootMotion = false;
 
@@ -332,14 +340,27 @@ namespace SA
             if (!itemInput)
                 return;
 
-            ItemAction slot = actionManager.consumableItem;
-            string targetAnim = slot.targetAnim;
+            RuntimeConsumable slot = inventoryManager.currentConsumable;
+            if (slot == null || slot.instance == null)
+            {
+                itemInputPending = false;
+                return;
+            }
+
+            string targetAnim = slot.instance.targetAnim;
 
             if (string.IsNullOrEmpty(targetAnim))
+            {
+                itemInputPending = false;
                 return;
+            }
 
-            //inventoryManager.curWeapon.weaponModel.SetActive(false);
+           //f(slot.itemModel != null)
+           //   slot.itemModel.SetActive(true);
+    
+
             usingItem = true;
+            itemInputPending = false;
             anim.Play(targetAnim);
         }
 

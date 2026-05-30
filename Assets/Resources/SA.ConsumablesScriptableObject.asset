@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca02e3a626819fd458d569d2f31cdf00, type: 3}
+  m_Name: SA.ConsumablesScriptableObject
+  m_EditorClassIdentifier: Assembly-CSharp::SA.ConsumablesScriptableObject
+  consumables:
+  - itemName: bestus
+    itemDescription: 
+    iconId: bestus
+    icon: {fileID: 0}
+    consumableEffect: 
+    targetAnim: bestus
+    itemPrefab: {fileID: 8432840886968817844, guid: 6f3c86df08d11274b81eee778160e869, type: 3}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: -0, y: 0, z: 0}
+    model_scale: {x: 1, y: 1, z: 1}
+  - itemName: bestus focus
+    itemDescription: 
+    iconId: bestus_focus
+    icon: {fileID: 0}
+    consumableEffect: 
+    targetAnim: bestus
+    itemPrefab: {fileID: 3899678667441111952, guid: e207deefabc2925419b24e2f3b94fed2, type: 3}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    model_scale: {x: 1, y: 1, z: 1}
+  - itemName: souls
+    itemDescription: 
+    iconId: soul
+    icon: {fileID: 0}
+    consumableEffect: 
+    targetAnim: use_item
+    itemPrefab: {fileID: 0}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    model_scale: {x: 0, y: 0, z: 0}

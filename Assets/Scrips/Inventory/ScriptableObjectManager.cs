@@ -26,10 +26,10 @@ namespace SA
             }
         }
 
-        [MenuItem("Assets/Inventory/Create Inventory List Scriptable Object")]
-        public static void CreateInventory()
+        [MenuItem("Assets/Inventory/Create Consumables List Scriptable Object")]
+        public static void CreateConsumables()
         {
-
+            ScriptableObjectManager.CreateAsset<ConsumablesScriptableObject>();
         }
 
         [MenuItem("Assets/Inventory/Create Spell Items List Scriptable Object")]
