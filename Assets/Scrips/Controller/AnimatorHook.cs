@@ -277,5 +277,17 @@ namespace SA
         {
             ik_handler.UpdateIKTargets((isLeft) ? IKSnapShotType.sword_l : IKSnapShotType.sword_r, isLeft);
         }
+        public void ConsumeCurrentItem()
+        {
+            if (states)
+            {
+                if(states.inventoryManager.currentConsumable)
+                {
+                    states.inventoryManager.currentConsumable.itemCount--;
+                    ItemEffectManager.singleton.UseItemEffect(states.inventoryManager.currentConsumable.instance.consumableEffect, states);
+                }
+            }
+
+        }
     }
 }

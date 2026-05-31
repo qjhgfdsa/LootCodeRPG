@@ -2188,6 +2188,9 @@ MonoBehaviour:
     _health: 0
     _focus: 0
     _stamina: 0
+    _souls: 0
+    _healthRecovery: 60
+    _focusRecovery: 70
     hp: 100
     fp: 100
     stamina: 100
@@ -3496,6 +3499,9 @@ MonoBehaviour:
     _health: 0
     _focus: 0
     _stamina: 0
+    _souls: 0
+    _healthRecovery: 60
+    _focusRecovery: 70
     hp: 100
     fp: 100
     stamina: 100
@@ -3862,8 +3868,8 @@ MonoBehaviour:
   spell_items: []
   consumable_items:
   - bestus
-  - bestus focus
-  - soul
+  - bestus_focus
+  - souls
   r_index: 0
   l_index: 0
   s_index: 0
@@ -7502,6 +7508,7 @@ MonoBehaviour:
   f_visual: {fileID: 1522669824}
   stamina: {fileID: 297811256}
   s_visual: {fileID: 1542274037}
+  souls: {fileID: 1893464444}
   sizeMultiplier: 3
 --- !u!1 &1336801791
 GameObject:
@@ -8642,6 +8649,9 @@ MonoBehaviour:
     _health: 0
     _focus: 0
     _stamina: 0
+    _souls: 0
+    _healthRecovery: 60
+    _focusRecovery: 70
     hp: 100
     fp: 100
     stamina: 100
@@ -10054,6 +10064,9 @@ MonoBehaviour:
     _health: 0
     _focus: 0
     _stamina: 0
+    _souls: 0
+    _healthRecovery: 60
+    _focusRecovery: 70
     hp: 100
     fp: 100
     stamina: 100
@@ -10749,7 +10762,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -11780,6 +11793,7 @@ GameObject:
   - component: {fileID: 2109640209}
   - component: {fileID: 2109640208}
   - component: {fileID: 2109640210}
+  - component: {fileID: 2109640211}
   m_Layer: 0
   m_Name: Resources Manager
   m_TagString: Untagged
@@ -11826,6 +11840,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70da0eee2d48e0940958eb9052b32a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.SpellEffectManager
+--- !u!114 &2109640211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109640207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a47e76716ee5a3f40b43ec540e3a5124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SA.ItemEffectManager
 --- !u!1 &2122012848 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8186804091790208800, guid: 3910d452d77a232498857be043651e9f, type: 3}

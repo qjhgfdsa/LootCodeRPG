@@ -6,9 +6,13 @@ namespace SA
     public class CharacterStats
     {
         [Header("Current")]
-        public int _health;
+        public float _health;
         public float _focus;
         public float _stamina;
+        public int _souls;
+
+        public float _healthRecovery = 60;
+        public float _focusRecovery = 70;
 
         [Header("Base Power")]
         public int hp = 100;
@@ -51,9 +55,9 @@ namespace SA
                 statEffect();
             }
             
-            _health = hp;
-            _focus = fp;
-            _stamina = stamina;
+          //  _health = hp;
+          //  _focus = fp;
+          //  _stamina = stamina;
 
         }
         public delegate void StatEffect();

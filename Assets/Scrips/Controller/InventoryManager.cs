@@ -410,7 +410,21 @@ namespace SA
 
             EquipSpell(r_spells[s_index]);
         }
+        public void ChangeToNextConsumable()
+        {
+            if (r_consum.Count == 0)
+            {
+                Debug.LogWarning("InventoryManager: No runtime consumables to cycle. Check consumable_items and ResourcesManager consumable ids.");
+                return;
+            }
 
+            if (c_index < r_consum.Count - 1)
+                c_index++;
+            else
+                c_index = 0;
+
+            EquipConsumable(r_consum[c_index]);
+        }
         #region Delegate Calls
         public void OpenBreathCollider()
         {

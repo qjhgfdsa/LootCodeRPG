@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SA
 {
@@ -13,12 +14,13 @@ namespace SA
         public Slider f_visual;
         public Slider stamina;
         public Slider s_visual;
-
+        public TextMeshProUGUI souls;
         public float sizeMultiplier = 4;
+        int curSouls;
 
-        void Start()
+        public void InitSouls(int v)
         {
-
+            curSouls = v;
         }
         public void InitSlider(StatSlider t, int value)
         {
@@ -50,11 +52,14 @@ namespace SA
             r.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);
             r_v.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);
         }
-        public void Tick(CharacterStats stats, float delta)
+              public void Tick(CharacterStats stats, float delta)
         {
-            health.value = stats._health;
-            focus.value = stats._focus;
+            health.value = Mathf.Lerp(health.value, stats._health, delta * lerpSpeed * 2);
+            focus.value = Mathf.Lerp(focus.value, stats._focus, delta * lerpSpeed * 2);
             stamina.value = stats._stamina;
+
+            curSouls = Mathf.RoundToInt(Mathf.Lerp(curSouls, stats._souls, delta * lerpSpeed));
+            souls.text = curSouls.ToString();
 
             h_visual.value = Mathf.Lerp(h_visual.value, stats._health, delta * lerpSpeed);
             f_visual.value = Mathf.Lerp(f_visual.value, stats._focus, delta * lerpSpeed);

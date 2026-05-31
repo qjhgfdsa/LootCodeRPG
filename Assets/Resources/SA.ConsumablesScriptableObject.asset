@@ -17,17 +17,17 @@ MonoBehaviour:
     itemDescription: 
     iconId: bestus
     icon: {fileID: 0}
-    consumableEffect: 
+    consumableEffect: bestus
     targetAnim: bestus
     itemPrefab: {fileID: 8432840886968817844, guid: 6f3c86df08d11274b81eee778160e869, type: 3}
     r_model_pos: {x: 0, y: 0, z: 0}
     r_model_eulers: {x: -0, y: 0, z: 0}
     model_scale: {x: 1, y: 1, z: 1}
-  - itemName: bestus focus
+  - itemName: bestus_focus
     itemDescription: 
     iconId: bestus_focus
     icon: {fileID: 0}
-    consumableEffect: 
+    consumableEffect: bestus_focus
     targetAnim: bestus
     itemPrefab: {fileID: 3899678667441111952, guid: e207deefabc2925419b24e2f3b94fed2, type: 3}
     r_model_pos: {x: 0, y: 0, z: 0}
@@ -37,7 +37,7 @@ MonoBehaviour:
     itemDescription: 
     iconId: soul
     icon: {fileID: 0}
-    consumableEffect: 
+    consumableEffect: souls
     targetAnim: use_item
     itemPrefab: {fileID: 0}
     r_model_pos: {x: 0, y: 0, z: 0}

@@ -217,6 +217,9 @@ namespace SA
                 return;
             if (states.isTwoHanded)
                 return;
+            
+            if (key2_input)
+                states.inventoryManager.ChangeToNextConsumable();
 
             if (key3_input)
                 states.inventoryManager.ChangeToNextWeapon(true);

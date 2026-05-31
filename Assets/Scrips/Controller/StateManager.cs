@@ -87,6 +87,7 @@ namespace SA
         [HideInInspector]
         public Action currentAction;
 
+
         [HideInInspector]
         public float airTimer;
         public ActionInput storePrevInput;
@@ -133,6 +134,8 @@ namespace SA
             characterStats.InitCurrent();
             if (UIManager.singleton != null)
                 UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
+
+            UIManager.singleton.InitSouls(characterStats._souls);
         }
 
         void SetupAnimator()
@@ -182,9 +185,9 @@ namespace SA
                 inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
             }
 
-            if (inventoryManager.currentConsumable != null )
+            if (inventoryManager.currentConsumable != null)
             {
-                if(inventoryManager.currentConsumable.itemModel != null)
+                if (inventoryManager.currentConsumable.itemModel != null)
                     inventoryManager.currentConsumable.itemModel.SetActive(usingItem);
             }
 
@@ -221,7 +224,7 @@ namespace SA
                 canMove = true;
                 actionManager.actionIndex = 0;
             }
-            if(canRotate)
+            if (canRotate)
             {
                 HandleRotation();
             }
@@ -340,6 +343,12 @@ namespace SA
             if (!itemInput)
                 return;
 
+            if (inventoryManager.currentConsumable == null)
+                return;
+
+            if (inventoryManager.currentConsumable.itemCount < 1 && inventoryManager.currentConsumable.unlimitedCount == false)
+                return;
+
             RuntimeConsumable slot = inventoryManager.currentConsumable;
             if (slot == null || slot.instance == null)
             {
@@ -355,12 +364,9 @@ namespace SA
                 return;
             }
 
-           //f(slot.itemModel != null)
-           //   slot.itemModel.SetActive(true);
-    
 
             usingItem = true;
-            itemInputPending = false;
+            itemInputPending = false;//เพิ่มเองไม่มีในสอนวิดีโอ
             anim.Play(targetAnim);
         }
 
