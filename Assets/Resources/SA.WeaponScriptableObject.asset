@@ -15,6 +15,7 @@ MonoBehaviour:
   weapons_all:
   - itemName: Sword
     itemDescription: 
+    iconId: 
     icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
@@ -33,6 +34,8 @@ MonoBehaviour:
       canBackStab: 1
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -51,6 +54,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 1
@@ -70,6 +75,8 @@ MonoBehaviour:
       canBackStab: 1
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -88,6 +95,8 @@ MonoBehaviour:
       canBackStab: 1
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 1
@@ -103,6 +112,7 @@ MonoBehaviour:
     model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
   - itemName: Unarmed
     itemDescription: 
+    iconId: 
     icon: {fileID: 21300000, guid: 0db2246a02b4b304291742b5b69f4ecb, type: 3}
     oh_idle: empty
     th_idle: Empty Both
@@ -121,6 +131,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -139,6 +151,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 1
@@ -158,6 +172,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 0
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -173,6 +189,7 @@ MonoBehaviour:
     model_scale: {x: 0.1550004, y: 0.1550004, z: 0.15500037}
   - itemName: Shield
     itemDescription: 
+    iconId: 
     icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
@@ -191,6 +208,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -209,6 +228,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -225,6 +246,7 @@ MonoBehaviour:
     model_scale: {x: 0.8, y: 0.8, z: 0.8}
   - itemName: Pyromancy Flame
     itemDescription: 
+    iconId: 
     icon: {fileID: 21300000, guid: 3dd23b9d6ec11ee419c81e9f6a58b35d, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
@@ -243,6 +265,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 0
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -259,6 +283,7 @@ MonoBehaviour:
     model_scale: {x: 0.01, y: 0.01, z: 0.01}
   - itemName: BigSword
     itemDescription: 
+    iconId: 
     icon: {fileID: 21300000, guid: 53421475a649a4e4aa127602a2ad9573, type: 3}
     oh_idle: gs_oh_idle
     th_idle: gs_th_idle
@@ -277,6 +302,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 20
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -295,6 +322,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 20
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -312,8 +341,10 @@ MonoBehaviour:
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 5
+      staminaCost: 20
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 1
@@ -332,8 +363,10 @@ MonoBehaviour:
       animSpeed: 0
       canParry: 0
       canBackStab: 0
-      staminaCost: 5
+      staminaCost: 30
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 1
@@ -349,6 +382,7 @@ MonoBehaviour:
     model_scale: {x: 0.3, y: 0.3, z: 0.3}
   - itemName: Spear
     itemDescription: 
+    iconId: 
     icon: {fileID: 21300000, guid: 698c5e9feaa63e54c8fd20932cfb6136, type: 3}
     oh_idle: oh_idle
     th_idle: th_idle
@@ -367,6 +401,8 @@ MonoBehaviour:
       canBackStab: 1
       staminaCost: 5
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0
@@ -385,6 +421,8 @@ MonoBehaviour:
       canBackStab: 0
       staminaCost: 20
       focusCost: 0
+      overrideKick: 0
+      kickAnim: 
       parryMultiplier: 0
       backstabMultiplier: 0
       overrideDamageAnim: 0

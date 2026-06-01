@@ -20,7 +20,7 @@ namespace SA
         [Header("Inputs")]
         public float vertical;
         public float horizontal;
-        public float moveAmount;
+
         public Vector3 moveDir;
         public bool r, f, q, e;
         public bool rollInput;
@@ -95,6 +95,12 @@ namespace SA
 
 
         float actionDelay;
+        float kickTimer;
+        public bool canKick;
+        public bool holdKick;
+        public float moveAmount;
+        public float kickMaxTime = 0.5f;
+        public float moveAmountThreshold = 0.05f;
 
         public void Init()
         {
@@ -241,6 +247,7 @@ namespace SA
                 }
             }
 
+            MoitorKick();
 
             if (canAttack)
             {
@@ -412,6 +419,49 @@ namespace SA
             }
         }
 
+        void MoitorKick()
+        {
+            if (!holdKick)
+            {
+                if (moveAmount > moveAmountThreshold)
+                {
+                    kickTimer += delta;
+                    if (kickTimer < kickMaxTime)
+                    {
+                        canKick = true;
+                    }
+                    else
+                    {
+                        kickTimer = kickMaxTime;
+                        holdKick = true;
+                        canKick = false;
+                    }
+                }
+                else
+                {
+
+                    kickTimer -= delta * 0.5f;
+                    if (kickTimer < 0)
+                    {
+                        kickTimer = 0;
+                        canKick = false;
+                    }
+                }
+            }
+            else
+            {
+                if (moveAmount < moveAmountThreshold)
+                {
+                    kickTimer -= delta;
+                    if (kickTimer < 0)
+                    {
+                        kickTimer = 0;
+                        holdKick = false;
+                        canKick = false;
+                    }
+                }
+            }
+        }
         void AttackAction(Action slot)
         {
             if (characterStats._stamina < slot.staminaCost)
@@ -425,6 +475,29 @@ namespace SA
 
             if (CheckForBackstab(slot))
                 return;
+
+            if (slot.fristStep.input == ActionInput.f)
+            {
+                if (canKick)
+                {
+                    string kickAnim = "kick 1";
+                    if (slot.overrideKick)
+                        kickAnim = slot.kickAnim;
+
+                    onEmpty = false;
+                    canMove = false;
+                    canAttack = false;
+                    canRotate = false;
+                    inAction = true;
+                    canKick = false;
+                    kickTimer = 0;
+
+                    anim.SetBool(StaticStrings.mirror, false);
+                    anim.CrossFade(kickAnim, 0.2f);
+                    Debug.Log("Kick 1 เฉพาะอยู่กับที่นั้นเท่านั้น");
+                    return;
+                }
+            }
 
             string targetAnim = null;
             targetAnim = slot.GetActionStep(ref actionManager.actionIndex).targetAnim;

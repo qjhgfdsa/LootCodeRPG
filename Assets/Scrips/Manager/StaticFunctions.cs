@@ -52,16 +52,18 @@ namespace SA
 
             to.actionType = from.actionType;
             to.spellClass = from.spellClass;
-            to.mirror = from.mirror;
+          //  to.mirror = from.mirror;
             to.canParry = from.canParry;
             to.canBeParried = from.canBeParried;
             to.changeSpeed = from.changeSpeed;
             to.animSpeed = from.animSpeed;
             to.canBackStab = from.canBackStab;
-            to.staminaCost = from.staminaCost;
-            to.focusCost = from.focusCost;
+           // to.staminaCost = from.staminaCost;
+          //  to.focusCost = from.focusCost;
             to.overrideDamageAnim = from.overrideDamageAnim;
             to.damageAnim = from.damageAnim;
+            to.overrideKick = from.overrideKick;
+            to.kickAnim = from.kickAnim;
 
             DeepCopyStepList(from, to);
         }
@@ -81,7 +83,7 @@ namespace SA
         }
 
 
-        public static bool TryDeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
+        public static bool DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
         {
             if (w == null || actionList == null)
                 return false;
@@ -113,22 +115,25 @@ namespace SA
             a.changeSpeed = from.changeSpeed;
             a.animSpeed = from.animSpeed;
             a.canBackStab = from.canBackStab;
-            a.staminaCost = from.staminaCost;
-            a.focusCost = from.focusCost;
+           // a.staminaCost = from.staminaCost;
+           // a.focusCost = from.focusCost;
             a.overrideDamageAnim = from.overrideDamageAnim;
             a.damageAnim = from.damageAnim;
             a.parryMultiplier = w.parryMultiplier;
             a.backstabMultiplier = w.backstabMultiplier;
             a.mirror = isLeftHand;
 
+            a.overrideKick = from.overrideKick;
+            a.kickAnim = from.kickAnim;
+
             return true;
         }
 
-        public static void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
+      /*  public static void DeepCopyAction(Weapon w, ActionInput inp, ActionInput assing, List<Action> actionList, bool isLeftHand = false)
         {
-            if (!TryDeepCopyAction(w, inp, assing, actionList, isLeftHand))
+           if (!TryDeepCopyAction(w, inp, assing, actionList, isLeftHand))
                 Debug.Log("no weapon action found for " + inp);
-        }
+        } */
 
         public static void DeepCopyWeaponStats(WeaponStats from, WeaponStats to)
         {

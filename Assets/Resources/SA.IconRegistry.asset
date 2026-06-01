@@ -37,4 +37,16 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 5aabaadcd5e8dce4296119d032114c28, type: 3}
   - id: soul
     sprite: {fileID: 21300000, guid: 96df5282e804a6f488e4b55e33dbbef2, type: 3}
+  - id: hello
+    sprite: {fileID: 21300000, guid: f0e7563eb25e2d245bbacc2882887972, type: 3}
+  - id: praise
+    sprite: {fileID: 21300000, guid: eb8be3525c099ed4395a972b8a724ed0, type: 3}
+  - id: point_down
+    sprite: {fileID: 21300000, guid: 01fac960f3777a24fb5fe72166874b0e, type: 3}
+  - id: point_forward
+    sprite: {fileID: 21300000, guid: 9a414b54de103bd40806bd3e0f42faa3, type: 3}
+  - id: point_up
+    sprite: {fileID: 21300000, guid: c44bf61472afa6d49b0778fc2b403677, type: 3}
+  - id: well
+    sprite: {fileID: 21300000, guid: 90d49660f80a3b542b7e5c619d2a8143, type: 3}
   missingIcon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}

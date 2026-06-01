@@ -19,6 +19,7 @@ namespace SA
         public static string KeyE = "e";                 // โจมตี E
         public static string KeyR = "r";                 // โจมตี R
         public static string KeyF = "f";                 // โจมตี F
+        public static string KeyG = "g";                 // เลือกการจัดการคำสั่ง Gesture Menu
 
         //Animation Parameters
         public static string Vertical_Axis = "vertical";

@@ -32,6 +32,8 @@ namespace SA
         StateManager states;
         CameraManager camManager;
         UIManager uiManager;
+
+        bool isGesturesOpen;
         float delta;
 
         void Awake()
@@ -80,6 +82,7 @@ namespace SA
                 return;
             
             delta = Time.fixedDeltaTime;
+            HandleUI();
             camManager.Tick(delta);
             states.FixedTick(delta);
         }
@@ -121,6 +124,28 @@ namespace SA
             key2_input = Input.GetKeyDown(KeyCode.Alpha2);
             key3_input = Input.GetKeyDown(KeyCode.Alpha3);
             key4_input = Input.GetKeyDown(KeyCode.Alpha4);
+
+            bool gesturesMenu = Input.GetKeyDown(StaticStrings.KeyG);
+            if (gesturesMenu)
+            {
+                isGesturesOpen = !isGesturesOpen;
+            }
+        }
+
+        void HandleUI()
+        {
+            uiManager.gestures.HandleGestures(isGesturesOpen);
+
+            if(isGesturesOpen)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
 
         void UpdateStates()

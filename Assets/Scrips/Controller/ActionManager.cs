@@ -185,6 +185,13 @@ namespace SA
         public float staminaCost = 5;
         public int focusCost = 0;
 
+        public bool overrideKick;
+        public string kickAnim;
+
+
+
+
+
         public ActionInput GetfirstInput()
         {
             if (fristStep == null)

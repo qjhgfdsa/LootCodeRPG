@@ -17,6 +17,12 @@ namespace SA
         public TextMeshProUGUI souls;
         public float sizeMultiplier = 4;
         int curSouls;
+        public GesturesManager gestures;
+        void Start()
+        {
+            gestures = GesturesManager.singleton;
+        }
+
 
         public void InitSouls(int v)
         {
@@ -52,7 +58,7 @@ namespace SA
             r.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);
             r_v.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);
         }
-              public void Tick(CharacterStats stats, float delta)
+        public void Tick(CharacterStats stats, float delta)
         {
             health.value = Mathf.Lerp(health.value, stats._health, delta * lerpSpeed * 2);
             focus.value = Mathf.Lerp(focus.value, stats._focus, delta * lerpSpeed * 2);
