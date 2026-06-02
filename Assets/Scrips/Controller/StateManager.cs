@@ -56,6 +56,7 @@ namespace SA
         public bool canBeParried;
         public bool parryIsOn;
         public bool onEmpty;
+        public bool closeWeapons;
 
 
 
@@ -143,7 +144,6 @@ namespace SA
 
             UIManager.singleton.InitSouls(characterStats._souls);
         }
-
         void SetupAnimator()
         {
             if (activeModel == null)
@@ -162,7 +162,6 @@ namespace SA
             if (anim == null)
                 anim = activeModel.GetComponent<Animator>();
         }
-
         public void FixedTick(float d)
         {
             delta = d;
@@ -184,17 +183,27 @@ namespace SA
             usingItem = anim.GetBool(StaticStrings.isInteracting);
             anim.SetBool(StaticStrings.spellcasting, isSpellCasting);
 
-            if (inventoryManager != null &&
-                inventoryManager.rightHandWeapon != null &&
-                inventoryManager.rightHandWeapon.weaponModel != null)
+            if (!closeWeapons)
             {
-                inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
-            }
+                if (inventoryManager != null &&
+                    inventoryManager.rightHandWeapon != null &&
+                    inventoryManager.rightHandWeapon.weaponModel != null)
+                {
+                    inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
+                }
 
-            if (inventoryManager.currentConsumable != null)
+                if (inventoryManager.currentConsumable != null)
+                {
+                    if (inventoryManager.currentConsumable.itemModel != null)
+                        inventoryManager.currentConsumable.itemModel.SetActive(usingItem);
+                }
+            }
+            else
             {
-                if (inventoryManager.currentConsumable.itemModel != null)
-                    inventoryManager.currentConsumable.itemModel.SetActive(usingItem);
+                if (inventoryManager.rightHandWeapon != null)
+                    inventoryManager.rightHandWeapon.weaponModel.SetActive(false);
+                if (inventoryManager.leftHandWeapon != null)
+                    inventoryManager.leftHandWeapon.weaponModel.SetActive(false);
             }
 
             if (isBlocking == false && isSpellCasting == false)
@@ -237,6 +246,8 @@ namespace SA
 
             if (!onEmpty && !canMove && !canAttack)//aniamtion is playing
                 return;
+
+            closeWeapons = false;
 
             if (canMove && !onEmpty)
             {
@@ -484,16 +495,8 @@ namespace SA
                     if (slot.overrideKick)
                         kickAnim = slot.kickAnim;
 
-                    onEmpty = false;
-                    canMove = false;
-                    canAttack = false;
-                    canRotate = false;
-                    inAction = true;
-                    canKick = false;
+                    PlayAnimation(kickAnim, false);
                     kickTimer = 0;
-
-                    anim.SetBool(StaticStrings.mirror, false);
-                    anim.CrossFade(kickAnim, 0.2f);
                     Debug.Log("Kick 1 เฉพาะอยู่กับที่นั้นเท่านั้น");
                     return;
                 }
@@ -509,11 +512,8 @@ namespace SA
 
             currentAction = slot;
 
-            onEmpty = false;
-            canMove = false;
-            canAttack = false;
             canRotate = false;
-            inAction = true;
+
 
             float targetSpeed = 1;
             if (slot.changeSpeed)
@@ -523,11 +523,10 @@ namespace SA
                     targetSpeed = 1;
             }
 
+            canBeParried = slot.canBeParried;
             anim.SetFloat(StaticStrings.animSpeed, targetSpeed);
-            anim.SetBool(StaticStrings.mirror, slot.mirror);
-            anim.CrossFade(targetAnim, 0.2f);
+            PlayAnimation(targetAnim, slot.mirror);
             characterStats._stamina -= slot.staminaCost;
-            characterStats._focus -= slot.focusCost;
         }
 
         void SpellAction(Action slot)
@@ -541,12 +540,7 @@ namespace SA
             if (slot.spellClass != inventoryManager.currentSpell.instance.spellClass ||
            characterStats._focus < slot.focusCost)
             {
-                Debug.Log("Not enough stamina or focus");
-                anim.CrossFade("cant_spell", 0.2f);
-                onEmpty = false;
-                canMove = false;
-                canAttack = true;
-                inAction = true;
+                PlayAnimation("cant_spell", slot.mirror);
                 return;
             }
 
@@ -593,6 +587,17 @@ namespace SA
 
             if (spellCast_start != null)
                 spellCast_start();
+        }
+        public void PlayAnimation(string targetAnim, bool isMirrored)
+        {
+            canAttack = false;
+            onEmpty = false;
+            canMove = false;
+            inAction = true;
+            canKick = false;
+            canRotate = false;
+            anim.SetBool(StaticStrings.mirror, isMirrored);
+            anim.CrossFade(targetAnim, 0.2f);
         }
         float cur_focusCost;
         float cur_staminaCost;

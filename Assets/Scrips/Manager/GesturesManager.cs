@@ -11,11 +11,18 @@ namespace SA
         public GameObject gestureGrid;
         public GameObject gestureIconTemplate;
         public RectTransform gestureSelector;
+        [SerializeField] Vector2 selectorSize = new Vector2(130f, 160f);
+
+        Transform selectorHomeParent;
 
         public int index;
+        public string gestureAnim;
+        public bool closeWeapon;
 
         void Start()
         {
+            if (gestureSelector != null)
+                selectorHomeParent = gestureSelector.parent;
             CreateGesturesUI();
         }
 
@@ -34,10 +41,28 @@ namespace SA
             if (index > gestures.Count - 1)
                 index = 0;
 
-            IconBase i = gestures[index].baseIcon;
-            gestureSelector.transform.SetParent(i.icon.transform);
+            PlaceSelectorOnIndex();
+            gestureAnim = gestures[index].targetAnim;
+            closeWeapon = gestures[index].closeWeapon;
+        }
+
+        void PlaceSelectorOnIndex()
+        {
+            if (gestureSelector == null || gestures.Count == 0)
+                return;
+
+            IconBase slot = gestures[index].baseIcon;
+            if (slot == null)
+                return;
+
+            gestureSelector.SetParent(slot.transform, false);
+            gestureSelector.localScale = Vector3.one;
+            gestureSelector.anchorMin = new Vector2(0.5f, 0.5f);
+            gestureSelector.anchorMax = new Vector2(0.5f, 0.5f);
+            gestureSelector.pivot = new Vector2(0.5f, 0.5f);
             gestureSelector.anchoredPosition = Vector2.zero;
-         
+            gestureSelector.sizeDelta = selectorSize;
+            gestureSelector.SetAsLastSibling();
         }
 
         public void HandleGestures(bool isOpen)
@@ -50,6 +75,9 @@ namespace SA
                     gestureSelector.gameObject.SetActive(true);
                 }
 
+                Canvas.ForceUpdateCanvases();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(gestureGrid.transform as RectTransform);
+                PlaceSelectorOnIndex();
             }
             else
             {
@@ -58,6 +86,9 @@ namespace SA
                     gestureGrid.SetActive(false);
                     gestureSelector.gameObject.SetActive(false);
                 }
+
+                if (gestureSelector != null && selectorHomeParent != null)
+                    gestureSelector.SetParent(selectorHomeParent, false);
             }
         }
 
@@ -77,6 +108,8 @@ namespace SA
             }
             gestureIconTemplate.SetActive(false);
             gestureSelector.gameObject.SetActive(false);
+            index = 1;
+            SelectGesture(false);
         }
 
         public GestureContainer GetGesture(string id)
@@ -112,6 +145,7 @@ namespace SA
             public string icon;
             public string targetAnim;
             public IconBase baseIcon;
+            public bool closeWeapon;
         }
 
     }

@@ -80,9 +80,8 @@ namespace SA
         {
             if (camManager == null)
                 return;
-            
+
             delta = Time.fixedDeltaTime;
-            HandleUI();
             camManager.Tick(delta);
             states.FixedTick(delta);
         }
@@ -92,6 +91,7 @@ namespace SA
             delta = Time.deltaTime;
 
             GetInput();
+            HandleUI();
             UpdateStates();
             states.Tick(delta);
 
@@ -110,7 +110,7 @@ namespace SA
             space_input = Input.GetKeyDown(StaticStrings.KeySpace);
             t_input = Input.GetKeyDown(StaticStrings.KeyT);
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
-           
+
 
             q_input = Input.GetKey(StaticStrings.KeyQ);
             e_input = Input.GetKey(StaticStrings.KeyE);
@@ -134,22 +134,66 @@ namespace SA
 
         void HandleUI()
         {
+            if (uiManager == null || uiManager.gestures == null)
+                return;
+
             uiManager.gestures.HandleGestures(isGesturesOpen);
 
-            if(isGesturesOpen)
+            if (isGesturesOpen)
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                curUIState = UIState.gestures;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                curUIState = UIState.game;
+            }
+
+            switch (curUIState)
+            {
+                case UIState.game:
+                    HandleQuickSlotChanges();
+                    break;
+                case UIState.gestures:
+                    HandleGesturesUI();
+                    break;
+                case UIState.inventory:
+                    break;
+            }
+
+        }
+
+        UIState curUIState;
+        enum UIState
+        {
+            game, gestures, inventory
+        }
+
+        void HandleGesturesUI()
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll > 0f)
+                uiManager.gestures.SelectGesture(true);
+            if (scroll < 0f)
+                uiManager.gestures.SelectGesture(false);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                isGesturesOpen = false;
+                states.usingItem = true;
+
+                var selected = uiManager.gestures.gestures[uiManager.gestures.index];
+                if (selected.closeWeapon)
+                    states.closeWeapons = true;
+
+                states.PlayAnimation(selected.targetAnim, false);
             }
         }
 
         void UpdateStates()
         {
+            if (isGesturesOpen)
+                return;
+
             states.vertical = vertical;
             states.horizontal = horizontal;
 
@@ -242,7 +286,7 @@ namespace SA
                 return;
             if (states.isTwoHanded)
                 return;
-            
+
             if (key2_input)
                 states.inventoryManager.ChangeToNextConsumable();
 
