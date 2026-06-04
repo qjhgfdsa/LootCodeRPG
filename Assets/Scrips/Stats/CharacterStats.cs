@@ -49,15 +49,15 @@ namespace SA
 
         public void InitCurrent()
         {
-            
-            if(statEffect != null)
+
+            if (statEffect != null)
             {
                 statEffect();
             }
-            
-          //  _health = hp;
-          //  _focus = fp;
-          //  _stamina = stamina;
+
+            //  _health = hp;
+            //  _focus = fp;
+            //  _stamina = stamina;
 
         }
         public delegate void StatEffect();
@@ -71,6 +71,16 @@ namespace SA
         {
             hp -= 5;
         }
+    }
+
+    public enum AttributeType
+    {
+        vigor, attunement, endurance, vitality, strength, dexterity, intelligence, faith, luck
+    }
+
+    public enum AttackDefenseType
+    {
+        physical, magic, fire, lighting, dark, critical, stability, bleed, curse, frost, magicBuff
     }
 
     [System.Serializable]
@@ -91,7 +101,7 @@ namespace SA
 
     [System.Serializable]
     public class WeaponStats
-    { 
+    {
         public string weaponId;
         public int physical;
         public int strike;
