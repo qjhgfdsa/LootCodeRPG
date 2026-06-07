@@ -1,11 +1,22 @@
+﻿# Unity generated / cache
 Library/
 Temp/
 Logs/
 UserSettings/
 obj/
-*.csproj
-*.unityproj
-*.sln
+Build/
+Builds/
+MemoryCaptures/
+Recordings/
+.utmp/
+
+# Unity meta (GUID noise, not useful for AI)
+*.meta
+
+# Logs
+*.log
+
+# IDE / build artifacts
 *.suo
 *.tmp
 *.user
@@ -13,7 +24,6 @@ obj/
 *.pidb
 *.booproj
 .vs/
-.vscode/
 .vsconfig
 *.apk
 *.aab
@@ -21,5 +31,34 @@ obj/
 *.app
 *.exe
 crashlytics-build.properties
+
+# Addressables generated
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
+
+# Third-party asset packs (not game code)
+Assets/EffectExamples/
+Assets/SimpleFX/
+Assets/PurePoly/
+Assets/TextMesh Pro/
+Assets/TutorialInfo/
+Assets/Homeless/
+Assets/_Recovery/
+
+# Animations (binary/yaml blobs; logic lives in Scrips/)
+Assets/Animation/
+
+# Binary assets (AI cannot read these)
+*.png
+*.jpg
+*.jpeg
+*.tif
+*.tga
+*.psd
+*.fbx
+*.obj
+*.wav
+*.mp3
+*.ogg
+*.pdf
+*.exr

@@ -12,38 +12,139 @@ namespace SA.UI
         public EquipmentLeft eq_left;
         public CenterOverlay c_overlay;
         public WeaponInfo weaponInfo;
+        public PlayerStatus playerStatus;
 
         public GameObject gameMenu, inventoryMenu, centerMain, centerRight, centerOverlay;
 
         void Start()
         {
             CreateUIElements();
-
-
         }
         void CreateUIElements()
         {
-            for (int i = 0; i < weaponInfo.itemDetails.Count; i++)
+            weaponInfoInit();
+            PlayerStatusInit();
+        }
+        void weaponInfoInit()
+        {
+            for (int i = 0; i < 6; i++)
             {
-                AttributeSlot a = weaponInfo.itemDetails[i];
-                if (a.isBreak)
-                {
-                    GameObject b = Instantiate(weaponInfo.breakSlot) as GameObject;
-                    b.transform.SetParent(weaponInfo.id_Grid);
-                    continue;
-                }
-                GameObject g = Instantiate(weaponInfo.slots_template) as GameObject;
-                g.transform.SetParent(weaponInfo.id_Grid);
-                a.slot = g.GetComponent<InventoryUISlot>();
-                a.slot.txt1.text = a.type.ToString();
-                a.slot.txt2.text = "99";
-
-
-
+                CreateAttDefUIElement(weaponInfo.ap_slots, weaponInfo.ap_Grid, (AttackDefenseType)i);
             }
 
-        }
+            for (int i = 0; i < 5; i++)
+            {
+                CreateAttDefUIElement(weaponInfo.g_absorb, weaponInfo.g_absorb_Grid, (AttackDefenseType)i);
+            }
 
+            CreateAttDefUIElement(weaponInfo.g_absorb, weaponInfo.g_absorb_Grid, AttackDefenseType.stability);
+
+            CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.bleed);
+            CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.curse);
+            CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.frost);
+            CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.magicBuff);
+
+
+            CreateAttributeUIElement_Mini(weaponInfo.att_bonus, weaponInfo.att_bonus_Grid, AttributeType.strength);
+            CreateAttributeUIElement_Mini(weaponInfo.att_bonus, weaponInfo.att_bonus_Grid, AttributeType.dexterity);
+            CreateAttributeUIElement_Mini(weaponInfo.att_bonus, weaponInfo.att_bonus_Grid, AttributeType.intelligence);
+            CreateAttributeUIElement_Mini(weaponInfo.att_bonus, weaponInfo.att_bonus_Grid, AttributeType.faith);
+
+
+            CreateAttributeUIElement_Mini(weaponInfo.att_req, weaponInfo.att_req_Grid, AttributeType.vigor);
+            CreateAttributeUIElement_Mini(weaponInfo.att_req, weaponInfo.att_req_Grid, AttributeType.attunement);
+            CreateAttributeUIElement_Mini(weaponInfo.att_req, weaponInfo.att_req_Grid, AttributeType.endurance);
+            CreateAttributeUIElement_Mini(weaponInfo.att_req, weaponInfo.att_req_Grid, AttributeType.vitality);
+
+        }
+        void PlayerStatusInit()
+        {
+            CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid,AttributeType.level);
+            CreateEmptySlot(playerStatus.Grid);
+
+            for (int i = 0; i < 8; i++)
+            {
+                CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid, (AttributeType)i);
+            }
+
+            CreateEmptySlot(playerStatus.Grid);
+            for (int i = 0; i < 3; i++)
+            {
+                int index = i;
+                index += 8;
+                CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid, (AttributeType)index);
+            }
+
+            
+            CreateEmptySlot(playerStatus.Grid);
+            for (int i = 0; i < 4; i++)
+            {
+                int index = i;
+                index += 11;
+                CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid, (AttributeType)index);
+            }
+
+
+
+
+        }
+        void CreateAttDefUIElement(List<AttDefType> l, Transform p, AttackDefenseType t)
+        {
+            AttDefType a = new AttDefType();
+            a.type = t;
+            l.Add(a);
+
+            GameObject g = Instantiate(weaponInfo.slots_template) as GameObject;
+            g.transform.SetParent(p);
+            a.slot = g.GetComponent<InventoryUISlot>();
+            a.slot.txt1.text = a.type.ToString();
+            a.slot.txt2.text = "99";
+            g.SetActive(true);
+        }
+        void CreateAttDefUIElement_Mini(List<AttDefType> l, Transform p, AttackDefenseType t)
+        {
+            AttDefType a = new AttDefType();
+            a.type = t;
+            l.Add(a);
+
+            GameObject g = Instantiate(weaponInfo.slot_mini) as GameObject;
+            g.transform.SetParent(p);
+            a.slot = g.GetComponent<InventoryUISlot>();
+            a.slot.txt1.text = "0";
+            g.SetActive(true);
+        }
+        void CreateAttributeUIElement_Mini(List<AttributeSlot> l, Transform p, AttributeType t)
+        {
+            AttributeSlot a = new AttributeSlot();
+            a.type = t;
+            l.Add(a);
+
+            GameObject g = Instantiate(weaponInfo.slot_mini) as GameObject;
+            g.transform.SetParent(p);
+            a.slot = g.GetComponent<InventoryUISlot>();
+            a.slot.txt1.text = "-";
+            g.SetActive(true);
+
+        }
+        void CreateAttributeUIElement(List<AttributeSlot> l, Transform p, AttributeType t)
+        {
+            AttributeSlot a = new AttributeSlot();
+            a.type = t;
+            l.Add(a);
+
+            GameObject g = Instantiate(playerStatus.slot_template) as GameObject;
+            g.transform.SetParent(p);
+            a.slot = g.GetComponent<InventoryUISlot>();
+            a.slot.txt1.text = t.ToString();
+            a.slot.txt2.text = "99";
+            g.SetActive(true);
+        }
+        void CreateEmptySlot(Transform p)
+        {
+            GameObject g = Instantiate(playerStatus.emptySlot) as GameObject;
+            g.transform.SetParent(p);
+            g.SetActive(true);
+        }
         public UIState curUIState;
         public void Tick()
         {
@@ -66,6 +167,14 @@ namespace SA.UI
             public TMP_Text curItemName;
             public Left_Inventory inventory;
             public EquipmentSlots slots;
+        }
+        [System.Serializable]
+        public class PlayerStatus
+        {
+            public GameObject slot_template;
+            public GameObject emptySlot;
+            public Transform Grid;
+            public List<AttributeSlot> attSlot = new List<AttributeSlot>();
         }
         [System.Serializable]
         public class Left_Inventory
@@ -93,11 +202,18 @@ namespace SA.UI
         public class WeaponInfo
         {
             public Image smallIcon;
-
             public GameObject slots_template;
+            public GameObject slot_mini;
             public GameObject breakSlot;
-            public Transform id_Grid;
-            public List<AttributeSlot> itemDetails = new List<AttributeSlot>();
+            public TMP_Text itemName;
+            public TMP_Text weaponType;
+            public TMP_Text damageType;
+            public TMP_Text skillName;
+            public TMP_Text fpCost;
+            public TMP_Text weightCost;
+            public TMP_Text durability_min;
+            public TMP_Text durability_max;
+
             public Transform ap_Grid;
             public List<AttDefType> ap_slots = new List<AttDefType>();
             public Transform g_absorb_Grid;
@@ -147,14 +263,13 @@ namespace SA.UI
             public InventoryUISlot slot;
 
         }
-         [System.Serializable]
+        [System.Serializable]
         public class AttDefType
         {
             public bool isBreak;
             public AttackDefenseType type;
-            public Image icon;
-            public TMP_Text attName0;
-            public TMP_Text attNumber;
+            public InventoryUISlot slot;
+
 
         }
 

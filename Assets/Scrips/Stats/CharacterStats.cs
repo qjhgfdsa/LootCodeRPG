@@ -75,7 +75,8 @@ namespace SA
 
     public enum AttributeType
     {
-        vigor, attunement, endurance, vitality, strength, dexterity, intelligence, faith, luck
+        vigor, endurance, vitality, strength, dexterity, intelligence, faith, luck, 
+        hp, fp, stamina, equip_load, poise, item_discover, attunement,level, 
     }
 
     public enum AttackDefenseType
