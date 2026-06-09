@@ -60,7 +60,7 @@ namespace SA
 
             for (int i = 0; i < obj.weapons_all.Count; i++)
             {
-                if (obj.weapons_all[i].itemName != itemName)
+                if (obj.weapons_all[i].Item_id != itemName)
                     continue;
 
                 Weapon w = obj.weapons_all[i];
@@ -107,7 +107,7 @@ namespace SA
 
             for (int i = 0; i < obj.consumables.Count; i++)
             {
-                if (obj.consumables[i].itemName != itemName)
+                if (obj.consumables[i].Item_id != itemName)
                     continue;
 
                 Consumable c = obj.consumables[i];

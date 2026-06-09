@@ -4,6 +4,7 @@ using TMPro;
 using SA;
 using System.Collections.Generic;
 using System;
+using System.Data.Common;
 
 namespace SA.UI
 {
@@ -13,6 +14,7 @@ namespace SA.UI
         public CenterOverlay c_overlay;
         public WeaponInfo weaponInfo;
         public PlayerStatus playerStatus;
+
 
         public GameObject gameMenu, inventoryMenu, centerMain, centerRight, centerOverlay;
 
@@ -24,6 +26,7 @@ namespace SA.UI
         {
             weaponInfoInit();
             PlayerStatusInit();
+            WeaponStatusInit();
         }
         void weaponInfoInit()
         {
@@ -42,7 +45,7 @@ namespace SA.UI
             CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.bleed);
             CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.curse);
             CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.frost);
-            CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.magicBuff);
+            CreateAttDefUIElement_Mini(weaponInfo.a_effects, weaponInfo.a_effects_Grid, AttackDefenseType.poison);
 
 
             CreateAttributeUIElement_Mini(weaponInfo.att_bonus, weaponInfo.att_bonus_Grid, AttributeType.strength);
@@ -59,32 +62,56 @@ namespace SA.UI
         }
         void PlayerStatusInit()
         {
-            CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid,AttributeType.level);
-            CreateEmptySlot(playerStatus.Grid);
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.level, "Level");
+            CreateEmptySlot(playerStatus.attGrid);
 
-            for (int i = 0; i < 8; i++)
-            {
-                CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid, (AttributeType)i);
-            }
-
-            CreateEmptySlot(playerStatus.Grid);
-            for (int i = 0; i < 3; i++)
-            {
-                int index = i;
-                index += 8;
-                CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid, (AttributeType)index);
-            }
-
-            
-            CreateEmptySlot(playerStatus.Grid);
-            for (int i = 0; i < 4; i++)
-            {
-                int index = i;
-                index += 11;
-                CreateAttributeUIElement(playerStatus.attSlot, playerStatus.Grid, (AttributeType)index);
-            }
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.vigor, "Vigor");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.endurance, "Endurance");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.vitality, "Vitality");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.strength, "Strength");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.dexterity, "Dexterity");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.intelligence, "Intelligence");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.faith, "Faith");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.luck, "Luck");
 
 
+            CreateEmptySlot(playerStatus.attGrid);
+
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.hp, "HP");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.fp, "FP");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.stamina, "Stamina");
+
+            CreateEmptySlot(playerStatus.attGrid);
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.equip_load, "Equip Load");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.poise, "Poise");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.item_discover, "Item Discover");
+            CreateAttributeUIElement(playerStatus.attSlots, playerStatus.attGrid, AttributeType.attunement, "Attunement");
+
+        }
+        void WeaponStatusInit()
+        {
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.physical, "Physical");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.strike, "VS Strike");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.slash, "VS Slash");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.thrust, "VS Thrust");
+
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.magic, "Magic");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.fire, "Fire");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.lightning, "Lightning");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.dark, "Dark");
+
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.bleed, "Bleed");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.curse, "Curse");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.frost, "Frost");
+            CreateWeaponStatusSlot(playerStatus.defSlots, playerStatus.defGrid, AttackDefenseType.poison, "Poison");
+
+            CreateAttackPowerSlot(playerStatus.apSlots, playerStatus.apGrid, "R Weapon 1");
+            CreateAttackPowerSlot(playerStatus.apSlots, playerStatus.apGrid, "R Weapon 2");
+            CreateAttackPowerSlot(playerStatus.apSlots, playerStatus.apGrid, "R Weapon 3");
+
+            CreateAttackPowerSlot(playerStatus.apSlots, playerStatus.apGrid, "L Weapon 1");
+            CreateAttackPowerSlot(playerStatus.apSlots, playerStatus.apGrid, "L Weapon 2");
+            CreateAttackPowerSlot(playerStatus.apSlots, playerStatus.apGrid, "L Weapon 3");
 
 
         }
@@ -126,7 +153,7 @@ namespace SA.UI
             g.SetActive(true);
 
         }
-        void CreateAttributeUIElement(List<AttributeSlot> l, Transform p, AttributeType t)
+        void CreateAttributeUIElement(List<AttributeSlot> l, Transform p, AttributeType t, string txt1Text = null)
         {
             AttributeSlot a = new AttributeSlot();
             a.type = t;
@@ -135,7 +162,10 @@ namespace SA.UI
             GameObject g = Instantiate(playerStatus.slot_template) as GameObject;
             g.transform.SetParent(p);
             a.slot = g.GetComponent<InventoryUISlot>();
-            a.slot.txt1.text = t.ToString();
+            if (string.IsNullOrEmpty(txt1Text))
+                a.slot.txt1.text = t.ToString();
+            else
+                a.slot.txt1.text = txt1Text;
             a.slot.txt2.text = "99";
             g.SetActive(true);
         }
@@ -144,6 +174,35 @@ namespace SA.UI
             GameObject g = Instantiate(playerStatus.emptySlot) as GameObject;
             g.transform.SetParent(p);
             g.SetActive(true);
+        }
+        void CreateWeaponStatusSlot(List<PlayerStatusDef> l, Transform p, AttackDefenseType t, string txt1Text = null)
+        {
+            PlayerStatusDef w = new PlayerStatusDef();
+            GameObject g = Instantiate(playerStatus.doubleSlot_template) as GameObject;
+            g.SetActive(true);
+            g.transform.SetParent(p);
+            w.type = t;
+            w.slot = g.GetComponent<InventoryUIDoubleSlot>();
+            if (string.IsNullOrEmpty(txt1Text))
+                w.slot.txt1.text = t.ToString();
+            else
+                w.slot.txt1.text = txt1Text;
+            w.slot.txt2.text = "99";
+            w.slot.txt3.text = "99";
+
+        }
+        void CreateAttackPowerSlot(List<AttackPowerSlot> l, Transform p, string id)
+        {
+            AttackPowerSlot a = new AttackPowerSlot();
+            l.Add(a);
+
+            GameObject g = Instantiate(weaponInfo.slots_template) as GameObject;
+            g.transform.SetParent(p);
+            a.slot = g.GetComponent<InventoryUISlot>();
+            a.slot.txt1.text = id;
+            a.slot.txt2.text = "99";
+            g.SetActive(true);
+
         }
         public UIState curUIState;
         public void Tick()
@@ -172,9 +231,16 @@ namespace SA.UI
         public class PlayerStatus
         {
             public GameObject slot_template;
+            public GameObject doubleSlot_template;
             public GameObject emptySlot;
-            public Transform Grid;
-            public List<AttributeSlot> attSlot = new List<AttributeSlot>();
+            public Transform attGrid;
+            public Transform defGrid;
+            public Transform apGrid;
+            public Transform resistGrid;
+            public List<AttributeSlot> attSlots = new List<AttributeSlot>();
+            public List<AttackPowerSlot> apSlots = new List<AttackPowerSlot>();
+            public List<PlayerStatusDef> defSlots = new List<PlayerStatusDef>();
+            public List<PlayerStatusDef> resistSlots = new List<PlayerStatusDef>();
         }
         [System.Serializable]
         public class Left_Inventory
@@ -263,15 +329,28 @@ namespace SA.UI
             public InventoryUISlot slot;
 
         }
-        [System.Serializable]
         public class AttDefType
         {
             public bool isBreak;
             public AttackDefenseType type;
             public InventoryUISlot slot;
-
-
         }
+
+        [System.Serializable]
+        public class AttackPowerSlot
+        {
+            public InventoryUISlot slot;
+        }
+
+
+        [System.Serializable]
+        public class PlayerStatusDef
+        {
+            public AttackDefenseType type;
+            public InventoryUIDoubleSlot slot;
+        }
+
+
 
 
 

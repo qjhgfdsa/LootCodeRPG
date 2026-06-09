@@ -25,6 +25,12 @@ namespace SA
                 Debug.Log(typeof(T).ToString() + " already exists");
             }
         }
+        
+        [MenuItem("Assets/Inventory/Create Item List Scriptable Object")]
+        public static void CreateItemList()
+        {
+            ScriptableObjectManager.CreateAsset<ItemScriptableObjectScript>();
+        }
 
         [MenuItem("Assets/Inventory/Create Consumables List Scriptable Object")]
         public static void CreateConsumables()

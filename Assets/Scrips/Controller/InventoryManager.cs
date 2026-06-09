@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SA.UI;
 using UnityEngine;
 
 
@@ -146,7 +147,7 @@ namespace SA
             RuntimeSpellItems inst = go.AddComponent<RuntimeSpellItems>();
             inst.instance = new Spell();
             StaticFunctions.DeepCopySpell(s, inst.instance);
-            go.name = s.itemName;
+            go.name = s.Item_id;
 
 
 
@@ -163,7 +164,7 @@ namespace SA
             }
             if (inst.instance.particlePrefab == null)
             {
-                Debug.LogWarning($"CreateSpellParticle: particlePrefab is null for spell '{inst.instance.itemName}'");
+                Debug.LogWarning($"CreateSpellParticle: particlePrefab is null for spell '{inst.instance.Item_id}'");
                 return;
             }
 
@@ -201,13 +202,13 @@ namespace SA
 
             GameObject go = new GameObject();
             RuntimeWeapon inst = go.AddComponent<RuntimeWeapon>();
-            go.name = w.itemName;
+            go.name = w.Item_id;
 
             inst.instance = new Weapon();
             StaticFunctions.DeepCopyWeapon(w, inst.instance);
 
             inst.weaponStats = new WeaponStats();
-            WeaponStats w_stats = ResourcesManager.singleton.GetWeaponStats(w.itemName);
+            WeaponStats w_stats = ResourcesManager.singleton.GetWeaponStats(w.Item_id);
             StaticFunctions.DeepCopyWeaponStats(w_stats, inst.weaponStats);
 
             inst.weaponModel = Instantiate(inst.instance.modelPrefab) as GameObject;
@@ -233,7 +234,7 @@ namespace SA
         {
             GameObject go = new GameObject();
             RuntimeConsumable inst = go.AddComponent<RuntimeConsumable>();
-            go.name = c.itemName;
+            go.name = c.Item_id;
 
             inst.instance = new Consumable();
             StaticFunctions.DeepCopyConsumable(c, inst.instance);
@@ -283,16 +284,27 @@ namespace SA
             states.anim.Play(StaticStrings.changeWeapon);
             states.anim.Play(targetIdle);
 
-            if (UI.QuickSlot.singleton != null)
+            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
+            Item item = ResourcesManager.singleton.GetItem(w.instance.Item_id, ResourcesManager.ItemType.weapon);
+            uiSlot.UpdateSlot((isLeft) ? UI.QSlotType.lh : UI.QSlotType.rh, item.GetIconId());
+
+            w.weaponModel.SetActive(true);
+
+
+
+
+
+
+          /*  if (UI.QuickSlot.singleton != null)
             {
                 UI.QuickSlot.singleton.UpdateSlot(
                     (isLeft) ?
-                    UI.QSlotType.lh : UI.QSlotType.rh, w.instance.GetIconId());
+                    UI.QSlotType.lh : UI.QSlotType.rh, IconId.FromItemName(w.instance.Item_id));//ค่อยมาเปลี่ยน
             }
             else
                 Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
 
-            w.weaponModel.SetActive(true);
+            w.weaponModel.SetActive(true);*/
         }
 
         public void EquipSpell(RuntimeSpellItems spell)
@@ -304,7 +316,11 @@ namespace SA
                 return;
             }
 
-            UI.QuickSlot.singleton.UpdateSlot(UI.QSlotType.spell, spell.instance.GetIconId());
+            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
+
+            Item item = ResourcesManager.singleton.GetItem(spell.instance.Item_id, ResourcesManager.ItemType.spell);
+            uiSlot.UpdateSlot(UI.QSlotType.spell, item.GetIconId());
+
         }
         public void EquipConsumable(RuntimeConsumable consum)
         {
@@ -315,7 +331,10 @@ namespace SA
                 return;
             }
 
-            UI.QuickSlot.singleton.UpdateSlot(UI.QSlotType.item, consum.instance.GetIconId());
+            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
+
+            Item item = ResourcesManager.singleton.GetItem(consum.instance.Item_id, ResourcesManager.ItemType.consumable);
+            uiSlot.UpdateSlot(UI.QSlotType.item, item.GetIconId());
 
         }
 
@@ -451,9 +470,10 @@ namespace SA
     [System.Serializable]
     public class Item
     {
-        public string itemName;
+        public string Item_id;
+        public string name_item;
         public string itemDescription;
-        [Tooltip("Registry key. Leave empty to use normalized itemName.")]
+        [Tooltip("Registry key. Leave empty to use normalized Item_id.")]
         public string iconId;
         public Sprite icon;
 
@@ -462,13 +482,14 @@ namespace SA
             if (!string.IsNullOrWhiteSpace(iconId))
                 return new IconId(IconId.Normalize(iconId));
 
-            return IconId.FromItemName(itemName);
+            return IconId.FromItemName(Item_id);
         }
     }
 
     [System.Serializable]
-    public class Weapon : Item
+    public class Weapon
     {
+        public string Item_id;
         public string oh_idle;
         public string th_idle;
 
@@ -507,8 +528,9 @@ namespace SA
     }
 
     [System.Serializable]
-    public class Spell : Item
+    public class Spell 
     {
+        public string Item_id;
         public SpellType spellType;
         public SpellClass spellClass;
         public List<SpellAction> actions = new List<SpellAction>();
@@ -535,8 +557,9 @@ namespace SA
         }
     }
     [System.Serializable]
-    public class Consumable : Item
+    public class Consumable 
     {
+        public string Item_id;
         public string consumableEffect;
         public string targetAnim;
 
@@ -545,6 +568,8 @@ namespace SA
         public Vector3 r_model_eulers;
         public Vector3 model_scale;
     }
+
+
 
     #region IconId
     [Serializable]

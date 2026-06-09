@@ -8,8 +8,8 @@ namespace SA
     {
         public static void DeepCopyWeapon(Weapon from, Weapon to)
         {
-            to.iconId = from.iconId;
-            to.icon = from.icon;
+          //  to.iconId = from.iconId;
+         //   to.icon = from.icon;
             to.oh_idle = from.oh_idle;
             to.th_idle = from.th_idle;
 
@@ -174,10 +174,10 @@ namespace SA
         public static void DeepCopySpell(Spell from, Spell to)
 
         {
-            to.itemName = from.itemName;
-            to.itemDescription = from.itemDescription;
-            to.iconId = from.iconId;
-            to.icon = from.icon;
+            to.Item_id = from.Item_id;
+           // to.itemDescription = from.itemDescription;
+          //  to.iconId = from.iconId;
+          //  to.icon = from.icon;
             to.spellType = from.spellType;
             to.spellClass = from.spellClass;
             to.projecttile = from.projecttile;
@@ -205,10 +205,10 @@ namespace SA
         {
             to.consumableEffect = from.consumableEffect;
             to.targetAnim = from.targetAnim;
-            to.iconId = from.iconId;
-            to.icon = from.icon;
-            to.itemDescription = from.itemDescription;
-            to.itemName = from.itemName;
+          //  to.iconId = from.iconId;
+          //  to.icon = from.icon;
+          //  to.itemDescription = from.itemDescription;
+            to.Item_id = from.Item_id;
             to.itemPrefab = from.itemPrefab;
             to.r_model_pos = from.r_model_pos;
             to.r_model_eulers = from.r_model_eulers;

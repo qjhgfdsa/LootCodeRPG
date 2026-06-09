@@ -81,7 +81,12 @@ namespace SA
 
     public enum AttackDefenseType
     {
-        physical, magic, fire, lighting, dark, critical, stability, bleed, curse, frost, magicBuff
+        physical, strike, slash, thrust, magic, fire, lightning, dark, stability, bleed, curse, frost,poison,
+       
+    }
+    public enum WeaponDamageType
+    {
+        sum, vs_strike, vs_slash, vs_thrust,
     }
 
     [System.Serializable]
