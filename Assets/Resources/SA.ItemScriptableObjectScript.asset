@@ -12,4 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d73e75a197c054b9b237d6858b6a44, type: 3}
   m_Name: SA.ItemScriptableObjectScript
   m_EditorClassIdentifier: Assembly-CSharp::SA.ItemScriptableObjectScript
-  items_all: []
+  cons_items:
+  - Item_id: "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
+    name_item: "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
+    itemDescription: "\u0E02\u0E32\u0E14\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49"
+    iconId: bestus
+    icon: {fileID: 21300000, guid: 720936d3887635548b5eca76a7978798, type: 3}
+  weapon_items:
+  - Item_id: "\u0E14\u0E32\u0E1A"
+    name_item: Sword basic
+    itemDescription: is it Most use Sword
+    iconId: sword
+    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+  - Item_id: "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
+    name_item: Big Sword
+    itemDescription: is a Big One
+    iconId: bigsword
+    icon: {fileID: 21300000, guid: 53421475a649a4e4aa127602a2ad9573, type: 3}
+  - Item_id: "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
+    name_item: unarmd
+    itemDescription: Just punch
+    iconId: 
+    icon: {fileID: 0}
+  spell_items:
+  - Item_id: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
+    name_item: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F\u0E2A\u0E35\u0E1F\u0E49\u0E32"
+    itemDescription: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E15\u0E34\u0E14\u0E1A\u0E49\u0E32\u0E07\u0E44\u0E21\u0E48\u0E15\u0E34\u0E14\u0E1A\u0E49\u0E32\u0E07"
+    iconId: fireball
+    icon: {fileID: 21300000, guid: 3dd23b9d6ec11ee419c81e9f6a58b35d, type: 3}

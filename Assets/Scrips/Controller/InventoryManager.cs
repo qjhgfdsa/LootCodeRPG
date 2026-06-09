@@ -285,14 +285,10 @@ namespace SA
             states.anim.Play(targetIdle);
 
             UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
-            Item item = ResourcesManager.singleton.GetItem(w.instance.Item_id, ResourcesManager.ItemType.weapon);
+            Item item = ResourcesManager.singleton.GetItem(w.instance.Item_id, ItemType.weapon);
             uiSlot.UpdateSlot((isLeft) ? UI.QSlotType.lh : UI.QSlotType.rh, item.GetIconId());
 
             w.weaponModel.SetActive(true);
-
-
-
-
 
 
           /*  if (UI.QuickSlot.singleton != null)
@@ -318,7 +314,7 @@ namespace SA
 
             UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
 
-            Item item = ResourcesManager.singleton.GetItem(spell.instance.Item_id, ResourcesManager.ItemType.spell);
+            Item item = ResourcesManager.singleton.GetItem(spell.instance.Item_id, ItemType.spell);
             uiSlot.UpdateSlot(UI.QSlotType.spell, item.GetIconId());
 
         }
@@ -333,7 +329,7 @@ namespace SA
 
             UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
 
-            Item item = ResourcesManager.singleton.GetItem(consum.instance.Item_id, ResourcesManager.ItemType.consumable);
+            Item item = ResourcesManager.singleton.GetItem(consum.instance.Item_id, ItemType.consumable);
             uiSlot.UpdateSlot(UI.QSlotType.item, item.GetIconId());
 
         }

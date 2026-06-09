@@ -10,6 +10,7 @@ namespace SA
         {
           //  to.iconId = from.iconId;
          //   to.icon = from.icon;
+            to.Item_id = from.Item_id;
             to.oh_idle = from.oh_idle;
             to.th_idle = from.th_idle;
 

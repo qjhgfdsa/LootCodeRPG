@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: SA.WeaponScriptableObject
   m_EditorClassIdentifier: Assembly-CSharp::SA.WeaponScriptableObject
   weapons_all:
-  - itemName: Sword
-    itemDescription: 
-    iconId: 
-    icon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
+  - Item_id: "\u0E14\u0E32\u0E1A"
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
@@ -110,10 +107,7 @@ MonoBehaviour:
     r_model_eulers: {x: -26.952, y: 42.042, z: 92.93}
     l_model_eulers: {x: -26.952, y: -140, z: 92.93}
     model_scale: {x: 0.3937009, y: 0.3937008, z: 0.3937009}
-  - itemName: Unarmed
-    itemDescription: 
-    iconId: 
-    icon: {fileID: 21300000, guid: 0db2246a02b4b304291742b5b69f4ecb, type: 3}
+  - Item_id: "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
     oh_idle: empty
     th_idle: Empty Both
     actions:
@@ -187,10 +181,7 @@ MonoBehaviour:
     r_model_eulers: {x: 332.1887, y: 36.85992, z: 183.71913}
     l_model_eulers: {x: -26.952, y: -140, z: 92.93}
     model_scale: {x: 0.1550004, y: 0.1550004, z: 0.15500037}
-  - itemName: Shield
-    itemDescription: 
-    iconId: 
-    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
+  - Item_id: "\u0E42\u0E25\u0E48\u0E01\u0E25\u0E21"
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
@@ -244,10 +235,7 @@ MonoBehaviour:
     r_model_eulers: {x: 0, y: 0, z: 0}
     l_model_eulers: {x: 1, y: 1, z: 1}
     model_scale: {x: 0.8, y: 0.8, z: 0.8}
-  - itemName: Pyromancy Flame
-    itemDescription: 
-    iconId: 
-    icon: {fileID: 21300000, guid: 3dd23b9d6ec11ee419c81e9f6a58b35d, type: 3}
+  - Item_id: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E40\u0E1E\u0E25\u0E34\u0E07"
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
@@ -281,10 +269,7 @@ MonoBehaviour:
     r_model_eulers: {x: 0, y: 0, z: 0}
     l_model_eulers: {x: 0, y: 0, z: 0}
     model_scale: {x: 0.01, y: 0.01, z: 0.01}
-  - itemName: BigSword
-    itemDescription: 
-    iconId: 
-    icon: {fileID: 21300000, guid: 53421475a649a4e4aa127602a2ad9573, type: 3}
+  - Item_id: "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
     oh_idle: gs_oh_idle
     th_idle: gs_th_idle
     actions:
@@ -380,10 +365,7 @@ MonoBehaviour:
     r_model_eulers: {x: 354.1571, y: 324.81235, z: 269.03992}
     l_model_eulers: {x: 350.51245, y: 352.92935, z: 36.554886}
     model_scale: {x: 0.3, y: 0.3, z: 0.3}
-  - itemName: Spear
-    itemDescription: 
-    iconId: 
-    icon: {fileID: 21300000, guid: 698c5e9feaa63e54c8fd20932cfb6136, type: 3}
+  - Item_id: "\u0E2B\u0E2D\u0E01"
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
@@ -438,7 +420,7 @@ MonoBehaviour:
     l_model_eulers: {x: 283.8677, y: 8.8954, z: 35.738194}
     model_scale: {x: 0.4, y: 0.4, z: 0.4}
   weaponStats_all:
-  - weaponId: Unarmed
+  - weaponId: "\u0E14\u0E32\u0E1A"
     physical: 15
     strike: 0
     slash: 0
@@ -447,7 +429,7 @@ MonoBehaviour:
     fire: 0
     lightning: 0
     dark: 0
-  - weaponId: BigSword
+  - weaponId: "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
     physical: 50
     strike: 0
     slash: 0
@@ -456,7 +438,7 @@ MonoBehaviour:
     fire: 0
     lightning: 0
     dark: 0
-  - weaponId: sword
+  - weaponId: "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
     physical: 30
     strike: 0
     slash: 0
