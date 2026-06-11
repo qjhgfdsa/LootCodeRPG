@@ -18,11 +18,69 @@ namespace SA.UI
         public GameObject gameMenu, inventoryMenu, centerMain, centerRight, centerOverlay;
 
         List<IconBase> iconSlotsCreated = new List<IconBase>();
+        public EquipmentSlotUI equipmentSlotUI;
+
+        public Transform equipmentParent;
+       // List<EquipmentSlot> equipSlots = new List<EquipmentSlot>();
+       EquipmentSlot[,] equipSlots ;
+
+
+        public Vector2 curSlotPos;
+        float inputT;
+        bool dontMove;
+        void HandleSlotMovement()
+        {
+            float x = curSlotPos.x;
+            float y = curSlotPos.y;
+
+            float h = Input.GetAxis(StaticStrings.Horizontal);
+            float v = Input.GetAxis(StaticStrings.Vertical);
+
+            if(h!=0 && v!=0)
+            {
+                if(dontMove)
+                {
+                    inputT -= Time.deltaTime;
+                    if(inputT < 0)
+                    {
+                        dontMove = true;
+                    }
+                }
+
+            }
+            else
+            {
+                dontMove = false;
+                inputT = 0.6f;
+
+            }
+            if (h !=0)
+            {
+
+            }
+           
+
+
+        }
+
 
         #region Create UI Elements
         void Start()
         {
             CreateUIElements();
+            InitEqSlots();
+        }
+        void InitEqSlots()
+        {
+            EquipmentSlot[] eq = equipmentParent.GetComponentsInChildren<EquipmentSlot>();
+            equipSlots = new EquipmentSlot[5, 6];
+    
+            for (int i = 0; i < equipSlots.Length; i++)
+            {
+               int x = Mathf.RoundToInt(eq[i].slotPos.x);
+               int y = Mathf.RoundToInt(eq[i].slotPos.y);
+               equipSlots[x, y] = eq[i];
+            }
         }
         void CreateUIElements()
         {
@@ -223,11 +281,11 @@ namespace SA.UI
             Transform p = eq_left.inventory.slotGrid;
 
             int dif = iconSlotsCreated.Count - itemList.Count;
-            int extra = (dif>0)?dif:0;
+            int extra = (dif > 0) ? dif : 0;
 
             for (int i = 0; i < itemList.Count + extra; i++)
             {
-                if(i > itemList.Count-1)
+                if (i > itemList.Count - 1)
                 {
                     iconSlotsCreated[i].gameObject.SetActive(false);
                     continue;
@@ -252,20 +310,49 @@ namespace SA.UI
                 icon.id = itemList[i].Item_id;
             }
         }
-        public ItemType typeDebug;
+
+        public void Tick()
+        {
+
+        }
+        public void LoadEquipment(InventoryManager inv)
+        {
+            for (int i = 0; i < inv.rh_weapons.Count; i++)
+            {
+                if (i > 2)
+                    break;
+
+                EquipmentSlot slot = equipmentSlotUI.weaponSlots[i];
+                equipmentSlotUI.UpdateSlot(inv.rh_weapons[i], slot, ItemType.weapon);
+            }
+            for (int i = 0; i < inv.lh_weapons.Count; i++)
+            {
+                if (i > 2)
+                    break;
+
+                EquipmentSlot slot = equipmentSlotUI.weaponSlots[i + 3];
+                equipmentSlotUI.UpdateSlot(inv.lh_weapons[i], slot, ItemType.weapon);
+            }
+            for (int i = 0; i < inv.consumable_items.Count; i++)
+            {
+                if (i > 9)
+                    break;
+
+                EquipmentSlot slot = equipmentSlotUI.consumableSlots[i];
+                equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
+            }
+
+        }
+        public InventoryManager invManager;
         public bool load;
+
         void Update()
         {
             if (load)
             {
+                LoadEquipment(invManager);
                 load = false;
-                LoadCurrentItems(typeDebug);
             }
-
-        }
-        public void Tick()
-        {
-
         }
 
         public static InventoryUI singleton;
@@ -274,10 +361,53 @@ namespace SA.UI
         {
             singleton = this;
         }
-        public enum UIState
+
+        [System.Serializable]
+        public class EquipmentSlotUI
         {
-            eqipment, inventory, attributes, messages, options
+            public List<EquipmentSlot> weaponSlots = new List<EquipmentSlot>();
+            public List<EquipmentSlot> arrowSlots = new List<EquipmentSlot>();
+            public List<EquipmentSlot> equipmentSlots = new List<EquipmentSlot>();
+            public List<EquipmentSlot> ringSlots = new List<EquipmentSlot>();
+            public List<EquipmentSlot> consumableSlots = new List<EquipmentSlot>();
+            public EquipmentSlot covenantSlot;
+
+            public void UpdateSlot(string itemId, EquipmentSlot s, ItemType itemType)
+            {
+                Item item = ResourcesManager.singleton.GetItem(itemId, itemType);
+                s.icon.icon.sprite = item.icon;
+                s.icon.icon.enabled = true;
+                s.icon.id = item.Item_id;
+            }
+            public void AddSlotOnList(EquipmentSlot eq)
+            {
+                switch (eq.slotType)
+                {
+                    case EqSlotType.weapons:
+                        weaponSlots.Add(eq);
+                        break;
+                    case EqSlotType.arrows:
+                    case EqSlotType.bolts:
+                        arrowSlots.Add(eq);
+                        break;
+                    case EqSlotType.equipment:
+                        equipmentSlots.Add(eq);
+                        break;
+                    case EqSlotType.rings:
+                        ringSlots.Add(eq);
+                        break;
+                    case EqSlotType.covenant:
+                        covenantSlot = eq;
+                        break;
+                    case EqSlotType.consumables:
+                        consumableSlots.Add(eq);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
+
 
         [System.Serializable]
         public class EquipmentLeft
@@ -285,7 +415,7 @@ namespace SA.UI
             public TMP_Text slotName;
             public TMP_Text curItemName;
             public Left_Inventory inventory;
-            public EquipmentSlots slots;
+
         }
         [System.Serializable]
         public class PlayerStatus
@@ -309,11 +439,7 @@ namespace SA.UI
             public GameObject slotTemplate;
             public Transform slotGrid;
         }
-        [System.Serializable]
-        public class EquipmentSlots
-        {
 
-        }
         [System.Serializable]
         public class CenterOverlay
         {
@@ -410,5 +536,13 @@ namespace SA.UI
             public InventoryUIDoubleSlot slot;
         }
 
+    }
+    public enum EqSlotType
+    {
+        weapons, arrows, bolts, equipment, rings, covenant, consumables
+    }
+    public enum UIState
+    {
+        eqipment, inventory, attributes, messages, options
     }
 }

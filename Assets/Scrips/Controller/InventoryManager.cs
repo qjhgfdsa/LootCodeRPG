@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using SA.UI;
 using UnityEngine;
 
 
@@ -463,6 +462,8 @@ namespace SA
         }
         #endregion
     }
+   
+   
     [System.Serializable]
     public class Item
     {
@@ -564,9 +565,6 @@ namespace SA
         public Vector3 r_model_eulers;
         public Vector3 model_scale;
     }
-
-
-
     #region IconId
     [Serializable]
     public readonly struct IconId : IEquatable<IconId>
