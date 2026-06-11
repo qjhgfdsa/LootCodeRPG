@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 
@@ -21,46 +22,90 @@ namespace SA.UI
         public EquipmentSlotUI equipmentSlotUI;
 
         public Transform equipmentParent;
-       // List<EquipmentSlot> equipSlots = new List<EquipmentSlot>();
-       EquipmentSlot[,] equipSlots ;
+        // List<EquipmentSlot> equipSlots = new List<EquipmentSlot>();
+        EquipmentSlot[,] equipSlots;
 
 
         public Vector2 curSlotPos;
         float inputT;
         bool dontMove;
+
+        public Color unselected;
+        public Color selected;
+        EquipmentSlot curEqSlot;
+        float inpTimer;
+        float moveTimer = 0.4f;
         void HandleSlotMovement()
         {
-            float x = curSlotPos.x;
-            float y = curSlotPos.y;
+            int x = Mathf.RoundToInt(curSlotPos.x);
+            int y = Mathf.RoundToInt(curSlotPos.y);
 
-            float h = Input.GetAxis(StaticStrings.Horizontal);
-            float v = Input.GetAxis(StaticStrings.Vertical);
+            bool up = (Input.GetAxis(StaticStrings.Vertical) > 0);
+            bool down = (Input.GetAxis(StaticStrings.Vertical) < 0);
+            bool left = (Input.GetAxis(StaticStrings.Horizontal) < 0);
+            bool right = (Input.GetAxis(StaticStrings.Horizontal) > 0);
 
-            if(h!=0 && v!=0)
+            if (!up && !down && !left && !right)
             {
-                if(dontMove)
-                {
-                    inputT -= Time.deltaTime;
-                    if(inputT < 0)
-                    {
-                        dontMove = true;
-                    }
-                }
+                inpTimer = 0;
 
             }
             else
             {
-                dontMove = false;
-                inputT = 0.6f;
-
+                inpTimer -= Time.deltaTime;
             }
-            if (h !=0)
+
+            if (inpTimer < 0)
+                inpTimer = 0;
+
+            if (inpTimer > 0)
+                return;
+
+            if (up)
             {
-
+                y--;
+                inpTimer = moveTimer;
             }
-           
 
+            if (down)
+            {
+                y++;
+                inpTimer = moveTimer;
+            }
+            if (left)
+            {
+                x--;
+                inpTimer = moveTimer;
+            }
+            if (right)
+            {
+                x++;
+                inpTimer = moveTimer;
+            }
 
+            if (x > 4)
+                x = 0;
+            if (x < 0)
+                x = 4;
+            if (y > 5)
+                y = 0;
+            if (y < 0)
+                y = 5;
+
+            if (curEqSlot != null)
+                curEqSlot.icon.background.color = unselected;
+
+            if (x == 4 && y == 3)
+            {
+                x = 4;
+                y = 2;
+            }
+
+            curEqSlot = equipSlots[x, y];
+            curSlotPos.x = x;
+            curSlotPos.y = y;
+            if (curEqSlot != null)
+                curEqSlot.icon.background.color = selected;
         }
 
 
@@ -74,12 +119,13 @@ namespace SA.UI
         {
             EquipmentSlot[] eq = equipmentParent.GetComponentsInChildren<EquipmentSlot>();
             equipSlots = new EquipmentSlot[5, 6];
-    
-            for (int i = 0; i < equipSlots.Length; i++)
+
+            for (int i = 0; i < eq.Length; i++)
             {
-               int x = Mathf.RoundToInt(eq[i].slotPos.x);
-               int y = Mathf.RoundToInt(eq[i].slotPos.y);
-               equipSlots[x, y] = eq[i];
+                eq[i].Init(this);
+                int x = Mathf.RoundToInt(eq[i].slotPos.x);
+                int y = Mathf.RoundToInt(eq[i].slotPos.y);
+                equipSlots[x, y] = eq[i];
             }
         }
         void CreateUIElements()
@@ -353,6 +399,7 @@ namespace SA.UI
                 LoadEquipment(invManager);
                 load = false;
             }
+            HandleSlotMovement();
         }
 
         public static InventoryUI singleton;

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3147719356610965433}
   - component: {fileID: 7597618244213228485}
-  - component: {fileID: 3262462082496434818}
   m_Layer: 5
   m_Name: Inventory Slot
   m_TagString: Untagged
@@ -53,21 +52,6 @@ MonoBehaviour:
   background: {fileID: 4114233599902814193}
   icon: {fileID: 7224079847163853382}
   id: 
---- !u!114 &3262462082496434818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1181570545111356637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
-  icon: {fileID: 0}
-  slotType: 5
-  slotPos: {x: 4, y: 2}
 --- !u!1 &2694095227694894852
 GameObject:
   m_ObjectHideFlags: 0
