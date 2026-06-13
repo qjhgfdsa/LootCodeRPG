@@ -6,6 +6,7 @@ namespace SA.UI
 {
     public class EquipmentSlot : MonoBehaviour
     {
+        public string slotName;
         public IconBase icon;
         public EqSlotType slotType;
         public Vector2 slotPos;

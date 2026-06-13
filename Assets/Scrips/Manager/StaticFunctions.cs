@@ -144,14 +144,30 @@ namespace SA
                 return;
             }
             to.weaponId = from.weaponId;
-            to.physical = from.physical;
-            to.slash = from.slash;
-            to.strike = from.strike;
-            to.thrust = from.thrust;
-            to.magic = from.magic;
-            to.lightning = from.lightning;
-            to.fire = from.fire;
-            to.dark = from.dark;
+            to.a_physical = from.a_physical;
+            to.a_slash = from.a_slash;
+            to.a_strike = from.a_strike;
+            to.a_thrust = from.a_thrust;
+            to.a_magic = from.a_magic;
+            to.a_lightning = from.a_lightning;
+            to.a_fire = from.a_fire;
+            to.a_dark = from.a_dark;
+            to.a_frost = from.a_frost;
+            to.a_curse = from.a_curse;
+            to.a_poison = from.a_poison;
+            to.critical = from.critical;
+            to.d_physical = from.d_physical;
+            to.d_strike = from.d_strike;
+            to.d_slash = from.d_slash;
+            to.d_thrust = from.d_thrust;
+            to.d_magic = from.d_magic;
+            to.d_lightning = from.d_lightning;
+            to.d_fire = from.d_fire;
+            to.d_dark = from.d_dark;
+            to.d_frost = from.d_frost;
+            to.d_curse = from.d_curse;
+            to.d_poison = from.d_poison;
+            to.stability = from.stability;
         }
 
         public static Action GetAction(ActionInput input, List<Action> actionSlots)

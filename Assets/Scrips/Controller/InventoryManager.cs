@@ -290,16 +290,16 @@ namespace SA
             w.weaponModel.SetActive(true);
 
 
-          /*  if (UI.QuickSlot.singleton != null)
-            {
-                UI.QuickSlot.singleton.UpdateSlot(
-                    (isLeft) ?
-                    UI.QSlotType.lh : UI.QSlotType.rh, IconId.FromItemName(w.instance.Item_id));//ค่อยมาเปลี่ยน
-            }
-            else
-                Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
+            /*  if (UI.QuickSlot.singleton != null)
+              {
+                  UI.QuickSlot.singleton.UpdateSlot(
+                      (isLeft) ?
+                      UI.QSlotType.lh : UI.QSlotType.rh, IconId.FromItemName(w.instance.Item_id));//ค่อยมาเปลี่ยน
+              }
+              else
+                  Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
 
-            w.weaponModel.SetActive(true);*/
+              w.weaponModel.SetActive(true);*/
         }
 
         public void EquipSpell(RuntimeSpellItems spell)
@@ -462,8 +462,8 @@ namespace SA
         }
         #endregion
     }
-   
-   
+
+
     [System.Serializable]
     public class Item
     {
@@ -471,6 +471,7 @@ namespace SA
         public string name_item;
         public string itemDescription;
         [Tooltip("Registry key. Leave empty to use normalized Item_id.")]
+        public string skillDescription;
         public string iconId;
         public Sprite icon;
 
@@ -525,7 +526,7 @@ namespace SA
     }
 
     [System.Serializable]
-    public class Spell 
+    public class Spell
     {
         public string Item_id;
         public SpellType spellType;
@@ -554,7 +555,7 @@ namespace SA
         }
     }
     [System.Serializable]
-    public class Consumable 
+    public class Consumable
     {
         public string Item_id;
         public string consumableEffect;

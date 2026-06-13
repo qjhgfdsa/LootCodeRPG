@@ -9,17 +9,17 @@ namespace SA
     {
         public static int CalculateBaseDamage(WeaponStats w, CharacterStats st, float multiplier = 1)
         {
-            float physical = (w.physical * multiplier) - st.physical;
-            float strike = (w.strike * multiplier) - st.vs_strike;
-            float slash = (w.slash * multiplier) -  st.vs_slash;
-            float thrust = (w.thrust * multiplier) -  st.vs_thrust;
+            float physical = (w.a_physical * multiplier) - st.physical;
+            float strike = (w.a_strike * multiplier) - st.vs_strike;
+            float slash = (w.a_slash * multiplier) -  st.vs_slash;
+            float thrust = (w.a_thrust * multiplier) -  st.vs_thrust;
 
             float sum = physical + strike + slash + thrust;
 
-            float magic = (w.magic * multiplier) - st.magic;
-            float fire = (w.fire * multiplier) - st.fire;
-            float lightning = (w.lightning * multiplier) - st.lightning;
-            float dark = (w.dark * multiplier) - st.dark;
+            float magic = (w.a_magic * multiplier) - st.magic;
+            float fire = (w.a_fire * multiplier) - st.fire;
+            float lightning = (w.a_lightning * multiplier) - st.lightning;
+            float dark = (w.a_dark * multiplier) - st.dark;
 
             sum += magic + fire + lightning + dark;
 

@@ -7793,9 +7793,9 @@ RectTransform:
   - {fileID: 1043042946}
   m_Father: {fileID: 817546444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -597.69507}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &289958366
@@ -11167,10 +11167,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2033331937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 345.7958, y: -10}
-  m_SizeDelta: {x: 308.41, y: 20}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 250, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &432627888
 MonoBehaviour:
@@ -12435,10 +12435,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2033331937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95.79541, y: -10}
-  m_SizeDelta: {x: 191.5908, y: 20}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &468654216
 MonoBehaviour:
@@ -12876,6 +12876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 2, y: 4}
@@ -16695,14 +16696,35 @@ MonoBehaviour:
   w_Hook: {fileID: 0}
   weaponStats:
     weaponId: 
-    physical: 0
-    strike: 0
-    slash: 0
-    thrust: 0
-    magic: 0
-    fire: 0
-    lightning: 0
-    dark: 0
+    a_physical: 0
+    a_strike: 0
+    a_slash: 0
+    a_thrust: 0
+    a_magic: 0
+    a_fire: 0
+    a_lightning: 0
+    a_dark: 0
+    a_frost: 0
+    a_curse: 0
+    a_poison: 0
+    critical: 0
+    d_physical: 0
+    d_strike: 0
+    d_slash: 0
+    d_thrust: 0
+    d_magic: 0
+    d_fire: 0
+    d_lightning: 0
+    d_dark: 0
+    d_frost: 0
+    d_curse: 0
+    d_poison: 0
+    stability: 0
+    weaponType: 
+    weaponDamageType: 
+    skillName: 
+    weightCost: 5
+    maxDurability: 100
 --- !u!4 &670239405
 Transform:
   m_ObjectHideFlags: 0
@@ -18268,6 +18290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 3, y: 4}
@@ -18766,9 +18789,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2037933906}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -81.84755}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &736542357
@@ -19623,6 +19646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Equipment Slots
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 3, y: 2}
@@ -19910,6 +19934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 3, y: 5}
@@ -20758,6 +20783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 0, y: 5}
@@ -22351,6 +22377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Equipment Slots
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 1, y: 2}
@@ -24335,6 +24362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Rings Slots
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 3, y: 3}
@@ -25656,10 +25684,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 289958365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -90}
-  m_SizeDelta: {x: 500, y: 151.7612}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1043042947
 MonoBehaviour:
@@ -26957,6 +26985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Covenant Slot
   icon: {fileID: 0}
   slotType: 5
   slotPos: {x: 4, y: 2}
@@ -29715,6 +29744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 0, y: 4}
@@ -29835,6 +29865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Equipment Slots
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 0, y: 2}
@@ -30238,6 +30269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Arrow Slots
   icon: {fileID: 0}
   slotType: 1
   slotPos: {x: 3, y: 0}
@@ -31572,6 +31604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Rings Slots
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 0, y: 3}
@@ -32286,9 +32319,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1434704797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -16}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1335789174
@@ -33196,6 +33229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Left Hand Slots
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 2, y: 1}
@@ -33648,9 +33682,9 @@ RectTransform:
   - {fileID: 1335789173}
   m_Father: {fileID: 817546444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 153.55765, y: -16}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 307.1153, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1434704798
@@ -34037,9 +34071,9 @@ RectTransform:
   - {fileID: 1821456815}
   m_Father: {fileID: 817546444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 153.55765, y: -48}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 307.1153, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1449757060
@@ -36887,6 +36921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Left Hand Slots
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 0, y: 1}
@@ -38467,6 +38502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Right Hand Slots
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 2, y: 0}
@@ -38823,6 +38859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Arrow Slots
   icon: {fileID: 0}
   slotType: 2
   slotPos: {x: 4, y: 1}
@@ -39674,6 +39711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Equipment Slots
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 2, y: 2}
@@ -40041,6 +40079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 4, y: 4}
@@ -40318,14 +40357,35 @@ MonoBehaviour:
   w_Hook: {fileID: 0}
   weaponStats:
     weaponId: 
-    physical: 0
-    strike: 0
-    slash: 0
-    thrust: 0
-    magic: 0
-    fire: 0
-    lightning: 0
-    dark: 0
+    a_physical: 0
+    a_strike: 0
+    a_slash: 0
+    a_thrust: 0
+    a_magic: 0
+    a_fire: 0
+    a_lightning: 0
+    a_dark: 0
+    a_frost: 0
+    a_curse: 0
+    a_poison: 0
+    critical: 0
+    d_physical: 0
+    d_strike: 0
+    d_slash: 0
+    d_thrust: 0
+    d_magic: 0
+    d_fire: 0
+    d_lightning: 0
+    d_dark: 0
+    d_frost: 0
+    d_curse: 0
+    d_poison: 0
+    stability: 0
+    weaponType: 
+    weaponDamageType: 
+    skillName: 
+    weightCost: 5
+    maxDurability: 100
 --- !u!4 &1766253518
 Transform:
   m_ObjectHideFlags: 0
@@ -40641,6 +40701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 4, y: 5}
@@ -41881,6 +41942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 1, y: 5}
@@ -41901,7 +41963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1807528927
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42105,9 +42167,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1449757059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -16}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 600, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1821456816
@@ -44000,6 +44062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 2, y: 5}
@@ -45630,9 +45693,9 @@ RectTransform:
   - {fileID: 447769553}
   m_Father: {fileID: 817546444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -194}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1922896714
@@ -46866,6 +46929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Arrow Slots
   icon: {fileID: 0}
   slotType: 1
   slotPos: {x: 4, y: 0}
@@ -47142,14 +47206,35 @@ MonoBehaviour:
   w_Hook: {fileID: 0}
   weaponStats:
     weaponId: 
-    physical: 0
-    strike: 0
-    slash: 0
-    thrust: 0
-    magic: 0
-    fire: 0
-    lightning: 0
-    dark: 0
+    a_physical: 0
+    a_strike: 0
+    a_slash: 0
+    a_thrust: 0
+    a_magic: 0
+    a_fire: 0
+    a_lightning: 0
+    a_dark: 0
+    a_frost: 0
+    a_curse: 0
+    a_poison: 0
+    critical: 0
+    d_physical: 0
+    d_strike: 0
+    d_slash: 0
+    d_thrust: 0
+    d_magic: 0
+    d_fire: 0
+    d_lightning: 0
+    d_dark: 0
+    d_frost: 0
+    d_curse: 0
+    d_poison: 0
+    stability: 0
+    weaponType: 
+    weaponDamageType: 
+    skillName: 
+    weightCost: 5
+    maxDurability: 100
 --- !u!4 &1975116926
 Transform:
   m_ObjectHideFlags: 0
@@ -47182,6 +47267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Arrow Slots
   icon: {fileID: 0}
   slotType: 2
   slotPos: {x: 3, y: 1}
@@ -47277,6 +47363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Item Slots
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 1, y: 4}
@@ -47581,6 +47668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Left Hand Slots
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 1, y: 1}
@@ -47701,6 +47789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Right Hand Slots
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 1, y: 0}
@@ -47963,9 +48052,9 @@ RectTransform:
   - {fileID: 432627887}
   m_Father: {fileID: 817546444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -497.6951}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2033331938
@@ -48191,6 +48280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Rings Slots
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 2, y: 3}
@@ -48227,9 +48317,9 @@ RectTransform:
   - {fileID: 736542356}
   m_Father: {fileID: 817546444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -405.84753}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 163.6951}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2037933907
@@ -49769,6 +49859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Rings Slots
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 1, y: 3}
@@ -51439,6 +51530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cfb26eb0685f24eb16809a02655fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.UI.EquipmentSlot
+  slotName: Right Hand Slots
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 0, y: 0}

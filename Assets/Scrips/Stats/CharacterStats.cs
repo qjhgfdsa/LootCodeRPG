@@ -75,19 +75,20 @@ namespace SA
 
     public enum AttributeType
     {
-        vigor, endurance, vitality, strength, dexterity, intelligence, faith, luck, 
-        hp, fp, stamina, equip_load, poise, item_discover, attunement,level, 
+        vigor, endurance, vitality, strength, dexterity, intelligence, faith, luck,
+        hp, fp, stamina, equip_load, poise, item_discover, attunement, level,
     }
 
     public enum AttackDefenseType
     {
-        physical, strike, slash, thrust, magic, fire, lightning, dark, stability, bleed, curse, frost,poison,
-       
+        physical, strike, slash, thrust, magic, fire, lightning, dark, stability, bleed, curse, frost, poison, critical,
+
     }
     public enum WeaponDamageType
     {
         sum, vs_strike, vs_slash, vs_thrust,
     }
+
 
     [System.Serializable]
     public class Attributes
@@ -103,21 +104,45 @@ namespace SA
         public int intelligence = 11;
         public int faith = 11;
         public int luck = 11;
+
     }
 
     [System.Serializable]
     public class WeaponStats
     {
         public string weaponId;
-        public int physical;
-        public int strike;
-        public int slash;
-        public int thrust;
-        public int magic = 0;
-        public int fire = 0;
-        public int lightning = 0;
-        public int dark = 0;
+        public int a_physical;
+        public int a_strike;
+        public int a_slash;
+        public int a_thrust;
+        public int a_magic = 0;
+        public int a_fire = 0;
+        public int a_lightning = 0;
+        public int a_dark = 0;
+        public int a_frost;
+        public int a_curse;
+        public int a_poison;
+        public int critical;
 
+
+        public float d_physical;
+        public float d_strike;
+        public float d_slash;
+        public float d_thrust;
+        public float d_magic;
+        public float d_fire;
+        public float d_lightning;
+        public float d_dark;
+        public float d_frost;
+        public float d_curse;
+        public float d_poison;
+        public float stability;
+
+        public string weaponType;
+        public string weaponDamageType;
+        public string skillName;
+        public float weightCost = 5;
+        public float maxDurability = 100;
     }
 }
 
