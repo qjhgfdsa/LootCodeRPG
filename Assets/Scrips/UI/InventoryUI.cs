@@ -17,6 +17,9 @@ namespace SA.UI
 
 
         public GameObject gameMenu, inventoryMenu, centerMain, centerRight, centerOverlay;
+        public GameObject equipmentScreen;
+        public GameObject inventoryScreen;
+        public GameObject gameUI;
 
         List<IconBase> iconSlotsCreated = new List<IconBase>();
         public EquipmentSlotUI equipmentSlotUI;
@@ -24,9 +27,13 @@ namespace SA.UI
         public Transform equipmentParent;
         // List<EquipmentSlot> equipSlots = new List<EquipmentSlot>();
         EquipmentSlot[,] equipSlots;
-
-
         public Vector2 curSlotPos;
+        public int curInvIndex;
+        List<IconBase> curCreatedItems;
+        IconBase curInvIcon;
+        int prevInvIndex;
+        int maxInvIndex;
+
         float inputT;
         bool dontMove;
 
@@ -36,15 +43,82 @@ namespace SA.UI
         EquipmentSlot prevEqSlot;
         float inpTimer;
         float moveTimer = 0.4f;
-        void HandleSlotMovement()
+
+        InputUI inp;
+        InventoryManager invManager;
+        public bool isSwitching;
+        void HandleSlotInput(InputUI inp)
+        {
+            if (curEqSlot == null)
+                return;
+
+            if (inp.key1_input)//เดะเเก้
+            {
+                isSwitching = !isSwitching;
+                if (isSwitching)
+                {
+                    ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
+                    LoadCurrentItems(t);
+                }
+                else
+                {
+                    ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
+                    if (t == ItemType.weapon)
+                    {
+                        int targetIndex = curEqSlot.itemPosition;
+                        bool isLeft = (curEqSlot.itemPosition > 2) ? true : false;
+
+                        if (isLeft)
+                        {
+                            targetIndex -= 3;
+                            invManager.lh_weapons[targetIndex] = curInvIcon.id;
+                        }
+                        else
+                        {
+                            invManager.rh_weapons[targetIndex] = curInvIcon.id;
+                        }
+                    }
+                    else
+                    {
+                        invManager.consumable_items[curEqSlot.itemPosition] = curEqSlot.icon.id;
+                    }
+                    LoadEquipment(invManager, true);
+                }
+                ChangeToSwitching();
+            }
+            if (inp.key2_input)
+            {
+                isSwitching = false;
+                ChangeToSwitching();
+            }
+        }
+        ItemType ItemTypeFromSlotType(EqSlotType t)
+        {
+            switch (t)
+            {
+                case EqSlotType.weapons:
+                    return ItemType.weapon;
+                case EqSlotType.arrows:
+                case EqSlotType.bolts:
+                case EqSlotType.equipment:
+                case EqSlotType.rings:
+                case EqSlotType.covenant:
+                default:
+                    return ItemType.spell;
+                case EqSlotType.consumables:
+                    return ItemType.consumable;
+            }
+        }
+        void HandleSlotMovement(InputUI inp)
         {
             int x = Mathf.RoundToInt(curSlotPos.x);
             int y = Mathf.RoundToInt(curSlotPos.y);
 
-            bool up = (Input.GetAxis(StaticStrings.Vertical) > 0);
-            bool down = (Input.GetAxis(StaticStrings.Vertical) < 0);
-            bool left = (Input.GetAxis(StaticStrings.Horizontal) < 0);
-            bool right = (Input.GetAxis(StaticStrings.Horizontal) > 0);
+
+            bool up = (inp.vertical > 0);
+            bool down = (inp.vertical < 0);
+            bool left = (inp.horizontal < 0);
+            bool right = (inp.horizontal > 0);
 
             if (!up && !down && !left && !right)
             {
@@ -108,11 +182,64 @@ namespace SA.UI
             if (curEqSlot != null)
                 curEqSlot.icon.background.color = selected;
         }
+        void HandleInventoryMovement(InputUI inp)
+        {
 
+            bool up = (inp.vertical > 0);
+            bool down = (inp.vertical < 0);
+            bool left = (inp.horizontal < 0);
+            bool right = (inp.horizontal > 0);
+
+            if (!up && !down && !left && !right)
+            {
+                inpTimer = 0;
+
+            }
+            else
+            {
+                inpTimer -= Time.deltaTime;
+            }
+
+            if (inpTimer < 0)
+                inpTimer = 0;
+
+            if (inpTimer > 0)
+                return;
+
+            if (up)
+            {
+                curInvIndex -= 5;
+                inpTimer = moveTimer;
+            }
+            if (down)
+            {
+                curInvIndex += 5;
+                inpTimer = moveTimer;
+            }
+            if (left)
+            {
+                curInvIndex -= 1;
+                inpTimer = moveTimer;
+            }
+            if (right)
+            {
+                curInvIndex += 1;
+                inpTimer = moveTimer;
+            }
+
+            if (curInvIndex > maxInvIndex - 1)
+                curInvIndex = 0;
+
+            if (curInvIndex < 0)
+                curInvIndex = maxInvIndex - 1;
+
+        }
 
         #region Create UI Elements
-        void Start()
+        public void Init(InventoryManager inv)
         {
+            inp = InputUI.singleton;
+            invManager = inv;
             CreateUIElements();
             InitEqSlots();
         }
@@ -330,6 +457,11 @@ namespace SA.UI
             int dif = iconSlotsCreated.Count - itemList.Count;
             int extra = (dif > 0) ? dif : 0;
 
+            maxInvIndex = itemList.Count;
+
+            curCreatedItems = new List<IconBase>();
+            curInvIndex = 0;
+
             for (int i = 0; i < itemList.Count + extra; i++)
             {
                 if (i > itemList.Count - 1)
@@ -351,18 +483,128 @@ namespace SA.UI
                 {
                     icon = iconSlotsCreated[i];
                 }
+
+                curCreatedItems.Add(icon);
                 icon.gameObject.SetActive(true);
                 icon.icon.enabled = true;
                 icon.icon.sprite = itemList[i].icon;
                 icon.id = itemList[i].Item_id;
             }
         }
-
-        public void Tick()
+        void ChangeToSwitching()
         {
 
+            if (isSwitching)
+            {
+                equipmentScreen.SetActive(false);
+                inventoryScreen.SetActive(true);
+            }
+            else
+            {
+                equipmentScreen.SetActive(true);
+                inventoryScreen.SetActive(false);
+            }
+
         }
-        public void LoadEquipment(InventoryManager inv)
+
+        void HandleUIState(InputUI inp)
+        {
+            switch (curUIState)
+            {
+                case UIState.eqipment:
+                    if (!isSwitching)
+                        HandleSlotMovement(inp);
+                    else
+                        HandleInventoryMovement(inp);
+
+                    HandleSlotInput(inp);
+                    break;
+                case UIState.inventory:
+                    HandleInventoryMovement(inp);
+                    break;
+                case UIState.attributes:
+                    break;
+                case UIState.messages:
+                    break;
+                case UIState.options:
+                    break;
+                default:
+                    break;
+            }
+        }
+        public void OpenUI()
+        {
+            LoadEquipment(invManager);
+            gameMenu.SetActive(false);
+            inventoryMenu.SetActive(true);
+            gameUI.SetActive(false);
+            prevEqSlot = null;
+            curInvIndex = -1;
+            isSwitching = false;
+
+            if (equipmentSlotUI.weaponSlots.Count > 0)
+                SelectEqSlot(equipmentSlotUI.weaponSlots[0]);
+            else if (equipSlots != null)
+                SelectEqSlot(equipSlots[0, 0]);
+
+            if (curEqSlot != null)
+            {
+                eq_left.slotName.text = curEqSlot.slotName;
+                LoadItemFromSlot(curEqSlot.icon);
+            }
+        }
+
+        void SelectEqSlot(EquipmentSlot slot)
+        {
+            if (slot == null)
+                return;
+
+            if (curEqSlot != null)
+                curEqSlot.icon.background.color = unselected;
+
+            curEqSlot = slot;
+            curSlotPos = curEqSlot.slotPos;
+            curEqSlot.icon.background.color = selected;
+        }
+        public void CloseUI()
+        {
+            gameMenu.SetActive(false);
+            inventoryMenu.SetActive(false);
+            gameUI.SetActive(true);
+            prevEqSlot = null;
+            curInvIndex = -1;
+        }
+        public void Tick()
+        {
+            inp.Tick();
+            HandleUIState(inp);
+
+            if (isSwitching)
+            {
+                if (curCreatedItems != null && curCreatedItems.Count > 0 && prevInvIndex != curInvIndex)
+                {
+                    if (curInvIcon)
+                        curInvIcon.background.color = unselected;
+
+                    if (curInvIndex < curCreatedItems.Count)
+                    {
+                        curInvIcon = curCreatedItems[curInvIndex];
+                        curInvIcon.background.color = selected;
+                        LoadItemFromSlot(curInvIcon);
+                    }
+                }
+            }
+            else if (curEqSlot != null && curEqSlot != prevEqSlot)
+            {
+                eq_left.slotName.text = curEqSlot.slotName;
+                LoadItemFromSlot(curEqSlot.icon);
+            }
+
+            prevEqSlot = curEqSlot;
+            prevInvIndex = curInvIndex;
+        }
+
+        public void LoadEquipment(InventoryManager inv, bool loadOnCharacter = false)
         {
             for (int i = 0; i < inv.rh_weapons.Count; i++)
             {
@@ -371,6 +613,7 @@ namespace SA.UI
 
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i];
                 equipmentSlotUI.UpdateSlot(inv.rh_weapons[i], slot, ItemType.weapon);
+                slot.itemPosition = i;
             }
             for (int i = 0; i < inv.lh_weapons.Count; i++)
             {
@@ -379,6 +622,7 @@ namespace SA.UI
 
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i + 3];
                 equipmentSlotUI.UpdateSlot(inv.lh_weapons[i], slot, ItemType.weapon);
+                slot.itemPosition = i + 3;
             }
             for (int i = 0; i < inv.consumable_items.Count; i++)
             {
@@ -387,38 +631,23 @@ namespace SA.UI
 
                 EquipmentSlot slot = equipmentSlotUI.consumableSlots[i];
                 equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
+                slot.itemPosition = i;
+            }
+
+            if (loadOnCharacter)
+            {
+                invManager.LoadInventory();
             }
 
         }
-        public InventoryManager invManager;
-        public bool load;
 
-        void Update()
+        void LoadItemFromSlot(IconBase icon)
         {
-            if (load)
+            if (string.IsNullOrEmpty(icon.id))
             {
-                LoadEquipment(invManager);
-                prevEqSlot = null;
-                load = false;
+                icon.id = "Unarmed";
             }
-            HandleSlotMovement();
-
-            if (prevEqSlot != null)
-            {
-                LoadItemFromSlot();
-            }
-            prevEqSlot = curEqSlot;
-        }
-        void LoadItemFromSlot()
-        {
-            if (curEqSlot == null)
-                return;
-
-            if (string.IsNullOrEmpty(curEqSlot.icon.id))
-            {
-                curEqSlot.icon.id = "Unarmed";
-            }
-            eq_left.slotName.text = curEqSlot.slotName;
+            // eq_left.slotName.text = curEqSlot.slotName;
 
             ResourcesManager rm = ResourcesManager.singleton;
 
@@ -427,7 +656,7 @@ namespace SA.UI
             switch (curEqSlot.slotType)
             {
                 case EqSlotType.weapons:
-                    LoadWeaponItem(rm);
+                    LoadWeaponItem(rm, icon);
                     break;
                 case EqSlotType.equipment:
                     break;
@@ -442,11 +671,11 @@ namespace SA.UI
                     break;
             }
         }
-        void LoadWeaponItem(ResourcesManager rm)
+        void LoadWeaponItem(ResourcesManager rm, IconBase icon)
         {
-            string weaponId = curEqSlot.icon.id;
+            string weaponId = icon.id;
             WeaponStats stats = rm.GetWeaponStats(weaponId);
-            Item item = rm.GetItem(curEqSlot.icon.id, ItemType.weapon);
+            Item item = rm.GetItem(icon.id, ItemType.weapon);
             eq_left.curItemName.text = item.name_item;
             UpdateCenterOverlay(item);
             //center main
@@ -505,7 +734,7 @@ namespace SA.UI
             c_overlay.itemDescription.text = item.itemDescription;
             c_overlay.skillName.text = item.skillDescription;
             c_overlay.skillDescription.text = item.skillDescription;
-      
+
         }
         void LoadConsumableItem(ResourcesManager rm)
         {

@@ -204,7 +204,7 @@ namespace SA
         {
             if (indx == 0)
             {
-                if (comboSteps.Count == 0)
+                if (comboSteps == null || comboSteps.Count == 0)
                 {
                     indx = 0;
                 }

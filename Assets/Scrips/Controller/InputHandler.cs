@@ -18,6 +18,7 @@ namespace SA
         bool key2_input;
         bool key3_input;
         bool key4_input;
+       // public bool Key1Input { get => key1_input; set => key1_input = value; }//เดะเเก้
 
         bool f_input;
         bool r_input;
@@ -32,8 +33,10 @@ namespace SA
         StateManager states;
         CameraManager camManager;
         UIManager uiManager;
+        SA.UI.InventoryUI invUI;
 
         bool isGesturesOpen;
+        bool isInventoryOpen;
         float delta;
 
         void Awake()
@@ -75,6 +78,9 @@ namespace SA
             uiManager = UIManager.singleton;
             if (uiManager == null)
                 Debug.LogWarning("InputHandler: UIManager is missing from the scene — HUD will not update.");
+
+            invUI = SA.UI.InventoryUI.singleton;
+            invUI.Init(states.inventoryManager);
         }
         void FixedUpdate()
         {
@@ -82,6 +88,7 @@ namespace SA
                 return;
 
             delta = Time.fixedDeltaTime;
+            HandleUI();
             camManager.Tick(delta);
             states.FixedTick(delta);
         }
@@ -91,14 +98,17 @@ namespace SA
             delta = Time.deltaTime;
 
             GetInput();
-            HandleUI();
+          
             UpdateStates();
             states.Tick(delta);
+
+          //  invUI.Tick();
 
             ResetInputNStates();
             states.MonitorStats();
             if (uiManager != null)
                 uiManager.Tick(states.characterStats, delta);
+
         }
 
         void GetInput()
@@ -112,10 +122,20 @@ namespace SA
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
 
 
-            q_input = Input.GetKey(StaticStrings.KeyQ);
-            e_input = Input.GetKey(StaticStrings.KeyE);
-            r_input = Input.GetKey(StaticStrings.KeyR);
-            f_input = Input.GetKey(StaticStrings.KeyF);
+            if (!isInventoryOpen)
+            {
+                q_input = Input.GetKey(StaticStrings.KeyQ);
+                e_input = Input.GetKey(StaticStrings.KeyE);
+                r_input = Input.GetKey(StaticStrings.KeyR);
+                f_input = Input.GetKey(StaticStrings.KeyF);
+            }
+            else
+            {
+                q_input = false;
+                e_input = false;
+                r_input = false;
+                f_input = false;
+            }
 
             if (shift_input)
                 shift_timer += delta;
@@ -126,9 +146,23 @@ namespace SA
             key4_input = Input.GetKeyDown(KeyCode.Alpha4);
 
             bool gesturesMenu = Input.GetKeyDown(StaticStrings.KeyG);
+            bool inventoryMenu = Input.GetKeyDown(StaticStrings.KeyI);
             if (gesturesMenu)
             {
                 isGesturesOpen = !isGesturesOpen;
+            }
+
+            if (inventoryMenu)
+            {
+                isInventoryOpen = !isInventoryOpen;
+                if (isInventoryOpen)
+                {
+                    invUI.OpenUI();
+                }
+                else
+                {
+                    invUI.CloseUI();
+                }
             }
         }
 
@@ -138,6 +172,7 @@ namespace SA
                 return;
 
             uiManager.gestures.HandleGestures(isGesturesOpen);
+            invUI.Tick();
 
             if (isGesturesOpen)
             {
@@ -146,6 +181,12 @@ namespace SA
             else
             {
                 curUIState = UIState.game;
+            }
+
+            
+            if(isInventoryOpen)
+            {
+                curUIState = UIState.inventory;
             }
 
             switch (curUIState)
@@ -157,6 +198,7 @@ namespace SA
                     HandleGesturesUI();
                     break;
                 case UIState.inventory:
+                    HandleInventoryUI();
                     break;
             }
 
@@ -188,9 +230,18 @@ namespace SA
                 states.PlayAnimation(selected.targetAnim, false);
             }
         }
+        void HandleInventoryUI()
+        {
 
+        }
         void UpdateStates()
         {
+            if (isInventoryOpen)
+            {
+                ClearCombatStates();
+                return;
+            }
+
             if (isGesturesOpen)
                 return;
 
@@ -333,6 +384,14 @@ namespace SA
             camManager.lockonTarget = null;
             camManager.lockonTransform = null;
         }
+        void ClearCombatStates()
+        {
+            states.f = false;
+            states.r = false;
+            states.e = false;
+            states.q = false;
+        }
+
         void ResetInputNStates()
         {
             if (shift_input == false)

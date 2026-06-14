@@ -10,6 +10,7 @@ namespace SA.UI
         public IconBase icon;
         public EqSlotType slotType;
         public Vector2 slotPos;
+        public int itemPosition;
 
         public void Init( InventoryUI ui)
         {

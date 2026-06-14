@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using SA.UI;
 
 namespace SA
 {
@@ -18,6 +19,7 @@ namespace SA
         public float sizeMultiplier = 4;
         int curSouls;
         public GesturesManager gestures;
+  
         void Start()
         {
             gestures = GesturesManager.singleton;
@@ -59,6 +61,12 @@ namespace SA
             r_v.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value_actual);
         }
         public void Tick(CharacterStats stats, float delta)
+        {
+            GameUI(stats, delta);
+    
+        }
+
+        void GameUI(CharacterStats stats, float delta)
         {
             health.value = Mathf.Lerp(health.value, stats._health, delta * lerpSpeed * 2);
             focus.value = Mathf.Lerp(focus.value, stats._focus, delta * lerpSpeed * 2);

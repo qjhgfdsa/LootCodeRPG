@@ -54,11 +54,36 @@ namespace SA
             CloseBlockCollider();
         }
 
+        void ClearReferences()
+        {
+            if (r_r_weapons != null)
+            {
+                for (int i = 0; i < r_r_weapons.Count; i++)
+                {
+                    Destroy(r_r_weapons[i].weaponModel);
+                }
+
+                r_r_weapons.Clear();
+            }
+
+            if (r_l_weapons != null)
+            {
+                for (int i = 0; i < r_l_weapons.Count; i++)
+                {
+                    Destroy(r_l_weapons[i].weaponModel);
+                }
+                r_l_weapons.Clear();
+
+            }
+        }
+
 
         public void LoadInventory()
         {
-
             unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
+
+            ClearReferences();
+
             if (unarmedRuntime == null)
             {
                 Debug.LogError($"InventoryManager: Could not load unarmed weapon id '{unarmedId}'. itemName in WeaponScriptableObject must match exactly (case-sensitive).");
@@ -133,6 +158,11 @@ namespace SA
 
             InitAllDamageCollider(states);
             CloseAllDamageColliders();
+
+            if (states.isTwoHanded)
+                states.actionManager.UpdateActionsTwoHanded();
+            else
+                states.actionManager.UpdateActionsOneHanded();
         }
         public RuntimeSpellItems SpellToRuntimeSpell(Spell s, bool isLeft = false)
         {
