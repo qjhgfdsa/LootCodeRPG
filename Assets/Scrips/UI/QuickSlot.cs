@@ -29,6 +29,11 @@ namespace SA.UI
             }
         }
 
+        public void ClearSlot(QSlotType stype)
+        {
+            QSlots q = GetSlot(stype);
+            q.icon.gameObject.SetActive(false);
+        }
         public void UpdateSlot(QSlotType stype, IconId iconId)
         {
             QSlots q = GetSlot(stype);

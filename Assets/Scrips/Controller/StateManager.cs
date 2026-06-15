@@ -185,18 +185,42 @@ namespace SA
 
             if (!closeWeapons)
             {
+                GameObject mm = null;
+
                 if (inventoryManager != null &&
                     inventoryManager.rightHandWeapon != null &&
                     inventoryManager.rightHandWeapon.weaponModel != null)
                 {
-                    inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
+                    mm = inventoryManager.rightHandWeapon.weaponModel;
+                    //inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
                 }
+
+
+                if (mm == null)
+                {
+                    if (inventoryManager.leftHandWeapon != null)
+                        mm = inventoryManager.leftHandWeapon.weaponModel;
+                }
+
+                if (mm != null)
+                {
+                    mm.SetActive(!usingItem);
+                }
+                  //เเก้เอง
+                if (!isTwoHanded)
+                {
+                    if (inventoryManager.leftHandWeapon != null && inventoryManager.rightHandWeapon != null)
+                        inventoryManager.leftHandWeapon.weaponModel.SetActive(true);
+                }
+
+
 
                 if (inventoryManager.currentConsumable != null)
                 {
                     if (inventoryManager.currentConsumable.itemModel != null)
                         inventoryManager.currentConsumable.itemModel.SetActive(usingItem);
                 }
+              
             }
             else
             {
@@ -502,10 +526,16 @@ namespace SA
                 }
             }
 
-            string targetAnim = null;
-            targetAnim = slot.GetActionStep(ref actionManager.actionIndex).targetAnim;
+            //เเก้เอง
+            int stepIndex = actionManager.actionIndex;
+            ActionAnim step = slot.GetActionStep(ref actionManager.actionIndex);
+            string targetAnim = step.targetAnim;
 
-            Debug.Log("storeActionInput: " + storeActionInput);
+            Weapon currentWeapon = inventoryManager.GetCurrentWeapon(actionManager.IsLeftHandslot(slot));
+            WeaponScriptableObject.LogPlayingFirstStep(currentWeapon?.Item_id, slot.GetfirstInput(), stepIndex, targetAnim);
+            //ถึงตรงนี้
+
+
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;

@@ -21,7 +21,7 @@ MonoBehaviour:
       spellClass: 0
       fristStep:
         input: 0
-        targetAnim: 
+        targetAnim: oh_attack_1
       comboSteps: []
       mirror: 0
       canBeParried: 1
@@ -40,8 +40,8 @@ MonoBehaviour:
     - actionType: 0
       spellClass: 0
       fristStep:
-        input: 0
-        targetAnim: 
+        input: 2
+        targetAnim: oh_attack_2
       comboSteps: []
       mirror: 0
       canBeParried: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
       spellClass: 0
       fristStep:
         input: 0
-        targetAnim: 
+        targetAnim: th_attack_1
       comboSteps: []
       mirror: 0
       canBeParried: 0
@@ -81,8 +81,8 @@ MonoBehaviour:
     - actionType: 0
       spellClass: 0
       fristStep:
-        input: 0
-        targetAnim: 
+        input: 2
+        targetAnim: th_attack_2
       comboSteps: []
       mirror: 0
       canBeParried: 0
@@ -151,27 +151,7 @@ MonoBehaviour:
       backstabMultiplier: 0
       overrideDamageAnim: 1
       damageAnim: attack_interrupt
-    two_handedActions:
-    - actionType: 0
-      spellClass: 0
-      fristStep:
-        input: 0
-        targetAnim: 
-      comboSteps: []
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 0
-      canParry: 0
-      canBackStab: 0
-      staminaCost: 0
-      focusCost: 0
-      overrideKick: 0
-      kickAnim: 
-      parryMultiplier: 0
-      backstabMultiplier: 0
-      overrideDamageAnim: 0
-      damageAnim: 
+    two_handedActions: []
     parryMultiplier: 0
     backstabMultiplier: 0
     LeftHandMirror: 1
@@ -510,3 +490,4 @@ MonoBehaviour:
     skillName: '-'
     weightCost: 0
     maxDurability: 0
+  debugFirstStepAnimations: 1

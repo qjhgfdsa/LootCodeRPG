@@ -71,11 +71,26 @@ namespace SA.UI
                         if (isLeft)
                         {
                             targetIndex -= 3;
-                            invManager.lh_weapons[targetIndex] = curInvIcon.id;
+                            if (targetIndex > invManager.lh_weapons.Count - 1)
+                            {
+                                invManager.lh_weapons.Add(curInvIcon.id);
+                            }
+                            else
+                            {
+                                invManager.lh_weapons[targetIndex] = curInvIcon.id;
+                            }
                         }
                         else
                         {
-                            invManager.rh_weapons[targetIndex] = curInvIcon.id;
+                            if (targetIndex > invManager.rh_weapons.Count - 1)
+                            {
+                                invManager.rh_weapons.Add(curInvIcon.id);
+                            }
+                            else
+                            {
+                                invManager.rh_weapons[targetIndex] = curInvIcon.id;
+                            }
+
                         }
                     }
                     else
@@ -88,8 +103,35 @@ namespace SA.UI
             }
             if (inp.key2_input)
             {
-                isSwitching = false;
-                ChangeToSwitching();
+                if (isSwitching)
+                {
+                    isSwitching = false;
+                    ChangeToSwitching();
+                }
+                else
+                {
+                    ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
+                    if (t == ItemType.weapon)
+                    {
+                        int targetIndex = curEqSlot.itemPosition;
+                        bool isLeft = (curEqSlot.itemPosition > 2) ? true : false;
+
+                        if (isLeft)
+                        {
+                            targetIndex -= 3;
+                            invManager.lh_weapons[targetIndex] = null;
+                        }
+                        else
+                        {
+                            invManager.rh_weapons[targetIndex] = null;
+                        }
+                    }
+                    else
+                    {
+                        invManager.consumable_items[curEqSlot.itemPosition] = null;
+                    }
+                    LoadEquipment(invManager, true);
+                }
             }
         }
         ItemType ItemTypeFromSlotType(EqSlotType t)
@@ -606,37 +648,88 @@ namespace SA.UI
 
         public void LoadEquipment(InventoryManager inv, bool loadOnCharacter = false)
         {
+            inv.ClearReferences();
+
+            List<int> rh_empties = new List<int>();
+
             for (int i = 0; i < inv.rh_weapons.Count; i++)
             {
                 if (i > 2)
                     break;
 
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i];
-                equipmentSlotUI.UpdateSlot(inv.rh_weapons[i], slot, ItemType.weapon);
-                slot.itemPosition = i;
+
+                if (string.IsNullOrEmpty(inv.rh_weapons[i]))
+                {
+                    rh_empties.Add(i);
+                    equipmentSlotUI.ClearEqSlot(slot, ItemType.weapon);
+                }
+                else
+                {
+                    equipmentSlotUI.UpdateSlot(inv.rh_weapons[i], slot, ItemType.weapon);
+                    slot.itemPosition = i;
+                }
             }
+            for (int i = 0; i < rh_empties.Count; i++)
+            {
+                inv.rh_weapons.RemoveAt(rh_empties[i]);
+            }
+
+            List<int> lh_empties = new List<int>();
+
             for (int i = 0; i < inv.lh_weapons.Count; i++)
             {
                 if (i > 2)
                     break;
 
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i + 3];
-                equipmentSlotUI.UpdateSlot(inv.lh_weapons[i], slot, ItemType.weapon);
-                slot.itemPosition = i + 3;
+
+                if (string.IsNullOrEmpty(inv.lh_weapons[i]))
+                {
+                    equipmentSlotUI.ClearEqSlot(slot, ItemType.weapon);
+                    lh_empties.Add(i);
+                }
+                else
+                {
+                    equipmentSlotUI.UpdateSlot(inv.lh_weapons[i], slot, ItemType.weapon);
+                    slot.itemPosition = i + 3;
+                }
             }
+            for (int i = 0; i < lh_empties.Count; i++)
+            {
+                inv.lh_weapons.RemoveAt(lh_empties[i]);
+            }
+
+            List<int> consumable_empties = new List<int>();
+
+
             for (int i = 0; i < inv.consumable_items.Count; i++)
             {
                 if (i > 9)
                     break;
 
                 EquipmentSlot slot = equipmentSlotUI.consumableSlots[i];
-                equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
-                slot.itemPosition = i;
+                if (string.IsNullOrEmpty(inv.consumable_items[i]))
+                {
+                    equipmentSlotUI.ClearEqSlot(slot, ItemType.consumable);
+                    consumable_empties.Add(i);
+                }
+                else
+                {
+                    equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
+                    slot.itemPosition = i;
+                }
+
+            }
+
+            for (int i = 0; i < consumable_empties.Count; i++)
+            {
+                inv.consumable_items.RemoveAt(consumable_empties[i]);
             }
 
             if (loadOnCharacter)
             {
-                invManager.LoadInventory();
+                invManager.LoadInventory(true);
             }
 
         }
@@ -762,6 +855,13 @@ namespace SA.UI
             public List<EquipmentSlot> consumableSlots = new List<EquipmentSlot>();
             public EquipmentSlot covenantSlot;
 
+            public void ClearEqSlot(EquipmentSlot s, ItemType itemType)
+            {
+                s.icon.icon.sprite = null; //อันนี้คือการล้างรูปภาพของสิ่งที่อยู่ใน slot
+                s.icon.icon.enabled = false; //อันนี้คือการล้างสถานะของสิ่งที่อยู่ใน slot
+                s.icon.id = null; //อันนี้คือการล้าง id ของสิ่งที่อยู่ใน slot
+
+            }
             public void UpdateSlot(string itemId, EquipmentSlot s, ItemType itemType)
             {
                 Item item = ResourcesManager.singleton.GetItem(itemId, itemType);

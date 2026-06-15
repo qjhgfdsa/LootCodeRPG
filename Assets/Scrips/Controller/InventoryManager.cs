@@ -7,7 +7,7 @@ namespace SA
 {
     public class InventoryManager : MonoBehaviour
     {
-        public string unarmedId = "Unarmed";
+        public string unarmedId;
         public RuntimeWeapon unarmedRuntime;
 
         public List<string> rh_weapons;
@@ -36,16 +36,19 @@ namespace SA
         public GameObject blockCollider;
 
         StateManager states;
+        UI.QuickSlot uiSlot;
+        GameObject referenceParent;
 
         public void Init(StateManager st)
         {
 
             states = st;
+            uiSlot = UI.QuickSlot.singleton;
+
+
+
+            ClearReferences();
             LoadInventory();
-
-
-            // InitAllDamageCollider(st);
-            // CloseAllDamageColliders();
 
             ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
             pr.InitPlayer(st);
@@ -54,7 +57,7 @@ namespace SA
             CloseBlockCollider();
         }
 
-        void ClearReferences()
+        public void ClearReferences()
         {
             if (r_r_weapons != null)
             {
@@ -73,16 +76,43 @@ namespace SA
                     Destroy(r_l_weapons[i].weaponModel);
                 }
                 r_l_weapons.Clear();
-
             }
+
+            leftHandWeapon = null;
+            rightHandWeapon = null;
+
+            if (r_consum != null)
+            {
+                for (int i = 0; i < r_consum.Count; i++)
+                {
+                    if (r_consum[i].itemModel)
+                        Destroy(r_consum[i].itemModel);
+                }
+                r_consum.Clear();
+            }
+
+            if (r_spells != null)
+            {
+                for (int i = 0; i < r_spells.Count; i++)
+                {
+                    if (r_spells[i].currentParticle)
+                        Destroy(r_spells[i].currentParticle);
+                }
+                r_spells.Clear();
+            }
+
+
+            if (referenceParent)
+                Destroy(referenceParent);
+            referenceParent = new GameObject();
         }
 
 
-        public void LoadInventory()
+        public void LoadInventory(bool updateActions = false)
         {
             unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
 
-            ClearReferences();
+
 
             if (unarmedRuntime == null)
             {
@@ -109,6 +139,10 @@ namespace SA
 
                 rightHandWeapon = r_r_weapons[r_index];
             }
+            else
+            {
+                rightHandWeapon = unarmedRuntime;
+            }
 
             if (r_l_weapons.Count > 0)
             {
@@ -117,14 +151,28 @@ namespace SA
 
                 leftHandWeapon = r_l_weapons[l_index];
             }
+            else
+            {
+                leftHandWeapon = null;
+            }
 
             if (rightHandWeapon != null && rightHandWeapon.weaponModel != null)
                 EquipWeapon(rightHandWeapon, false);
+            else
+            {
+                UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
+                uiSlot.ClearSlot(UI.QSlotType.rh);
+            }
 
             if (leftHandWeapon != null && leftHandWeapon.weaponModel != null)
             {
                 EquipWeapon(leftHandWeapon, true);
                 hasLeftHandWeapon = true;
+            }
+            else
+            {
+                UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
+                uiSlot.ClearSlot(UI.QSlotType.lh);
             }
 
             for (int i = 0; i < spell_items.Count; i++)
@@ -159,10 +207,11 @@ namespace SA
             InitAllDamageCollider(states);
             CloseAllDamageColliders();
 
-            if (states.isTwoHanded)
-                states.actionManager.UpdateActionsTwoHanded();
-            else
+            if (updateActions)
+            {
                 states.actionManager.UpdateActionsOneHanded();
+            }
+
         }
         public RuntimeSpellItems SpellToRuntimeSpell(Spell s, bool isLeft = false)
         {
@@ -173,12 +222,11 @@ namespace SA
             }
 
             GameObject go = new GameObject();
+            go.transform.parent = referenceParent.transform;
             RuntimeSpellItems inst = go.AddComponent<RuntimeSpellItems>();
             inst.instance = new Spell();
             StaticFunctions.DeepCopySpell(s, inst.instance);
             go.name = s.Item_id;
-
-
 
             r_spells.Add(inst);
             return inst;
@@ -228,8 +276,14 @@ namespace SA
         }
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false)
         {
+            if (w == null)
+            {
+                Debug.LogError("InventoryManager: WeaponToRuntimeWeapon — weapon data is null.");
+                return null;
+            }
 
             GameObject go = new GameObject();
+            go.transform.parent = referenceParent.transform;
             RuntimeWeapon inst = go.AddComponent<RuntimeWeapon>();
             go.name = w.Item_id;
 
@@ -262,6 +316,7 @@ namespace SA
         public RuntimeConsumable ConsumableToRuntime(Consumable c)
         {
             GameObject go = new GameObject();
+            go.transform.parent = referenceParent.transform;
             RuntimeConsumable inst = go.AddComponent<RuntimeConsumable>();
             go.name = c.Item_id;
 
@@ -313,7 +368,6 @@ namespace SA
             states.anim.Play(StaticStrings.changeWeapon);
             states.anim.Play(targetIdle);
 
-            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
             Item item = ResourcesManager.singleton.GetItem(w.instance.Item_id, ItemType.weapon);
             uiSlot.UpdateSlot((isLeft) ? UI.QSlotType.lh : UI.QSlotType.rh, item.GetIconId());
 
@@ -335,32 +389,16 @@ namespace SA
         public void EquipSpell(RuntimeSpellItems spell)
         {
             currentSpell = spell;
-            if (UI.QuickSlot.singleton == null)
-            {
-                Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
-                return;
-            }
-
-            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
 
             Item item = ResourcesManager.singleton.GetItem(spell.instance.Item_id, ItemType.spell);
             uiSlot.UpdateSlot(UI.QSlotType.spell, item.GetIconId());
-
         }
         public void EquipConsumable(RuntimeConsumable consum)
         {
             currentConsumable = consum;
-            if (UI.QuickSlot.singleton == null)
-            {
-                Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
-                return;
-            }
-
-            UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
 
             Item item = ResourcesManager.singleton.GetItem(consum.instance.Item_id, ItemType.consumable);
             uiSlot.UpdateSlot(UI.QSlotType.item, item.GetIconId());
-
         }
 
         public Weapon GetCurrentWeapon(bool isLeft)

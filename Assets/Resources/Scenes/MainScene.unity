@@ -12218,7 +12218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f842fab3281e247b942df80d40bef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unarmedId: Unarmed
+  unarmedId: "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
   unarmedRuntime: {fileID: 0}
   rh_weapons:
   - "\u0E14\u0E32\u0E1A"
