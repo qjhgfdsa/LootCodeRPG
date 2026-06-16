@@ -49,4 +49,6 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: c44bf61472afa6d49b0778fc2b403677, type: 3}
   - id: well
     sprite: {fileID: 21300000, guid: 90d49660f80a3b542b7e5c619d2a8143, type: 3}
+  - id: empty
+    sprite: {fileID: 21300000, guid: e45286c6c6d6403787491bb2584916cd, type: 3}
   missingIcon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}

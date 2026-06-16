@@ -25,11 +25,15 @@ namespace SA
         List<RuntimeSpellItems> r_spells = new List<RuntimeSpellItems>();
         List<RuntimeConsumable> r_consum = new List<RuntimeConsumable>();
 
+        List<int> consum_indexes = new List<int>();
+
         public RuntimeConsumable currentConsumable;
         public RuntimeSpellItems currentSpell;
         public RuntimeWeapon rightHandWeapon;
         public bool hasLeftHandWeapon = true;
         public RuntimeWeapon leftHandWeapon;
+
+        RuntimeConsumable emptyItem;
 
         public GameObject parryCollider;
         public GameObject breathCollider;
@@ -44,8 +48,6 @@ namespace SA
 
             states = st;
             uiSlot = UI.QuickSlot.singleton;
-
-
 
             ClearReferences();
             LoadInventory();
@@ -85,7 +87,7 @@ namespace SA
             {
                 for (int i = 0; i < r_consum.Count; i++)
                 {
-                    if (r_consum[i].itemModel)
+                    if (r_consum[i] != null && r_consum[i].itemModel)
                         Destroy(r_consum[i].itemModel);
                 }
                 r_consum.Clear();
@@ -112,24 +114,34 @@ namespace SA
         {
             unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
 
-
-
             if (unarmedRuntime == null)
             {
                 Debug.LogError($"InventoryManager: Could not load unarmed weapon id '{unarmedId}'. itemName in WeaponScriptableObject must match exactly (case-sensitive).");
                 return;
             }
 
+            for (int i = 0; i < 3; i++)
+            {
+                r_r_weapons.Add(unarmedRuntime);
+                r_l_weapons.Add(unarmedRuntime);
+
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                r_consum.Add(emptyItem);
+            }
+
             for (int i = 0; i < rh_weapons.Count; i++)
             {
                 RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
-                r_r_weapons.Add(rw);
+                r_r_weapons[i] = rw;
             }
 
             for (int i = 0; i < lh_weapons.Count; i++)
             {
                 RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
-                r_l_weapons.Add(lw);
+                r_l_weapons[i] = lw;
             }
 
             if (r_r_weapons.Count > 0)
@@ -160,6 +172,7 @@ namespace SA
                 EquipWeapon(rightHandWeapon, false);
             else
             {
+                states.anim.Play("empty_r");
                 UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
                 uiSlot.ClearSlot(UI.QSlotType.rh);
             }
@@ -171,6 +184,7 @@ namespace SA
             }
             else
             {
+                states.anim.Play("empty_l");
                 UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
                 uiSlot.ClearSlot(UI.QSlotType.lh);
             }
@@ -189,11 +203,18 @@ namespace SA
 
                 EquipSpell(r_spells[s_index]);
             }
+            else
+            {
+                uiSlot.ClearSlot(UI.QSlotType.spell);
+            }
+
+            emptyItem = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable("empty"));
 
             for (int i = 0; i < consumable_items.Count; i++)
             {
+              
                 RuntimeConsumable c = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable(consumable_items[i]));
-                r_consum.Add(c);
+                r_consum[i] = c;
             }
 
             if (r_consum.Count > 0)
@@ -202,6 +223,10 @@ namespace SA
                     c_index = 0;
 
                 EquipConsumable(r_consum[c_index]);
+            }
+            else
+            {
+                uiSlot.ClearSlot(UI.QSlotType.item);
             }
 
             InitAllDamageCollider(states);

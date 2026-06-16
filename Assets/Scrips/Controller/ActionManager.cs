@@ -7,7 +7,7 @@ namespace SA
     {
         public int actionIndex;
         public List<Action> actionSlots = new List<Action>();
-      
+
         StateManager states;
 
         public void Init(StateManager st)
@@ -51,8 +51,11 @@ namespace SA
             }
             else if (states.inventoryManager.unarmedRuntime?.instance != null)
             {
-                StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.e, actionSlots, true);
-                StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.q, actionSlots, true);
+                if (states.inventoryManager.rightHandWeapon != null)
+                {
+                    StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.f, ActionInput.e, actionSlots, true);
+                    StaticFunctions.DeepCopyAction(states.inventoryManager.unarmedRuntime.instance, ActionInput.r, ActionInput.q, actionSlots, true);
+                }
             }
 
             for (int i = 0; i < 4; i++)
@@ -60,26 +63,37 @@ namespace SA
         }
         public void UpdateActionsTwoHanded()
         {
-            if (states?.inventoryManager?.rightHandWeapon?.instance == null)
+            EmptyAllSlot();
+
+            if (states.inventoryManager.rightHandWeapon != null)
             {
-                UpdateActionsOneHanded();
+                Weapon w = states.inventoryManager.rightHandWeapon.instance;
+
+                for (int i = 0; i < w.two_handedActions.Count; i++)
+                {
+                    Action a = StaticFunctions.GetAction(w.two_handedActions[i].GetfirstInput(), actionSlots);
+
+                    a.fristStep.targetAnim = w.two_handedActions[i].fristStep.targetAnim;
+                    StaticFunctions.DeepCopyStepList(w.two_handedActions[i], a);
+                    a.actionType = w.two_handedActions[i].actionType;
+                }
                 return;
             }
 
-            EmptyAllSlot();
-
-            Weapon w = states.inventoryManager.rightHandWeapon.instance;
-
-            for (int i = 0; i < w.two_handedActions.Count; i++)
+            if (states.inventoryManager.leftHandWeapon != null)
             {
-                Action a = StaticFunctions.GetAction(w.two_handedActions[i].GetfirstInput(), actionSlots);
+                Weapon w = states.inventoryManager.leftHandWeapon.instance;
 
-                a.fristStep.targetAnim = w.two_handedActions[i].fristStep.targetAnim;
-                StaticFunctions.DeepCopyStepList(w.two_handedActions[i], a);
-                a.actionType = w.two_handedActions[i].actionType;
+                for (int i = 0; i < w.two_handedActions.Count; i++)
+                {
+                    Action a = StaticFunctions.GetAction(w.two_handedActions[i].GetfirstInput(), actionSlots);
+
+                    a.fristStep.targetAnim = w.two_handedActions[i].fristStep.targetAnim;
+                    StaticFunctions.DeepCopyStepList(w.two_handedActions[i], a);
+                    a.actionType = w.two_handedActions[i].actionType;
+                }
+
             }
-
-
         }
 
         void EmptyAllSlot()
@@ -215,7 +229,7 @@ namespace SA
                 return fristStep;
             }
 
-            ActionAnim retVal = comboSteps[indx-1];
+            ActionAnim retVal = comboSteps[indx - 1];
             indx++;
             if (indx > comboSteps.Count - 1)
             {

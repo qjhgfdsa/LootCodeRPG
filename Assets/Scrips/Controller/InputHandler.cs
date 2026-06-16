@@ -18,7 +18,7 @@ namespace SA
         bool key2_input;
         bool key3_input;
         bool key4_input;
-       // public bool Key1Input { get => key1_input; set => key1_input = value; }//เดะเเก้
+        // public bool Key1Input { get => key1_input; set => key1_input = value; }//เดะเเก้
 
         bool f_input;
         bool r_input;
@@ -36,7 +36,7 @@ namespace SA
         SA.UI.InventoryUI invUI;
 
         bool isGesturesOpen;
-        bool isInventoryOpen;
+
         float delta;
 
         void Awake()
@@ -98,17 +98,17 @@ namespace SA
             delta = Time.deltaTime;
 
             GetInput();
-          
+
             UpdateStates();
             states.Tick(delta);
 
-          //  invUI.Tick();
+            if (invUI.isMenu)
+                invUI.Tick();
 
             ResetInputNStates();
             states.MonitorStats();
             if (uiManager != null)
                 uiManager.Tick(states.characterStats, delta);
-
         }
 
         void GetInput()
@@ -122,7 +122,7 @@ namespace SA
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
 
 
-            if (!isInventoryOpen)
+            if (!invUI.isMenu)
             {
                 q_input = Input.GetKey(StaticStrings.KeyQ);
                 e_input = Input.GetKey(StaticStrings.KeyE);
@@ -136,7 +136,6 @@ namespace SA
                 r_input = false;
                 f_input = false;
             }
-
             if (shift_input)
                 shift_timer += delta;
 
@@ -145,8 +144,9 @@ namespace SA
             key3_input = Input.GetKeyDown(KeyCode.Alpha3);
             key4_input = Input.GetKeyDown(KeyCode.Alpha4);
 
-            bool gesturesMenu = Input.GetKeyDown(StaticStrings.KeyG);
             bool inventoryMenu = Input.GetKeyDown(StaticStrings.KeyI);
+            bool gesturesMenu = Input.GetKeyDown(StaticStrings.KeyG);
+
             if (gesturesMenu)
             {
                 isGesturesOpen = !isGesturesOpen;
@@ -154,9 +154,10 @@ namespace SA
 
             if (inventoryMenu)
             {
-                isInventoryOpen = !isInventoryOpen;
-                if (isInventoryOpen)
+                invUI.isMenu = !invUI.isMenu;
+                if (invUI.isMenu)
                 {
+                    isGesturesOpen = false;
                     invUI.OpenUI();
                 }
                 else
@@ -172,7 +173,6 @@ namespace SA
                 return;
 
             uiManager.gestures.HandleGestures(isGesturesOpen);
-            invUI.Tick();
 
             if (isGesturesOpen)
             {
@@ -183,8 +183,8 @@ namespace SA
                 curUIState = UIState.game;
             }
 
-            
-            if(isInventoryOpen)
+
+            if (invUI.isMenu)
             {
                 curUIState = UIState.inventory;
             }
@@ -198,10 +198,10 @@ namespace SA
                     HandleGesturesUI();
                     break;
                 case UIState.inventory:
-                    HandleInventoryUI();
+                    break;
+                default:
                     break;
             }
-
         }
 
         UIState curUIState;
@@ -230,13 +230,9 @@ namespace SA
                 states.PlayAnimation(selected.targetAnim, false);
             }
         }
-        void HandleInventoryUI()
-        {
-
-        }
         void UpdateStates()
         {
-            if (isInventoryOpen)
+            if (invUI.isMenu)
             {
                 ClearCombatStates();
                 return;

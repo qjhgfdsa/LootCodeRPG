@@ -6594,15 +6594,18 @@ MonoBehaviour:
   - "\u0E14\u0E32\u0E1A"
   - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
   - "\u0E14\u0E32\u0E1A"
+  - "\u0E2B\u0E2D\u0E01"
+  - "\u0E1E\u0E25\u0E31\u0E07\u0E44\u0E1F"
   spell_items:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
-  - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
+  - "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
+  - "\u0E42\u0E25\u0E48\u0E44\u0E1F"
   consumable_items:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
-  - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
-  - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
+  - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
+  - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
 --- !u!4 &239484887
 Transform:
   m_ObjectHideFlags: 0
@@ -6634,6 +6637,7 @@ MonoBehaviour:
   horizontal: 0
   key1_input: 0
   key2_input: 0
+  key3_input: 0
 --- !u!1 &240311415
 GameObject:
   m_ObjectHideFlags: 0
@@ -12222,12 +12226,23 @@ MonoBehaviour:
   unarmedRuntime: {fileID: 0}
   rh_weapons:
   - "\u0E14\u0E32\u0E1A"
+  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
+  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
   lh_weapons:
   - "\u0E14\u0E32\u0E1A"
+  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
+  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
   spell_items:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
   consumable_items:
-  - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
+  - empty
+  - empty
+  - empty
+  - empty
+  - empty
+  - empty
+  - empty
+  - empty
   r_index: 0
   l_index: 0
   s_index: 0
@@ -12896,7 +12911,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 2, y: 4}
-  itemPosition: 0
+  itemPosition: 2
 --- !u!1 &477745407 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5124656962777521795, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -18311,7 +18326,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 3, y: 4}
-  itemPosition: 0
+  itemPosition: 3
 --- !u!1 &713391815
 GameObject:
   m_ObjectHideFlags: 0
@@ -18762,6 +18777,7 @@ MonoBehaviour:
   unselected: {r: 0, g: 0, b: 0, a: 0.6509804}
   selected: {r: 0.72327036, g: 0.6735104, b: 0.19332686, a: 0.32941177}
   isSwitching: 0
+  isMenu: 0
   curUIState: 0
 --- !u!4 &729727976
 Transform:
@@ -19671,7 +19687,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 3, y: 2}
-  itemPosition: 0
+  itemPosition: 3
 --- !u!1 &781104303
 GameObject:
   m_ObjectHideFlags: 0
@@ -19960,7 +19976,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 3, y: 5}
-  itemPosition: 0
+  itemPosition: 8
 --- !u!1 &809490651
 GameObject:
   m_ObjectHideFlags: 0
@@ -20810,7 +20826,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 0, y: 5}
-  itemPosition: 0
+  itemPosition: 5
 --- !u!1 &837198068
 GameObject:
   m_ObjectHideFlags: 0
@@ -22405,7 +22421,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 1, y: 2}
-  itemPosition: 0
+  itemPosition: 1
 --- !u!1 &896843510
 GameObject:
   m_ObjectHideFlags: 0
@@ -24391,7 +24407,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 3, y: 3}
-  itemPosition: 0
+  itemPosition: 3
 --- !u!1 &1001722802
 GameObject:
   m_ObjectHideFlags: 0
@@ -33264,7 +33280,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 2, y: 1}
-  itemPosition: 0
+  itemPosition: 5
 --- !u!1 &1396533933
 GameObject:
   m_ObjectHideFlags: 0
@@ -36957,7 +36973,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 0, y: 1}
-  itemPosition: 0
+  itemPosition: 3
 --- !u!1 &1623091077
 GameObject:
   m_ObjectHideFlags: 0
@@ -38539,7 +38555,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 2, y: 0}
-  itemPosition: 0
+  itemPosition: 2
 --- !u!1 &1687814657
 GameObject:
   m_ObjectHideFlags: 0
@@ -38897,7 +38913,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 2
   slotPos: {x: 4, y: 1}
-  itemPosition: 0
+  itemPosition: 3
 --- !u!1 &1693443389 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -941126808867326829, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -39750,7 +39766,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 3
   slotPos: {x: 2, y: 2}
-  itemPosition: 0
+  itemPosition: 2
 --- !u!1 &1749593906
 GameObject:
   m_ObjectHideFlags: 0
@@ -40119,7 +40135,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 4, y: 4}
-  itemPosition: 0
+  itemPosition: 4
 --- !u!1 &1762337560
 GameObject:
   m_ObjectHideFlags: 0
@@ -40742,7 +40758,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 4, y: 5}
-  itemPosition: 0
+  itemPosition: 9
 --- !u!1 &1777447007
 GameObject:
   m_ObjectHideFlags: 0
@@ -41984,7 +42000,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 1, y: 5}
-  itemPosition: 0
+  itemPosition: 6
 --- !u!1 &1807528926
 GameObject:
   m_ObjectHideFlags: 0
@@ -44105,7 +44121,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 2, y: 5}
-  itemPosition: 0
+  itemPosition: 7
 --- !u!1 &1888117146
 GameObject:
   m_ObjectHideFlags: 0
@@ -46973,7 +46989,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 1
   slotPos: {x: 4, y: 0}
-  itemPosition: 0
+  itemPosition: 1
 --- !u!1 &1959939342
 GameObject:
   m_ObjectHideFlags: 0
@@ -47312,7 +47328,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 2
   slotPos: {x: 3, y: 1}
-  itemPosition: 0
+  itemPosition: 2
 --- !u!1 &1980288908
 GameObject:
   m_ObjectHideFlags: 0
@@ -47409,7 +47425,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 6
   slotPos: {x: 1, y: 4}
-  itemPosition: 0
+  itemPosition: 1
 --- !u!1 &1984368794
 GameObject:
   m_ObjectHideFlags: 0
@@ -47715,7 +47731,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 1, y: 1}
-  itemPosition: 0
+  itemPosition: 4
 --- !u!1001 &1998344224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47837,7 +47853,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 0
   slotPos: {x: 1, y: 0}
-  itemPosition: 0
+  itemPosition: 1
 --- !u!1 &2001939339
 GameObject:
   m_ObjectHideFlags: 0
@@ -48329,7 +48345,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 2, y: 3}
-  itemPosition: 0
+  itemPosition: 2
 --- !u!1 &2037933905
 GameObject:
   m_ObjectHideFlags: 0
@@ -49909,7 +49925,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   slotType: 4
   slotPos: {x: 1, y: 3}
-  itemPosition: 0
+  itemPosition: 1
 --- !u!1 &2105173060
 GameObject:
   m_ObjectHideFlags: 0

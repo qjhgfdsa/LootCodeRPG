@@ -215,7 +215,7 @@ MonoBehaviour:
     r_model_eulers: {x: 0, y: 0, z: 0}
     l_model_eulers: {x: 1, y: 1, z: 1}
     model_scale: {x: 0.8, y: 0.8, z: 0.8}
-  - Item_id: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E40\u0E1E\u0E25\u0E34\u0E07"
+  - Item_id: "\u0E1E\u0E25\u0E31\u0E07\u0E44\u0E1F"
     oh_idle: oh_idle
     th_idle: th_idle
     actions:
@@ -353,7 +353,7 @@ MonoBehaviour:
       spellClass: 0
       fristStep:
         input: 0
-        targetAnim: 
+        targetAnim: rap_oh_attack_1
       comboSteps: []
       mirror: 0
       canBeParried: 1
@@ -372,9 +372,11 @@ MonoBehaviour:
     - actionType: 0
       spellClass: 0
       fristStep:
-        input: 0
-        targetAnim: 
-      comboSteps: []
+        input: 2
+        targetAnim: rap_oh_attack_2
+      comboSteps:
+      - input: 2
+        targetAnim: rap_oh_attack_3
       mirror: 0
       canBeParried: 0
       changeSpeed: 0

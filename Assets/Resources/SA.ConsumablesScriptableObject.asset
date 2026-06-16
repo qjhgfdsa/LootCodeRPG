@@ -34,3 +34,10 @@ MonoBehaviour:
     r_model_pos: {x: 0, y: 0, z: 0}
     r_model_eulers: {x: 0, y: 0, z: 0}
     model_scale: {x: 0, y: 0, z: 0}
+  - Item_id: empty
+    consumableEffect: '-'
+    targetAnim: 
+    itemPrefab: {fileID: 0}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    model_scale: {x: 0, y: 0, z: 0}
