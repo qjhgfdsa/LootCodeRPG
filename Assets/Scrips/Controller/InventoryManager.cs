@@ -25,7 +25,10 @@ namespace SA
         List<RuntimeSpellItems> r_spells = new List<RuntimeSpellItems>();
         List<RuntimeConsumable> r_consum = new List<RuntimeConsumable>();
 
-        List<int> consum_indexes = new List<int>();
+        List<RuntimeConsumable> consum_indexes = new List<RuntimeConsumable>();
+        List<RuntimeWeapon> lh_indexes = new List<RuntimeWeapon>();
+        List<RuntimeWeapon> rh_indexes = new List<RuntimeWeapon>();
+
 
         public RuntimeConsumable currentConsumable;
         public RuntimeSpellItems currentSpell;
@@ -45,10 +48,10 @@ namespace SA
 
         public void Init(StateManager st)
         {
-
             states = st;
             uiSlot = UI.QuickSlot.singleton;
 
+            LoadLists();
             ClearReferences();
             LoadInventory();
 
@@ -57,6 +60,42 @@ namespace SA
             CloseParryCollider();
             CloseBreathCollider();
             CloseBlockCollider();
+        }
+
+        void LoadLists()
+        {
+            rh_weapons.Clear();
+            lh_weapons.Clear();
+            consumable_items.Clear();
+            spell_items.Clear();
+
+            string un = "มือเปล่า";
+            for (int i = 0; i < 3; i++)
+            {
+                rh_weapons.Add(un);
+                lh_weapons.Add(un);
+            }
+            string em = "empty";
+            {
+                consumable_items.Add(em);
+            }
+
+            SessionManager s = SessionManager.singleton;
+            for (int i = 0; i < s.rh_Equiped.Count; i++)
+            {
+                rh_weapons[i] = s.rh_Equiped[i];
+            }
+            for (int i = 0; i < s.lh_Equiped.Count; i++)
+            {
+                lh_weapons[i] = s.lh_Equiped[i];
+            }
+            for (int i = 0; i < s.con_Equiped.Count; i++)
+            {
+                consumable_items[i] = s.con_Equiped[i];
+            }
+         
+            spell_items.AddRange(s.spell_Equiped);
+        
         }
 
         public void ClearReferences()
@@ -108,8 +147,6 @@ namespace SA
                 Destroy(referenceParent);
             referenceParent = new GameObject();
         }
-
-
         public void LoadInventory(bool updateActions = false)
         {
             unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
@@ -119,6 +156,7 @@ namespace SA
                 Debug.LogError($"InventoryManager: Could not load unarmed weapon id '{unarmedId}'. itemName in WeaponScriptableObject must match exactly (case-sensitive).");
                 return;
             }
+            unarmedRuntime.isUnarmed = true;
 
             for (int i = 0; i < 3; i++)
             {
@@ -127,66 +165,31 @@ namespace SA
 
             }
 
-            for (int i = 0; i < 10; i++)
-            {
-                r_consum.Add(emptyItem);
-            }
-
             for (int i = 0; i < rh_weapons.Count; i++)
             {
-                RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
-                r_r_weapons[i] = rw;
+                if (string.Equals(rh_weapons[i], "มือเปล่า"))
+                {
+                    r_r_weapons[i] = unarmedRuntime;
+                }
+                else
+                {
+                    RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
+                    r_r_weapons[i] = rw;
+                }
             }
 
             for (int i = 0; i < lh_weapons.Count; i++)
             {
-                RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
-                r_l_weapons[i] = lw;
-            }
+                if (string.Equals(lh_weapons[i], "มือเปล่า"))
+                {
+                    r_l_weapons[i] = unarmedRuntime;
+                }
+                else
+                {
+                    RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
+                    r_l_weapons[i] = lw;
+                }
 
-            if (r_r_weapons.Count > 0)
-            {
-                if (r_index > r_r_weapons.Count - 1)
-                    r_index = 0;
-
-                rightHandWeapon = r_r_weapons[r_index];
-            }
-            else
-            {
-                rightHandWeapon = unarmedRuntime;
-            }
-
-            if (r_l_weapons.Count > 0)
-            {
-                if (l_index > r_l_weapons.Count - 1)
-                    l_index = 0;
-
-                leftHandWeapon = r_l_weapons[l_index];
-            }
-            else
-            {
-                leftHandWeapon = null;
-            }
-
-            if (rightHandWeapon != null && rightHandWeapon.weaponModel != null)
-                EquipWeapon(rightHandWeapon, false);
-            else
-            {
-                states.anim.Play("empty_r");
-                UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
-                uiSlot.ClearSlot(UI.QSlotType.rh);
-            }
-
-            if (leftHandWeapon != null && leftHandWeapon.weaponModel != null)
-            {
-                EquipWeapon(leftHandWeapon, true);
-                hasLeftHandWeapon = true;
-            }
-            else
-            {
-                states.anim.Play("empty_l");
-                UI.QuickSlot uiSlot = UI.QuickSlot.singleton;
-                uiSlot.ClearSlot(UI.QSlotType.lh);
             }
 
             for (int i = 0; i < spell_items.Count; i++)
@@ -194,7 +197,64 @@ namespace SA
                 SpellToRuntimeSpell(ResourcesManager.singleton.GetSpell(spell_items[i]));
             }
 
-            hasLeftHandWeapon = (leftHandWeapon != null);
+            Consumable emptyConsumable = ResourcesManager.singleton.GetConsumable("empty");
+            if (emptyConsumable == null)
+            {
+                Debug.LogError("InventoryManager: consumable id 'empty' not found in SA.ConsumablesScriptableObject.");
+                return;
+            }
+            emptyItem = ConsumableToRuntime(emptyConsumable);
+            emptyItem.isEmpty = true;
+
+            for (int i = 0; i < 10; i++)
+            {
+                r_consum.Add(emptyItem);
+            }
+
+            for (int i = 0; i < consumable_items.Count; i++)
+            {
+                if (string.Equals(consumable_items[i], "empty"))
+                {
+                    r_consum[i] = emptyItem;
+                }
+                else
+                {
+                    RuntimeConsumable c = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable(consumable_items[i]));
+                    r_consum[i] = c;
+                }
+            }
+
+
+            InitAllDamageCollider(states);
+            CloseAllDamageColliders();
+
+            MakeIndexesList();
+            EquipInventory();
+
+            if (updateActions)
+            {
+                states.actionManager.UpdateActionsOneHanded();
+            }
+
+        }
+        public void EquipInventory()
+        {
+            if (r_index > rh_indexes.Count - 1)
+                r_index = 0;
+            rightHandWeapon = rh_indexes[r_index];
+
+            if (l_index > lh_indexes.Count - 1)
+                l_index = 0;
+            leftHandWeapon = lh_indexes[l_index];
+
+            EquipWeapon(rightHandWeapon, false);
+            EquipWeapon(leftHandWeapon, true);
+
+            if (c_index > consum_indexes.Count - 1)
+                c_index = 0;
+
+            EquipConsumable(consum_indexes[c_index]);
+
 
             if (r_spells.Count > 0)
             {
@@ -207,36 +267,6 @@ namespace SA
             {
                 uiSlot.ClearSlot(UI.QSlotType.spell);
             }
-
-            emptyItem = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable("empty"));
-
-            for (int i = 0; i < consumable_items.Count; i++)
-            {
-              
-                RuntimeConsumable c = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable(consumable_items[i]));
-                r_consum[i] = c;
-            }
-
-            if (r_consum.Count > 0)
-            {
-                if (c_index > r_consum.Count - 1)
-                    c_index = 0;
-
-                EquipConsumable(r_consum[c_index]);
-            }
-            else
-            {
-                uiSlot.ClearSlot(UI.QSlotType.item);
-            }
-
-            InitAllDamageCollider(states);
-            CloseAllDamageColliders();
-
-            if (updateActions)
-            {
-                states.actionManager.UpdateActionsOneHanded();
-            }
-
         }
         public RuntimeSpellItems SpellToRuntimeSpell(Spell s, bool isLeft = false)
         {
@@ -256,7 +286,6 @@ namespace SA
             r_spells.Add(inst);
             return inst;
         }
-
         public void CreateSpellParticle(RuntimeSpellItems inst, bool isLeft, bool parentUnderRoot = false)
         {
             if (inst == null || inst.instance == null)
@@ -337,7 +366,6 @@ namespace SA
             return inst;
 
         }
-
         public RuntimeConsumable ConsumableToRuntime(Consumable c)
         {
             GameObject go = new GameObject();
@@ -398,6 +426,8 @@ namespace SA
 
             w.weaponModel.SetActive(true);
 
+         //   if (isLeft)
+              //  RefreshHasLeftHandWeapon();
 
             /*  if (UI.QuickSlot.singleton != null)
               {
@@ -410,7 +440,6 @@ namespace SA
 
               w.weaponModel.SetActive(true);*/
         }
-
         public void EquipSpell(RuntimeSpellItems spell)
         {
             currentSpell = spell;
@@ -425,7 +454,6 @@ namespace SA
             Item item = ResourcesManager.singleton.GetItem(consum.instance.Item_id, ItemType.consumable);
             uiSlot.UpdateSlot(UI.QSlotType.item, item.GetIconId());
         }
-
         public Weapon GetCurrentWeapon(bool isLeft)
         {
             if (isLeft)
@@ -441,7 +469,6 @@ namespace SA
             if (leftHandWeapon != null && leftHandWeapon.w_Hook != null)
                 leftHandWeapon.w_Hook.OpenDamageColliders();
         }
-
         public void CloseAllDamageColliders()
         {
             if (rightHandWeapon != null && rightHandWeapon.w_Hook != null)
@@ -450,7 +477,6 @@ namespace SA
             if (leftHandWeapon != null && leftHandWeapon.w_Hook != null)
                 leftHandWeapon.w_Hook.CloseDamageColliders();
         }
-
         public void InitAllDamageCollider(StateManager state)
         {
             if (rightHandWeapon != null && rightHandWeapon.w_Hook != null)
@@ -459,12 +485,10 @@ namespace SA
             if (leftHandWeapon != null && leftHandWeapon.w_Hook != null)
                 leftHandWeapon.w_Hook.InitDamageCollider(state);
         }
-
         public void CloseParryCollider()
         {
             parryCollider.SetActive(false);
         }
-
         public void OpenParryCollider()
         {
             parryCollider.SetActive(true);
@@ -476,27 +500,27 @@ namespace SA
 
             if (isLeft)
             {
-                if (r_l_weapons.Count == 0)
+                if (lh_indexes.Count == 0)
                     return;
 
-                if (l_index < r_l_weapons.Count - 1)
+                if (l_index < lh_indexes.Count - 1)
                     l_index++;
                 else
                     l_index = 0;
 
-                EquipWeapon(r_l_weapons[l_index], true);
+                EquipWeapon(lh_indexes[l_index], true);
             }
             else
             {
-                if (r_r_weapons.Count == 0)
+                if (rh_indexes.Count == 0)
                     return;
 
-                if (r_index < r_r_weapons.Count - 1)
+                if (r_index < rh_indexes.Count - 1)
                     r_index++;
                 else
                     r_index = 0;
 
-                EquipWeapon(r_r_weapons[r_index]);
+                EquipWeapon(rh_indexes[r_index]);
             }
 
             states.actionManager.UpdateActionsOneHanded();
@@ -519,19 +543,59 @@ namespace SA
         }
         public void ChangeToNextConsumable()
         {
-            if (r_consum.Count == 0)
-            {
-                Debug.LogWarning("InventoryManager: No runtime consumables to cycle. Check consumable_items and ResourcesManager consumable ids.");
-                return;
-            }
-
-            if (c_index < r_consum.Count - 1)
+            if (c_index < consum_indexes.Count - 1)
                 c_index++;
             else
                 c_index = 0;
 
-            EquipConsumable(r_consum[c_index]);
+            EquipConsumable(consum_indexes[c_index]);
         }
+        void MakeIndexesList()
+        {
+            consum_indexes.Clear();
+
+            for (int i = 0; i < r_consum.Count; i++)
+            {
+                if (r_consum[i] == null || r_consum[i].isEmpty)
+                    continue;
+
+                consum_indexes.Add(r_consum[i]);
+            }
+
+            if (consum_indexes.Count < 2)
+            {
+                consum_indexes.Add(emptyItem);
+            }
+
+            rh_indexes.Clear();
+            for (int i = 0; i < r_r_weapons.Count; i++)
+            {
+                if (r_r_weapons[i].isUnarmed)
+                    continue;
+
+                rh_indexes.Add(r_r_weapons[i]);
+            }
+
+            if (rh_indexes.Count < 2)
+            {
+                rh_indexes.Add(unarmedRuntime);
+            }
+
+            lh_indexes.Clear();
+            for (int i = 0; i < r_l_weapons.Count; i++)
+            {
+                if (r_l_weapons[i].isUnarmed)
+                    continue;
+
+                lh_indexes.Add(r_l_weapons[i]);
+            }
+
+            if (lh_indexes.Count < 2)
+            {
+                lh_indexes.Add(unarmedRuntime);
+            }
+        }
+
         #region Delegate Calls
         public void OpenBreathCollider()
         {

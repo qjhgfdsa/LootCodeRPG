@@ -23,13 +23,13 @@ MonoBehaviour:
     name_item: potion_Focus
     itemDescription: fight!!!
     skillDescription: for win
-    iconId: bestus
+    iconId: bestus_focus
     icon: {fileID: 21300000, guid: 5aabaadcd5e8dce4296119d032114c28, type: 3}
   - Item_id: empty
     name_item: '-'
     itemDescription: '-'
     skillDescription: '-'
-    iconId: '-'
+    iconId: empty
     icon: {fileID: 21300000, guid: e45286c6c6d6403787491bb2584916cd, type: 3}
   weapon_items:
   - Item_id: "\u0E14\u0E32\u0E1A"
@@ -48,13 +48,13 @@ MonoBehaviour:
     name_item: '-'
     itemDescription: '-'
     skillDescription: '-'
-    iconId: 
+    iconId: empty
     icon: {fileID: 21300000, guid: e45286c6c6d6403787491bb2584916cd, type: 3}
   - Item_id: "\u0E2B\u0E2D\u0E01"
     name_item: Spear
     itemDescription: Thust Thust
     skillDescription: is it Fun
-    iconId: 
+    iconId: spear
     icon: {fileID: 21300000, guid: 698c5e9feaa63e54c8fd20932cfb6136, type: 3}
   - Item_id: "\u0E1E\u0E25\u0E31\u0E07\u0E44\u0E1F"
     name_item: Pyromancy Flame

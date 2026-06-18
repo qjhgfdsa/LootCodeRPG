@@ -5,6 +5,13 @@ namespace SA
 {
     public class SessionManager : MonoBehaviour
     {
+        [Header("Equiped Items")]
+        public List<string> rh_Equiped = new List<string>();
+        public List<string> lh_Equiped = new List<string>();
+        public List<string> con_Equiped = new List<string>();
+        public List<string> spell_Equiped = new List<string>();
+      
+        [Header("In Inventory")]
         public List<string> weapon_items = new List<string>();
         public List<string> spell_items = new List<string>();
         public List<string> consumable_items = new List<string>();

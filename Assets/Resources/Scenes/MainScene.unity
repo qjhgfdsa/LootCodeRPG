@@ -6588,6 +6588,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a452ab02fd5acb54f839d9a34cc4fe03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.SessionManager
+  rh_Equiped:
+  - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
+  lh_Equiped:
+  - "\u0E14\u0E32\u0E1A"
+  - "\u0E2B\u0E2D\u0E01"
+  con_Equiped:
+  - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
+  spell_Equiped:
+  - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
   weapon_items:
   - "\u0E14\u0E32\u0E1A"
   - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
@@ -12242,7 +12251,6 @@ MonoBehaviour:
   - empty
   - empty
   - empty
-  - empty
   r_index: 0
   l_index: 0
   s_index: 0
@@ -16689,6 +16697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.RuntimeWeapon
+  isUnarmed: 0
   instance:
     Item_id: 
     oh_idle: oh_idle
@@ -40311,6 +40320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUnarmed: 0
   instance:
     Item_id: 
     oh_idle: oh_idle
@@ -47164,6 +47174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb45566e2d394ff4a8895024366fe201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUnarmed: 0
   instance:
     Item_id: 
     oh_idle: oh_idle

@@ -80,7 +80,10 @@ namespace SA
                 Debug.LogWarning("InputHandler: UIManager is missing from the scene — HUD will not update.");
 
             invUI = SA.UI.InventoryUI.singleton;
-            invUI.Init(states.inventoryManager);
+            if (invUI != null)
+                invUI.Init(states.inventoryManager);
+            else
+                Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
         }
         void FixedUpdate()
         {
@@ -102,7 +105,7 @@ namespace SA
             UpdateStates();
             states.Tick(delta);
 
-            if (invUI.isMenu)
+            if (invUI != null && invUI.isMenu)
                 invUI.Tick();
 
             ResetInputNStates();
@@ -122,7 +125,7 @@ namespace SA
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
 
 
-            if (!invUI.isMenu)
+            if (invUI == null || !invUI.isMenu)
             {
                 q_input = Input.GetKey(StaticStrings.KeyQ);
                 e_input = Input.GetKey(StaticStrings.KeyE);
@@ -152,7 +155,7 @@ namespace SA
                 isGesturesOpen = !isGesturesOpen;
             }
 
-            if (inventoryMenu)
+            if (inventoryMenu && invUI != null)
             {
                 invUI.isMenu = !invUI.isMenu;
                 if (invUI.isMenu)
@@ -184,7 +187,7 @@ namespace SA
             }
 
 
-            if (invUI.isMenu)
+            if (invUI != null && invUI.isMenu)
             {
                 curUIState = UIState.inventory;
             }
@@ -232,7 +235,7 @@ namespace SA
         }
         void UpdateStates()
         {
-            if (invUI.isMenu)
+            if (invUI != null && invUI.isMenu)
             {
                 ClearCombatStates();
                 return;

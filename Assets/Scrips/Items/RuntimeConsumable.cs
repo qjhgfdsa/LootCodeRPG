@@ -4,6 +4,7 @@ namespace SA
 {
     public class RuntimeConsumable : MonoBehaviour
     {
+        public bool isEmpty;
         public int itemCount = 2;
         public bool unlimitedCount;
         public Consumable instance;

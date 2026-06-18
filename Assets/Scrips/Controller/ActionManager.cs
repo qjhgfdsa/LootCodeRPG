@@ -29,7 +29,7 @@ namespace SA
         }
 
         public void UpdateActionsOneHanded()
-        {
+        { 
             if (states == null || states.inventoryManager == null)
                 return;
 

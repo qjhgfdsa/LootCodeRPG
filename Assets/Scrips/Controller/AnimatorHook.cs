@@ -106,6 +106,9 @@ namespace SA
             if (rm_Mutil == 0)
                 rm_Mutil = 1;
 
+            if (delta <= 0f)
+                return;
+
             if (rolling)
             {
                 roll_t += delta / 0.6f;
@@ -135,7 +138,7 @@ namespace SA
             Vector3 v = (delta2 * rm_Mutil) / delta;
             v += Physics.gravity;
 
-            if (!rigid.isKinematic)
+            if (!rigid.isKinematic && float.IsFinite(v.x) && float.IsFinite(v.y) && float.IsFinite(v.z))
                 rigid.linearVelocity = v;
 
         }
