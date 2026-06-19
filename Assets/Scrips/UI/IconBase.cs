@@ -7,7 +7,7 @@ namespace SA
     {
         public Image background;
         public Image icon;
-        public string id;
+        public int id;
 
     }
 }

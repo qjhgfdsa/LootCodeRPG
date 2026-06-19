@@ -5260,7 +5260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SA.IconBase
   background: {fileID: 0}
   icon: {fileID: 1508553184}
-  id: 
+  id: 0
 --- !u!1 &202539709
 GameObject:
   m_ObjectHideFlags: 0
@@ -6592,29 +6592,26 @@ MonoBehaviour:
   - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
   lh_Equiped:
   - "\u0E14\u0E32\u0E1A"
-  - "\u0E2B\u0E2D\u0E01"
   con_Equiped:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
   spell_Equiped:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
+  _eq_rh: 
+  _eq_lh: 
   weapon_items:
-  - "\u0E14\u0E32\u0E1A"
-  - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
-  - "\u0E14\u0E32\u0E1A"
-  - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
-  - "\u0E14\u0E32\u0E1A"
+  - "\u0E42\u0E25\u0E48\u0E01\u0E25\u0E21"
   - "\u0E2B\u0E2D\u0E01"
   - "\u0E1E\u0E25\u0E31\u0E07\u0E44\u0E1F"
   spell_items:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
-  - "\u0E1E\u0E48\u0E19\u0E44\u0E1F"
-  - "\u0E42\u0E25\u0E48\u0E44\u0E1F"
   consumable_items:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
+  inventoryUI: {fileID: 729727975}
+  rm: {fileID: 2109640208}
 --- !u!4 &239484887
 Transform:
   m_ObjectHideFlags: 0
@@ -6627,7 +6624,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1323851444}
+  - {fileID: 2109640209}
+  - {fileID: 729727976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &239484888
@@ -12233,14 +12233,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unarmedId: "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
   unarmedRuntime: {fileID: 0}
-  rh_weapons:
-  - "\u0E14\u0E32\u0E1A"
-  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
-  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
-  lh_weapons:
-  - "\u0E14\u0E32\u0E1A"
-  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
-  - "\u0E21\u0E37\u0E2D\u0E40\u0E1B\u0E25\u0E48\u0E32"
+  rh_weapons: 000000000000000000000000
+  lh_weapons: 000000000000000000000000
   spell_items:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
   consumable_items:
@@ -18796,12 +18790,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 729727974}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 925.27954, y: 560.0001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 239484887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &736542355
 GameObject:
@@ -31811,12 +31805,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323851442}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 600.5119, y: 540.2183, z: -2.548154}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 239484887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1323851445
 MonoBehaviour:
@@ -50185,12 +50179,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2109640207}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.3801, y: 0.88877, z: 0.58945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 239484887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2109640210
 MonoBehaviour:
@@ -51768,12 +51762,9 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1323851444}
-  - {fileID: 2109640209}
   - {fileID: 1567151152}
   - {fileID: 1129105444}
   - {fileID: 1250406972}
-  - {fileID: 729727976}
   - {fileID: 239484887}
   - {fileID: 283489733}
   - {fileID: 471015676}

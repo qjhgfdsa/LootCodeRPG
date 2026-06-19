@@ -102,7 +102,6 @@ namespace SA
                 go.SetActive(true);
                 IconBase icon = go.GetComponentInChildren<IconBase>();
                 icon.icon.sprite = SA.UI.Icons.IconRegistry.Instance.Resolve(new IconId(gestures[i].icon)); // รอเช็ค
-                icon.id = gestures[i].targetAnim;
                 gestures[i].baseIcon = icon;
 
             }

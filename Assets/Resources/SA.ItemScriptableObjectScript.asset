@@ -60,8 +60,14 @@ MonoBehaviour:
     name_item: Pyromancy Flame
     itemDescription: Brun Brun
     skillDescription: so HOTTT
-    iconId: firebreath
+    iconId: pyromancy_flame
     icon: {fileID: 21300000, guid: 3dd23b9d6ec11ee419c81e9f6a58b35d, type: 3}
+  - Item_id: "\u0E42\u0E25\u0E48\u0E01\u0E25\u0E21"
+    name_item: Shield
+    itemDescription: Proteck you
+    skillDescription: chance
+    iconId: shield
+    icon: {fileID: 21300000, guid: fd989a235a2ad5c4c853e17b477a21a3, type: 3}
   spell_items:
   - Item_id: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
     name_item: "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F\u0E2A\u0E35\u0E1F\u0E49\u0E32"

@@ -49,6 +49,8 @@ namespace SA.UI
         public bool isSwitching;
         public bool isMenu;
 
+        SessionManager session;
+
         #region ปุ่มเลือกออบเจ็ค ใน inventory
         void HandleSlotInput(InputUI inp)
         {
@@ -84,7 +86,7 @@ namespace SA.UI
                     }
                     else
                     {
-                         invManager.consumable_items[curEqSlot.itemPosition] = curInvIcon.id;
+                        // invManager.consumable_items[curEqSlot.itemPosition] = curInvIcon.id;
                     }
                     LoadEquipment(invManager, true);
                 }
@@ -120,11 +122,11 @@ namespace SA.UI
                         if (isLeft)
                         {
                             targetIndex -= 3;
-                            invManager.lh_weapons[targetIndex] = "มือเปล่า";
+                            invManager.lh_weapons[targetIndex] = -1;
                         }
                         else
                         {
-                            invManager.rh_weapons[targetIndex] = "มือเปล่า";
+                            invManager.rh_weapons[targetIndex] = -1;
                         }
                     }
                     else
@@ -283,12 +285,17 @@ namespace SA.UI
         }
 
         #region Create UI Elements
+        public void Pre_Init()
+        {
+            session = SessionManager.singleton;
+
+            CreateUIElements();
+            InitEqSlots();
+        }
         public void Init(InventoryManager inv)
         {
             inp = InputUI.singleton;
             invManager = inv;
-            CreateUIElements();
-            InitEqSlots();
         }
         void InitEqSlots()
         {
@@ -491,7 +498,8 @@ namespace SA.UI
 
         public void LoadCurrentItems(ItemType t)
         {
-            List<Item> itemList = SessionManager.singleton.GetItemAsList(t);
+            //List<Item> itemList = session.GetItemAsList(t);
+            List<ItemInventoryInstance> itemList = session.GetItemsIntanceList(t);
 
             if (itemList == null)
                 return;
@@ -511,6 +519,8 @@ namespace SA.UI
 
             for (int i = 0; i < itemList.Count + extra; i++)
             {
+                Item item = ResourcesManager.singleton.GetItem(itemList[i].itemId, t);
+
                 if (i > itemList.Count - 1)
                 {
                     iconSlotsCreated[i].gameObject.SetActive(false);
@@ -534,8 +544,10 @@ namespace SA.UI
                 curCreatedItems.Add(icon);
                 icon.gameObject.SetActive(true);
                 icon.icon.enabled = true;
-                icon.icon.sprite = itemList[i].icon;
-                icon.id = itemList[i].Item_id;
+                icon.icon.sprite = item.icon;
+                icon.id = itemList[i].uniqueId;
+
+
             }
         }
         void ChangeToSwitching()
@@ -656,6 +668,45 @@ namespace SA.UI
             if (loadOnCharacter)
                 inv.ClearReferences();
 
+            for (int i = 0; i < inv.rh_weapons.Count; i++)
+            {
+                ItemInventoryInstance inst = session.GetWeaponItem(inv.rh_weapons[i]);
+                if (inst.slot != null)
+                {
+                    equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+
+                    int targetIndex = inst.eq_index;
+                    if (targetIndex > 2)
+                    {
+                        targetIndex -= 3;
+                        inv.lh_weapons[targetIndex] = -1;
+                    }
+                    else
+                    {
+                        inv.rh_weapons[targetIndex] = -1;
+                    }
+                }
+            }
+
+            for (int i = 0; i < inv.lh_weapons.Count; i++)
+            {
+                ItemInventoryInstance inst = session.GetWeaponItem(inv.lh_weapons[i]);
+                if (inst.slot != null)
+                {
+                    equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+                    int targetIndex = inst.eq_index;
+                    if (targetIndex > 2)
+                    {
+                        targetIndex -= 3;
+                        inv.lh_weapons[targetIndex] = -1;
+                    }
+                    else
+                    {
+                        inv.rh_weapons[targetIndex] = -1;
+                    }
+                }
+            }
+
 
             for (int i = 0; i < inv.rh_weapons.Count; i++)
             {
@@ -664,14 +715,31 @@ namespace SA.UI
 
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i];
 
-                if (string.IsNullOrEmpty(inv.rh_weapons[i]))
+                if (inv.rh_weapons[i] == -1)
                 {
                     equipmentSlotUI.ClearEqSlot(slot, ItemType.weapon);
                 }
                 else
                 {
-                    equipmentSlotUI.UpdateSlot(inv.rh_weapons[i], slot, ItemType.weapon);
+                    ItemInventoryInstance inst = session.GetWeaponItem(inv.rh_weapons[i]);
+                    if (inst.slot != null)
+                    {
+                        /*   equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
 
+                           int targetIndex = inst.eq_index;
+                           if (targetIndex > 2)
+                           {
+                               targetIndex -= 3;
+                               inv.lh_weapons[targetIndex] = -1;
+                           }
+                           else
+                           {
+                               inv.rh_weapons[targetIndex] = -1;
+                           }*/
+                    }
+                    inst.slot = slot;
+                    inst.eq_index = i;
+                    equipmentSlotUI.UpdateSlot(inst.uniqueId, slot, ItemType.weapon);
                 }
             }
 
@@ -683,13 +751,30 @@ namespace SA.UI
 
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i + 3];
 
-                if (string.IsNullOrEmpty(inv.lh_weapons[i]))
+                if (inv.lh_weapons[i] == -1)
                 {
                     equipmentSlotUI.ClearEqSlot(slot, ItemType.weapon);
                 }
                 else
                 {
-                    equipmentSlotUI.UpdateSlot(inv.lh_weapons[i], slot, ItemType.weapon);
+                    ItemInventoryInstance inst = session.GetWeaponItem(inv.lh_weapons[i]);
+                    if (inst.slot != null)
+                    {
+                        /*   equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+                           int targetIndex = inst.eq_index;
+                           if(targetIndex>2)
+                           {
+                               targetIndex -= 3;
+                               inv.lh_weapons[targetIndex] = -1;
+                           }
+                           else
+                           {
+                               inv.rh_weapons[targetIndex] = -1;
+                           }   */
+                    }
+                    inst.slot = slot;
+                    inst.eq_index = i + 3;
+                    equipmentSlotUI.UpdateSlot(inst.uniqueId, slot, ItemType.weapon);
                 }
             }
 
@@ -705,7 +790,7 @@ namespace SA.UI
                 }
                 else
                 {
-                    equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
+                    //  equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
                 }
 
             }
@@ -719,10 +804,6 @@ namespace SA.UI
 
         void LoadItemFromSlot(IconBase icon)
         {
-            if (string.IsNullOrEmpty(icon.id))
-            {
-                icon.id = "Unarmed";
-            }
             // eq_left.slotName.text = curEqSlot.slotName;
 
             ResourcesManager rm = ResourcesManager.singleton;
@@ -749,9 +830,11 @@ namespace SA.UI
         }
         void LoadWeaponItem(ResourcesManager rm, IconBase icon)
         {
-            string weaponId = icon.id;
+            ItemInventoryInstance inst = session.GetWeaponItem(icon.id);
+
+            string weaponId = inst.itemId;
             WeaponStats stats = rm.GetWeaponStats(weaponId);
-            Item item = rm.GetItem(icon.id, ItemType.weapon);
+            Item item = rm.GetItem(weaponId, ItemType.weapon);
             eq_left.curItemName.text = item.name_item;
             UpdateCenterOverlay(item);
             //center main
@@ -814,11 +897,12 @@ namespace SA.UI
         }
         void LoadConsumableItem(ResourcesManager rm, IconBase icon)
         {
-            string consumableId = icon.id;
-            Item item = rm.GetItem(consumableId, ItemType.consumable);
+            /*  string consumableId = icon.id;
+              Item item = rm.GetItem(consumableId, ItemType.consumable);
 
-            UpdateCenterOverlay(item);
+              UpdateCenterOverlay(item);
 
+          */
         }
 
         public static InventoryUI singleton;
@@ -842,15 +926,35 @@ namespace SA.UI
             {
                 s.icon.icon.sprite = null; //อันนี้คือการล้างรูปภาพของสิ่งที่อยู่ใน slot
                 s.icon.icon.enabled = false; //อันนี้คือการล้างสถานะของสิ่งที่อยู่ใน slot
-                s.icon.id = null; //อันนี้คือการล้าง id ของสิ่งที่อยู่ใน slot
+                s.icon.id = -1; //อันนี้คือการล้าง id ของสิ่งที่อยู่ใน slot
 
             }
-            public void UpdateSlot(string itemId, EquipmentSlot s, ItemType itemType)
+            public void UpdateSlot(int uniqueId, EquipmentSlot s, ItemType itemType)
             {
-                Item item = ResourcesManager.singleton.GetItem(itemId, itemType);
+                ItemInventoryInstance inst = null;
+
+                switch (itemType)
+                {
+                    case ItemType.weapon:
+                        inst = SessionManager.singleton.GetWeaponItem(uniqueId);
+                        break;
+                    case ItemType.spell:
+                        break;
+                    case ItemType.consumable:
+                        inst = SessionManager.singleton.GetConItem(uniqueId);
+                        break;
+                    case ItemType.equipment:
+                        break;
+                    default:
+                        break;
+                }
+                if (inst == null)
+                    return;
+
+                Item item = ResourcesManager.singleton.GetItem(inst.itemId, itemType);
                 s.icon.icon.sprite = item.icon;
                 s.icon.icon.enabled = true;
-                s.icon.id = item.Item_id;
+                s.icon.id = uniqueId;
             }
             public void AddSlotOnList(EquipmentSlot eq)
             {
@@ -878,6 +982,10 @@ namespace SA.UI
                     default:
                         break;
                 }
+            }
+            public EquipmentSlot GetSlot(int index)
+            {
+                return weaponSlots[index];
             }
         }
 

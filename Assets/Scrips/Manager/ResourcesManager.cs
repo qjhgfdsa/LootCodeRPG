@@ -17,14 +17,13 @@ namespace SA
         public static ResourcesManager singleton;
 
         #region Load Items
-        void Awake()
+        public void Pre_Init()
         {
             singleton = this;
             LoadItems();
             LoadWeaponId();
             LoadSpellIds();
             LoadConsumableId();
-
         }
         void LoadItems()
         {
@@ -147,7 +146,7 @@ namespace SA
         }
         #endregion
 
-       public List<Item> GetAllItemsFromList(List<string> l, ItemType t)
+        public List<Item> GetAllItemsFromList(List<string> l, ItemType t)
         {
             List<Item> r = new List<Item>();
             for (int i = 0; i < l.Count; i++)

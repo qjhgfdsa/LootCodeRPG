@@ -10,8 +10,11 @@ namespace SA
         public string unarmedId;
         public RuntimeWeapon unarmedRuntime;
 
-        public List<string> rh_weapons;
-        public List<string> lh_weapons;
+        [HideInInspector]
+        public List<int> rh_weapons;
+        [HideInInspector]
+        public List<int> lh_weapons;
+
         public List<string> spell_items;
         public List<string> consumable_items;
 
@@ -69,11 +72,11 @@ namespace SA
             consumable_items.Clear();
             spell_items.Clear();
 
-            string un = "มือเปล่า";
+            // string un = "มือเปล่า";
             for (int i = 0; i < 3; i++)
             {
-                rh_weapons.Add(un);
-                lh_weapons.Add(un);
+                rh_weapons.Add(-1);
+                lh_weapons.Add(-1);
             }
             string em = "empty";
             {
@@ -81,21 +84,22 @@ namespace SA
             }
 
             SessionManager s = SessionManager.singleton;
-            for (int i = 0; i < s.rh_Equiped.Count; i++)
+
+            for (int i = 0; i < s._eq_rh.Count; i++)
             {
-                rh_weapons[i] = s.rh_Equiped[i];
+                rh_weapons[i] = s._eq_rh[i];
             }
-            for (int i = 0; i < s.lh_Equiped.Count; i++)
+            for (int i = 0; i < s._eq_lh.Count; i++)
             {
-                lh_weapons[i] = s.lh_Equiped[i];
+                lh_weapons[i] = s._eq_lh[i];
             }
             for (int i = 0; i < s.con_Equiped.Count; i++)
             {
                 consumable_items[i] = s.con_Equiped[i];
             }
-         
+
             spell_items.AddRange(s.spell_Equiped);
-        
+
         }
 
         public void ClearReferences()
@@ -149,6 +153,7 @@ namespace SA
         }
         public void LoadInventory(bool updateActions = false)
         {
+            SessionManager s = SessionManager.singleton;
             unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
 
             if (unarmedRuntime == null)
@@ -173,7 +178,8 @@ namespace SA
                 }
                 else
                 {
-                    RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
+                    ItemInventoryInstance it = s.GetWeaponItem(rh_weapons[i]);
+                    RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(it.itemId));
                     r_r_weapons[i] = rw;
                 }
             }
@@ -186,7 +192,8 @@ namespace SA
                 }
                 else
                 {
-                    RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
+                    ItemInventoryInstance it = s.GetWeaponItem(lh_weapons[i]);
+                    RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(it.itemId), true);
                     r_l_weapons[i] = lw;
                 }
 
@@ -426,8 +433,8 @@ namespace SA
 
             w.weaponModel.SetActive(true);
 
-         //   if (isLeft)
-              //  RefreshHasLeftHandWeapon();
+            //   if (isLeft)
+            //  RefreshHasLeftHandWeapon();
 
             /*  if (UI.QuickSlot.singleton != null)
               {
