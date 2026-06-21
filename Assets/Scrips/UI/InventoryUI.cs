@@ -52,6 +52,20 @@ namespace SA.UI
         SessionManager session;
 
         #region ปุ่มเลือกออบเจ็ค ใน inventory
+
+        void ClearOnIndex(int ind)
+        {
+            int ix = ind;
+            if (ix > 2)
+            {
+                ix -= 3;
+                invManager.lh_weapons[ix] = -1;
+            }
+            else
+            {
+                invManager.rh_weapons[ix] = -1;
+            }
+        }
         void HandleSlotInput(InputUI inp)
         {
             if (curEqSlot == null)
@@ -68,6 +82,7 @@ namespace SA.UI
                 else
                 {
                     ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
+
                     if (t == ItemType.weapon)
                     {
                         int targetIndex = curEqSlot.itemPosition;
@@ -78,15 +93,35 @@ namespace SA.UI
                             targetIndex -= 3;
                             invManager.lh_weapons[targetIndex] = curInvIcon.id;
 
+                            ItemInventoryInstance inst = session.GetWeaponItem(invManager.lh_weapons[targetIndex]);
+                            if (inst.slot != null)
+                            {
+                                equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+                                ClearOnIndex(inst.eq_index);
+                            }
                         }
                         else
                         {
                             invManager.rh_weapons[targetIndex] = curInvIcon.id;
+
+                            ItemInventoryInstance inst = session.GetWeaponItem(invManager.rh_weapons[targetIndex]);
+                            if (inst.slot != null)
+                            {
+                                equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+                                ClearOnIndex(inst.eq_index);
+                            }
                         }
                     }
                     else
                     {
-                        // invManager.consumable_items[curEqSlot.itemPosition] = curInvIcon.id;
+                            ItemInventoryInstance inst = session.GetConItem(curInvIcon.id);
+                            if (inst.slot != null)
+                            {
+                                equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.consumable);
+                                invManager.consumable_items[inst.eq_index] = -1;
+                            }
+
+                        invManager.consumable_items[curEqSlot.itemPosition] = curInvIcon.id;
                     }
                     LoadEquipment(invManager, true);
                 }
@@ -114,6 +149,7 @@ namespace SA.UI
                 else
                 {
                     ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
+
                     if (t == ItemType.weapon)
                     {
                         int targetIndex = curEqSlot.itemPosition;
@@ -123,10 +159,22 @@ namespace SA.UI
                         {
                             targetIndex -= 3;
                             invManager.lh_weapons[targetIndex] = -1;
+
+                            ItemInventoryInstance inst = session.GetWeaponItem(invManager.lh_weapons[targetIndex]);
+                            if (inst.slot != null)
+                            {
+                                equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+                            }
                         }
                         else
                         {
                             invManager.rh_weapons[targetIndex] = -1;
+                            ItemInventoryInstance inst = session.GetWeaponItem(invManager.rh_weapons[targetIndex]);
+                            
+                            if (inst.slot != null)
+                            {
+                                equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
+                            }
                         }
                     }
                     else
@@ -134,7 +182,13 @@ namespace SA.UI
                         int targetIndex = curEqSlot.itemPosition;
                         if (targetIndex < invManager.consumable_items.Count)
                         {
-                            invManager.consumable_items[curEqSlot.itemPosition] = "empty";
+                            invManager.consumable_items[curEqSlot.itemPosition] = -1;
+
+                            ItemInventoryInstance inst = session.GetWeaponItem(invManager.consumable_items[targetIndex]);
+                            if (inst.slot != null)
+                            {
+                                equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.consumable);
+                            }
                         }
                     }
                     LoadEquipment(invManager, true);
@@ -519,13 +573,13 @@ namespace SA.UI
 
             for (int i = 0; i < itemList.Count + extra; i++)
             {
-                Item item = ResourcesManager.singleton.GetItem(itemList[i].itemId, t);
-
                 if (i > itemList.Count - 1)
                 {
                     iconSlotsCreated[i].gameObject.SetActive(false);
                     continue;
                 }
+
+                   Item item = ResourcesManager.singleton.GetItem(itemList[i].itemId, t);
 
                 IconBase icon = null;
                 if (iconSlotsCreated.Count - 1 < i)
@@ -598,7 +652,8 @@ namespace SA.UI
             inventoryMenu.SetActive(true);
             gameUI.SetActive(false);
             prevEqSlot = null;
-            curInvIndex = -1;
+            curInvIndex = 0;
+            prevInvIndex = -1;
             isSwitching = false;
 
             if (equipmentSlotUI.weaponSlots.Count > 0)
@@ -670,46 +725,6 @@ namespace SA.UI
 
             for (int i = 0; i < inv.rh_weapons.Count; i++)
             {
-                ItemInventoryInstance inst = session.GetWeaponItem(inv.rh_weapons[i]);
-                if (inst.slot != null)
-                {
-                    equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
-
-                    int targetIndex = inst.eq_index;
-                    if (targetIndex > 2)
-                    {
-                        targetIndex -= 3;
-                        inv.lh_weapons[targetIndex] = -1;
-                    }
-                    else
-                    {
-                        inv.rh_weapons[targetIndex] = -1;
-                    }
-                }
-            }
-
-            for (int i = 0; i < inv.lh_weapons.Count; i++)
-            {
-                ItemInventoryInstance inst = session.GetWeaponItem(inv.lh_weapons[i]);
-                if (inst.slot != null)
-                {
-                    equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
-                    int targetIndex = inst.eq_index;
-                    if (targetIndex > 2)
-                    {
-                        targetIndex -= 3;
-                        inv.lh_weapons[targetIndex] = -1;
-                    }
-                    else
-                    {
-                        inv.rh_weapons[targetIndex] = -1;
-                    }
-                }
-            }
-
-
-            for (int i = 0; i < inv.rh_weapons.Count; i++)
-            {
                 if (i > 2)
                     break;
 
@@ -722,35 +737,18 @@ namespace SA.UI
                 else
                 {
                     ItemInventoryInstance inst = session.GetWeaponItem(inv.rh_weapons[i]);
-                    if (inst.slot != null)
-                    {
-                        /*   equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
-
-                           int targetIndex = inst.eq_index;
-                           if (targetIndex > 2)
-                           {
-                               targetIndex -= 3;
-                               inv.lh_weapons[targetIndex] = -1;
-                           }
-                           else
-                           {
-                               inv.rh_weapons[targetIndex] = -1;
-                           }*/
-                    }
                     inst.slot = slot;
                     inst.eq_index = i;
+
                     equipmentSlotUI.UpdateSlot(inst.uniqueId, slot, ItemType.weapon);
                 }
             }
-
 
             for (int i = 0; i < inv.lh_weapons.Count; i++)
             {
                 if (i > 2)
                     break;
-
                 EquipmentSlot slot = equipmentSlotUI.weaponSlots[i + 3];
-
                 if (inv.lh_weapons[i] == -1)
                 {
                     equipmentSlotUI.ClearEqSlot(slot, ItemType.weapon);
@@ -758,22 +756,9 @@ namespace SA.UI
                 else
                 {
                     ItemInventoryInstance inst = session.GetWeaponItem(inv.lh_weapons[i]);
-                    if (inst.slot != null)
-                    {
-                        /*   equipmentSlotUI.ClearEqSlot(inst.slot, ItemType.weapon);
-                           int targetIndex = inst.eq_index;
-                           if(targetIndex>2)
-                           {
-                               targetIndex -= 3;
-                               inv.lh_weapons[targetIndex] = -1;
-                           }
-                           else
-                           {
-                               inv.rh_weapons[targetIndex] = -1;
-                           }   */
-                    }
                     inst.slot = slot;
                     inst.eq_index = i + 3;
+
                     equipmentSlotUI.UpdateSlot(inst.uniqueId, slot, ItemType.weapon);
                 }
             }
@@ -784,13 +769,17 @@ namespace SA.UI
                     break;
 
                 EquipmentSlot slot = equipmentSlotUI.consumableSlots[i];
-                if (string.IsNullOrEmpty(inv.consumable_items[i]))
+                if (inv.consumable_items[i] == -1)
                 {
                     equipmentSlotUI.ClearEqSlot(slot, ItemType.consumable);
                 }
                 else
                 {
-                    //  equipmentSlotUI.UpdateSlot(inv.consumable_items[i], slot, ItemType.consumable);
+                    ItemInventoryInstance inst = session.GetConItem(inv.consumable_items[i]); 
+                    inst.slot = slot;
+                    inst.eq_index = i;
+
+                    equipmentSlotUI.UpdateSlot(inst.uniqueId, slot, ItemType.consumable);
                 }
 
             }
@@ -983,9 +972,13 @@ namespace SA.UI
                         break;
                 }
             }
-            public EquipmentSlot GetSlot(int index)
+            public EquipmentSlot GetWeaponSlot(int index)
             {
                 return weaponSlots[index];
+            }
+            public EquipmentSlot GetConSlot(int index)
+            {
+                return consumableSlots[index];
             }
         }
 

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a937ed9dc37e8748afb4e00f6544d1c, type: 3}
+  m_Name: SA.ArmorScriptableObjectScript
+  m_EditorClassIdentifier: Assembly-CSharp::SA.ArmorScriptableObjectScript
+  armor_containers:
+  - itemId: samurai_chest
+    armorType: 0
+    armorMesh: {fileID: 4501868355887322687, guid: a6e7a310fa6faa542b43469c441eed99, type: 3}
+    armorMaterials:
+    - {fileID: 2100000, guid: e9b48528c48d72944812438f6a9c71d0, type: 2}
+    - {fileID: 2100000, guid: ca3a18f44cc2fb3488bd21a229257294, type: 2}
+    BaseBodyEnabled: 0
+  - itemId: samurai_helmet
+    armorType: 3
+    armorMesh: {fileID: 6986836958077651477, guid: a6e7a310fa6faa542b43469c441eed99, type: 3}
+    armorMaterials:
+    - {fileID: 2100000, guid: ca3a18f44cc2fb3488bd21a229257294, type: 2}
+    BaseBodyEnabled: 1
+  - itemId: samurai_legs
+    armorType: 1
+    armorMesh: {fileID: -1615998528278068644, guid: a6e7a310fa6faa542b43469c441eed99, type: 3}
+    armorMaterials:
+    - {fileID: 2100000, guid: e9b48528c48d72944812438f6a9c71d0, type: 2}
+    - {fileID: 2100000, guid: ca3a18f44cc2fb3488bd21a229257294, type: 2}
+    BaseBodyEnabled: 0
+  - itemId: viking_chest
+    armorType: 0
+    armorMesh: {fileID: -2172298435045820941, guid: c8db1f057746d8d4997ed4e0e6f64d3a, type: 3}
+    armorMaterials:
+    - {fileID: 2100000, guid: f325dc2ba3cf44e4da6f7038eee6c431, type: 2}
+    BaseBodyEnabled: 0
+  - itemId: viking_helmet
+    armorType: 3
+    armorMesh: {fileID: 1270494388766054137, guid: c8db1f057746d8d4997ed4e0e6f64d3a, type: 3}
+    armorMaterials:
+    - {fileID: 2100000, guid: f325dc2ba3cf44e4da6f7038eee6c431, type: 2}
+    BaseBodyEnabled: 1

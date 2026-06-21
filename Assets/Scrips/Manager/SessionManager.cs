@@ -15,6 +15,8 @@ namespace SA
         public List<int> _eq_rh = new List<int>();
         [HideInInspector]
         public List<int> _eq_lh = new List<int>();
+        [HideInInspector]
+        public List<int> _eq_con = new List<int>();
 
         [Header("In Inventory")]
         public List<string> weapon_items = new List<string>();
@@ -126,6 +128,10 @@ namespace SA
             {
                 weapon_items.Add(lh_Equiped[i]);
             }
+            for (int i = 0; i < con_Equiped.Count; i++)
+            {
+                consumable_items.Add(con_Equiped[i]);
+            }
 
             for (int i = 0; i < weapon_items.Count; i++)
             {
@@ -141,7 +147,7 @@ namespace SA
             {
                 ItemInventoryInstance it = StringToItemInst(_w_items, rh_Equiped[i]);
                 _eq_rh.Add(it.uniqueId);
-                it.slot = inventoryUI.equipmentSlotUI.GetSlot(i);
+                it.slot = inventoryUI.equipmentSlotUI.GetWeaponSlot(i);
                 it.eq_index = i;
             }
             for (int i = 0; i < lh_Equiped.Count; i++)
@@ -149,7 +155,7 @@ namespace SA
                 ItemInventoryInstance it = StringToItemInst(_w_items, lh_Equiped[i]);
                 _eq_lh.Add(it.uniqueId);
                 int targetIndex = i + 3;
-                it.slot = inventoryUI.equipmentSlotUI.GetSlot(targetIndex);
+                it.slot = inventoryUI.equipmentSlotUI.GetWeaponSlot(targetIndex);
                 it.eq_index = targetIndex;
             }
 
@@ -160,6 +166,14 @@ namespace SA
                 it.uniqueId = m_c_item_index;
                 m_c_item_index++;
                 _c_items.Add(it);
+            }
+
+            for (int i = 0; i < con_Equiped.Count; i++)
+            {
+                ItemInventoryInstance it = StringToItemInst(_c_items, con_Equiped[i]);
+                _eq_con.Add(it.uniqueId);
+                it.slot = inventoryUI.equipmentSlotUI.GetConSlot(i);
+                it.eq_index = i;
             }
         }
     }

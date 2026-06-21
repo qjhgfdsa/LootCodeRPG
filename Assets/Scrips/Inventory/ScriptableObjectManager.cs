@@ -50,5 +50,12 @@ namespace SA
         {
             ScriptableObjectManager.CreateAsset<WeaponScriptableObject>();
         }
+
+        
+        [MenuItem("Assets/Inventory/Create Armor List Scriptable Object")]
+        public static void CreateArmorList()
+        {
+            ScriptableObjectManager.CreateAsset<ArmorScriptableObjectScript>();
+        }
     }
 }

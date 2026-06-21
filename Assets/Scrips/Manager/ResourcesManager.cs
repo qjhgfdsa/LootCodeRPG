@@ -9,11 +9,13 @@ namespace SA
         Dictionary<string, int> i_spells = new Dictionary<string, int>();
         Dictionary<string, int> i_weapons = new Dictionary<string, int>();
         Dictionary<string, int> i_consumables = new Dictionary<string, int>();
+        Dictionary<string, int> i_armors = new Dictionary<string, int>();
 
         Dictionary<string, int> spell_ids = new Dictionary<string, int>();
         Dictionary<string, int> weapon_ids = new Dictionary<string, int>();
         Dictionary<string, int> weaponStats_ids = new Dictionary<string, int>();
         Dictionary<string, int> consumable_ids = new Dictionary<string, int>();
+        Dictionary<string, int> armor_ids = new Dictionary<string, int>();
         public static ResourcesManager singleton;
 
         #region Load Items
@@ -24,6 +26,27 @@ namespace SA
             LoadWeaponId();
             LoadSpellIds();
             LoadConsumableId();
+            LoadArmor();
+        }
+        void LoadArmor()
+        {
+            ArmorScriptableObjectScript obj = Resources.Load("SA.ArmorScriptableObjectScript") as ArmorScriptableObjectScript;
+            if (obj == null)
+            {
+                Debug.Log("SA.ArmorScriptableObjectScript หาไม่เจอ");
+                return;
+            }
+            for (int i = 0; i < obj.armor_containers.Length; i++)
+            {
+                if (armor_ids.ContainsKey(obj.armor_containers[i].itemId))
+                {
+                    Debug.Log(obj.armor_containers[i].itemId + "Item is a duplicate");
+                }
+                else
+                {
+                    armor_ids.Add(obj.armor_containers[i].itemId, i);
+                }
+            }
         }
         void LoadItems()
         {
@@ -264,6 +287,19 @@ namespace SA
             if (index == -1)
                 return null;
             return obj.consumables[index];
+        }
+        public ArmorContainer GetArmor(string id)
+        {
+            ArmorScriptableObjectScript obj = Resources.Load("SA.ArmorScriptableObjectScript") as ArmorScriptableObjectScript;
+            if (obj == null)
+            {
+                Debug.Log("SA.ArmorScriptableObjectScript cant be loaded!");
+                return null;
+            }
+            int index = GetIndexFromString(armor_ids, id);
+            if (index == -1)
+                return null;
+            return obj.armor_containers[index];
         }
     }
     public enum ItemType

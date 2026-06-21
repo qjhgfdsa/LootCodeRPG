@@ -29,7 +29,7 @@ namespace SA
         }
 
         public void UpdateActionsOneHanded()
-        { 
+        {
             if (states == null || states.inventoryManager == null)
                 return;
 
@@ -42,8 +42,7 @@ namespace SA
             StaticFunctions.DeepCopyAction(rhWeapon, ActionInput.f, ActionInput.f, actionSlots);
             StaticFunctions.DeepCopyAction(rhWeapon, ActionInput.r, ActionInput.r, actionSlots);
 
-            if (states.inventoryManager.hasLeftHandWeapon &&
-                states.inventoryManager.leftHandWeapon != null &&
+            if (states.inventoryManager.leftHandWeapon != null &&
                 states.inventoryManager.leftHandWeapon.instance != null)
             {
                 StaticFunctions.DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.f, ActionInput.e, actionSlots, true);

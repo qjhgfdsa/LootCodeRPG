@@ -344,7 +344,7 @@ MonoBehaviour:
     l_model_pos: {x: 0.0308, y: 0.0079, z: -0.0005}
     r_model_eulers: {x: 354.1571, y: 324.81235, z: 269.03992}
     l_model_eulers: {x: 350.51245, y: 352.92935, z: 36.554886}
-    model_scale: {x: 0.3, y: 0.3, z: 0.3}
+    model_scale: {x: 1, y: 1, z: 1}
   - Item_id: "\u0E2B\u0E2D\u0E01"
     oh_idle: oh_idle
     th_idle: th_idle

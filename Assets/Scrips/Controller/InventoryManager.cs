@@ -16,7 +16,7 @@ namespace SA
         public List<int> lh_weapons;
 
         public List<string> spell_items;
-        public List<string> consumable_items;
+        public List<int> consumable_items;
 
         public int r_index;
         public int l_index;
@@ -36,7 +36,6 @@ namespace SA
         public RuntimeConsumable currentConsumable;
         public RuntimeSpellItems currentSpell;
         public RuntimeWeapon rightHandWeapon;
-        public bool hasLeftHandWeapon = true;
         public RuntimeWeapon leftHandWeapon;
 
         RuntimeConsumable emptyItem;
@@ -49,10 +48,16 @@ namespace SA
         UI.QuickSlot uiSlot;
         GameObject referenceParent;
 
+        [HideInInspector]
+        public ArmorManager armorManager;
+
         public void Init(StateManager st)
         {
             states = st;
             uiSlot = UI.QuickSlot.singleton;
+
+            armorManager = GetComponent<ArmorManager>();
+            armorManager.Init();
 
             LoadLists();
             ClearReferences();
@@ -72,15 +77,16 @@ namespace SA
             consumable_items.Clear();
             spell_items.Clear();
 
-            // string un = "มือเปล่า";
+           
             for (int i = 0; i < 3; i++)
             {
                 rh_weapons.Add(-1);
                 lh_weapons.Add(-1);
             }
-            string em = "empty";
+          
+            for (int i = 0; i < 10; i++)
             {
-                consumable_items.Add(em);
+                consumable_items.Add(-1);
             }
 
             SessionManager s = SessionManager.singleton;
@@ -89,13 +95,15 @@ namespace SA
             {
                 rh_weapons[i] = s._eq_rh[i];
             }
+
             for (int i = 0; i < s._eq_lh.Count; i++)
             {
                 lh_weapons[i] = s._eq_lh[i];
             }
-            for (int i = 0; i < s.con_Equiped.Count; i++)
+
+            for (int i = 0; i < s._eq_con.Count; i++)
             {
-                consumable_items[i] = s.con_Equiped[i];
+                consumable_items[i] = s._eq_con[i];
             }
 
             spell_items.AddRange(s.spell_Equiped);
@@ -172,7 +180,7 @@ namespace SA
 
             for (int i = 0; i < rh_weapons.Count; i++)
             {
-                if (string.Equals(rh_weapons[i], "มือเปล่า"))
+                if (rh_weapons[i] == -1) //-1 คือ มือเปล่า
                 {
                     r_r_weapons[i] = unarmedRuntime;
                 }
@@ -186,7 +194,7 @@ namespace SA
 
             for (int i = 0; i < lh_weapons.Count; i++)
             {
-                if (string.Equals(lh_weapons[i], "มือเปล่า"))
+                if (lh_weapons[i] == -1) //-1 คือ มือเปล่า
                 {
                     r_l_weapons[i] = unarmedRuntime;
                 }
@@ -220,17 +228,18 @@ namespace SA
 
             for (int i = 0; i < consumable_items.Count; i++)
             {
-                if (string.Equals(consumable_items[i], "empty"))
+                if (consumable_items[i] == -1)
                 {
                     r_consum[i] = emptyItem;
                 }
                 else
                 {
-                    RuntimeConsumable c = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable(consumable_items[i]));
+                    ItemInventoryInstance it = s.GetConItem(consumable_items[i]);
+
+                    RuntimeConsumable c = ConsumableToRuntime(ResourcesManager.singleton.GetConsumable(it.itemId));
                     r_consum[i] = c;
                 }
             }
-
 
             InitAllDamageCollider(states);
             CloseAllDamageColliders();
