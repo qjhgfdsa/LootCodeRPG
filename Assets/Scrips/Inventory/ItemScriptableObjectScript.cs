@@ -8,6 +8,7 @@ namespace SA
         public List<Item> cons_items = new List<Item>();
         public List<Item> weapon_items = new List<Item>();
         public List<Item> spell_items = new List<Item>();
+        public List<Item> armor_items = new List<Item>();
 
     }
 }

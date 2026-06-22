@@ -57,9 +57,11 @@ namespace SA
             uiSlot = UI.QuickSlot.singleton;
 
             armorManager = GetComponent<ArmorManager>();
-            armorManager.Init();
 
             LoadLists();
+            armorManager.Init();
+
+
             ClearReferences();
             LoadInventory();
 
@@ -77,13 +79,13 @@ namespace SA
             consumable_items.Clear();
             spell_items.Clear();
 
-           
+
             for (int i = 0; i < 3; i++)
             {
                 rh_weapons.Add(-1);
                 lh_weapons.Add(-1);
             }
-          
+
             for (int i = 0; i < 10; i++)
             {
                 consumable_items.Add(-1);
@@ -105,6 +107,10 @@ namespace SA
             {
                 consumable_items[i] = s._eq_con[i];
             }
+            armorManager.chestId = s._a_chest;
+            armorManager.legsId = s._a_legs;
+            armorManager.handsId = s._a_hands;
+            armorManager.headId = s._a_head;
 
             spell_items.AddRange(s.spell_Equiped);
 
@@ -246,6 +252,7 @@ namespace SA
 
             MakeIndexesList();
             EquipInventory();
+            armorManager.Init();
 
             if (updateActions)
             {

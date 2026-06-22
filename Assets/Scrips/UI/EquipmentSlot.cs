@@ -11,6 +11,7 @@ namespace SA.UI
         public EqSlotType slotType;
         public Vector2 slotPos;
         public int itemPosition;
+        public ArmorType armorType;
 
         public void Init( InventoryUI ui)
         {

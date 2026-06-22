@@ -4,10 +4,10 @@ namespace SA
 {
     public class ArmorManager : MonoBehaviour
     {
-        public string chestId;
-        public string legsId;
-        public string handsId;
-        public string headId;
+        public int chestId;
+        public int legsId;
+        public int handsId;
+        public int headId;
 
         public SkinnedMeshRenderer chestPiece;
         public SkinnedMeshRenderer legsPiece;
@@ -30,14 +30,15 @@ namespace SA
             LoadArmor(handsId, ArmorType.hands);
             LoadArmor(headId, ArmorType.head);
         }
-        void LoadArmor(string id, ArmorType t)
+        void LoadArmor(int id, ArmorType t)
         {
-            if (string.IsNullOrEmpty(id) || id == "empty")
+            if (id == -1)
             {
                 UnequipArmor(t);
                 return;
             }
-            ArmorContainer a = ResourcesManager.singleton.GetArmor(id);
+            ItemInventoryInstance item = SessionManager.singleton.GetArmorItem(id);
+            ArmorContainer a = ResourcesManager.singleton.GetArmor(item.itemId);
             EquipArmor(a);
 
         }

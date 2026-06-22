@@ -91,6 +91,17 @@ namespace SA
 
                 }
             }
+            for (int i = 0; i < obj.armor_items.Count; i++)
+            {
+                if (i_armors.ContainsKey(obj.armor_items[i].Item_id))
+                {
+                    Debug.Log(obj.armor_items[i].Item_id + "Item is a duplicate");
+                }
+                else
+                {
+                    i_armors.Add(obj.armor_items[i].Item_id, i);
+                }
+            }
         }
         void LoadSpellIds()
         {
@@ -212,6 +223,9 @@ namespace SA
                     l = obj.cons_items;
                     break;
                 case ItemType.equipment:
+                    d = i_armors;
+                    l = obj.armor_items;
+                    break;
                 default:
                     break;
             }

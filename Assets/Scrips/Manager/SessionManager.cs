@@ -11,6 +11,21 @@ namespace SA
         public List<string> con_Equiped = new List<string>();
         public List<string> spell_Equiped = new List<string>();
 
+        public string a_chestPiece;
+        public string a_legsPiece;
+        public string a_handsPiece;
+        public string a_headPiece;
+
+        [HideInInspector]
+        public int _a_chest;
+        [HideInInspector]
+        public int _a_legs;
+        [HideInInspector]
+        public int _a_hands;
+        [HideInInspector]
+        public int _a_head;
+
+
         [HideInInspector]
         public List<int> _eq_rh = new List<int>();
         [HideInInspector]
@@ -22,14 +37,17 @@ namespace SA
         public List<string> weapon_items = new List<string>();
         public List<string> spell_items = new List<string>();
         public List<string> consumable_items = new List<string>();
+        public List<string> armor_items = new List<string>();
 
         int m_w_item_index;
         int m_c_item_index;
+        int m_a_item_index;
         List<ItemInventoryInstance> _w_items = new List<ItemInventoryInstance>();
         List<ItemInventoryInstance> _c_items = new List<ItemInventoryInstance>();
-
+        List<ItemInventoryInstance> _a_items = new List<ItemInventoryInstance>();
         ItemInventoryInstance unarmedItem = new ItemInventoryInstance();
         ItemInventoryInstance emptyItem = new ItemInventoryInstance();
+
 
 
         public List<ItemInventoryInstance> GetItemsIntanceList(ItemType t)
@@ -43,12 +61,13 @@ namespace SA
                     return _c_items;
 
                 case ItemType.spell:
+                    return null;
                 case ItemType.equipment:
+                    return _a_items;
                 default:
                     return null;
             }
         }
-
         public List<Item> GetItemAsList(ItemType t)
         {
             switch (t)
@@ -64,7 +83,16 @@ namespace SA
                     return null;
             }
         }
+        public ItemInventoryInstance GetArmorItem(int uniqueId)
+        {
+            if (uniqueId == -1)
 
+            {
+                return emptyItem;
+            }
+
+            return GetItem(_a_items, uniqueId);
+        }
         public ItemInventoryInstance GetWeaponItem(int uniqueId)
         {
             if (uniqueId == -1)
@@ -110,6 +138,7 @@ namespace SA
             emptyItem = new ItemInventoryInstance();
             emptyItem.itemId = "empty";
             emptyItem.uniqueId = -1;
+
         }
         void Awake()
         {
@@ -119,7 +148,7 @@ namespace SA
 
             rm.Pre_Init();
             inventoryUI.Pre_Init();
-
+            #region Equipments
             for (int i = 0; i < rh_Equiped.Count; i++)
             {
                 weapon_items.Add(rh_Equiped[i]);
@@ -175,14 +204,81 @@ namespace SA
                 it.slot = inventoryUI.equipmentSlotUI.GetConSlot(i);
                 it.eq_index = i;
             }
+            #endregion
+
+            AddArmorItem(a_chestPiece, ArmorType.chest, true);
+            AddArmorItem(a_legsPiece, ArmorType.legs, true);
+            AddArmorItem(a_handsPiece, ArmorType.hands, true);
+            AddArmorItem(a_headPiece, ArmorType.head, true);
+
+            for (int i = 0; i < armor_items.Count; i++)
+            {
+                AddArmorItem(armor_items[i]);
+            }
+        }
+        void AddArmorItem(string id, ArmorType t = ArmorType.chest, bool isEquipped = false)
+        {
+            if (string.IsNullOrEmpty(id) || string.Equals(id, "empty"))
+            {
+                if (isEquipped)
+                {
+                    switch (t)
+                    {
+                        case ArmorType.chest:
+                            _a_chest = -1;
+                            break;
+                        case ArmorType.legs:
+                            _a_legs = -1;
+                            break;
+                        case ArmorType.hands:
+                            _a_hands = -1;
+                            break;
+                        case ArmorType.head:
+                            _a_head = -1;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                return;
+            }
+            ItemInventoryInstance item = new ItemInventoryInstance();
+            item.itemId = id;
+            m_a_item_index++;
+            item.uniqueId = m_a_item_index;
+            _a_items.Add(item);
+
+            if (isEquipped)
+            {
+                switch (t)
+                {
+                    case ArmorType.chest:
+                        _a_chest = item.uniqueId;
+                        break;
+                    case ArmorType.legs:
+                        _a_legs = item.uniqueId;
+                        break;
+                    case ArmorType.hands:
+                        _a_hands = item.uniqueId;
+                        break;
+                    case ArmorType.head:
+                        _a_head = item.uniqueId;
+                        break;
+                    default:
+                        break;
+                }
+              //  item.armorType = t;
+            }
         }
     }
+
     [System.Serializable]
     public class ItemInventoryInstance
     {
         public int uniqueId;
         public int eq_index;
         public string itemId;
+       // public ArmorType armorType;
         public UI.EquipmentSlot slot;
     }
 }

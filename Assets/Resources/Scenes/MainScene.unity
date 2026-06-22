@@ -6930,6 +6930,14 @@ MonoBehaviour:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
   spell_Equiped:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
+  a_chestPiece: 
+  a_legsPiece: 
+  a_handsPiece: 
+  a_headPiece: samurai_helmet
+  _a_chest: 0
+  _a_legs: 0
+  _a_hands: 0
+  _a_head: 0
   _eq_rh: 
   _eq_lh: 
   _eq_con: 
@@ -6945,6 +6953,15 @@ MonoBehaviour:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E40\u0E25\u0E37\u0E2D\u0E14"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
+  armor_items:
+  - samurai_chest
+  - samurai_helmet
+  - samurai_helmet
+  - samurai_helmet
+  - viking_chest
+  - viking_chest
+  - viking_helmet
+  - viking_helmet
   inventoryUI: {fileID: 729727975}
   rm: {fileID: 2109640208}
 --- !u!4 &239484887
@@ -12678,10 +12695,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b15568f35a334a4a87f487e940d8097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.ArmorManager
-  chestId: viking_chest
-  legsId: samurai_legs
-  handsId: 
-  headId: samurai_helmet
+  chestId: 0
+  legsId: 0
+  handsId: 0
+  headId: 0
   chestPiece: {fileID: 492607700}
   legsPiece: {fileID: 741473565}
   handsPiece: {fileID: 2046218887}
@@ -13347,6 +13364,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 2, y: 4}
   itemPosition: 2
+  armorType: 0
 --- !u!1 &477745407 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5124656962777521795, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -18859,6 +18877,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 3, y: 4}
   itemPosition: 3
+  armorType: 0
 --- !u!1 &713391815
 GameObject:
   m_ObjectHideFlags: 0
@@ -20230,6 +20249,7 @@ MonoBehaviour:
   slotType: 3
   slotPos: {x: 3, y: 2}
   itemPosition: 3
+  armorType: 1
 --- !u!1 &781104303
 GameObject:
   m_ObjectHideFlags: 0
@@ -20519,6 +20539,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 3, y: 5}
   itemPosition: 8
+  armorType: 0
 --- !u!1 &809490651
 GameObject:
   m_ObjectHideFlags: 0
@@ -21369,6 +21390,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 0, y: 5}
   itemPosition: 5
+  armorType: 0
 --- !u!1 &837198068
 GameObject:
   m_ObjectHideFlags: 0
@@ -22969,6 +22991,7 @@ MonoBehaviour:
   slotType: 3
   slotPos: {x: 1, y: 2}
   itemPosition: 1
+  armorType: 0
 --- !u!1 &896843510
 GameObject:
   m_ObjectHideFlags: 0
@@ -24955,6 +24978,7 @@ MonoBehaviour:
   slotType: 4
   slotPos: {x: 3, y: 3}
   itemPosition: 3
+  armorType: 0
 --- !u!1 &1001722802
 GameObject:
   m_ObjectHideFlags: 0
@@ -27579,6 +27603,7 @@ MonoBehaviour:
   slotType: 5
   slotPos: {x: 4, y: 2}
   itemPosition: 0
+  armorType: 0
 --- !u!1 &1105338282
 GameObject:
   m_ObjectHideFlags: 0
@@ -30339,6 +30364,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 0, y: 4}
   itemPosition: 0
+  armorType: 0
 --- !u!1001 &1228588914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30461,6 +30487,7 @@ MonoBehaviour:
   slotType: 3
   slotPos: {x: 0, y: 2}
   itemPosition: 0
+  armorType: 3
 --- !u!1 &1234422867
 GameObject:
   m_ObjectHideFlags: 0
@@ -30866,6 +30893,7 @@ MonoBehaviour:
   slotType: 1
   slotPos: {x: 3, y: 0}
   itemPosition: 0
+  armorType: 0
 --- !u!1 &1250223389 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1181570545111356637, guid: 4f3d5c4d2c4128141a6210baf72b8361, type: 3}
@@ -32202,6 +32230,7 @@ MonoBehaviour:
   slotType: 4
   slotPos: {x: 0, y: 3}
   itemPosition: 0
+  armorType: 0
 --- !u!1 &1298928396
 GameObject:
   m_ObjectHideFlags: 0
@@ -33828,6 +33857,7 @@ MonoBehaviour:
   slotType: 0
   slotPos: {x: 2, y: 1}
   itemPosition: 5
+  armorType: 0
 --- !u!1 &1396533933
 GameObject:
   m_ObjectHideFlags: 0
@@ -37526,6 +37556,7 @@ MonoBehaviour:
   slotType: 0
   slotPos: {x: 0, y: 1}
   itemPosition: 3
+  armorType: 0
 --- !u!1 &1623091077
 GameObject:
   m_ObjectHideFlags: 0
@@ -39108,6 +39139,7 @@ MonoBehaviour:
   slotType: 0
   slotPos: {x: 2, y: 0}
   itemPosition: 2
+  armorType: 0
 --- !u!1 &1687814657
 GameObject:
   m_ObjectHideFlags: 0
@@ -39466,6 +39498,7 @@ MonoBehaviour:
   slotType: 2
   slotPos: {x: 4, y: 1}
   itemPosition: 3
+  armorType: 0
 --- !u!1 &1693443389 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -941126808867326829, guid: 3910d452d77a232498857be043651e9f, type: 3}
@@ -40319,6 +40352,7 @@ MonoBehaviour:
   slotType: 3
   slotPos: {x: 2, y: 2}
   itemPosition: 2
+  armorType: 2
 --- !u!1 &1749593906
 GameObject:
   m_ObjectHideFlags: 0
@@ -40688,6 +40722,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 4, y: 4}
   itemPosition: 4
+  armorType: 0
 --- !u!1 &1762337560
 GameObject:
   m_ObjectHideFlags: 0
@@ -41312,6 +41347,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 4, y: 5}
   itemPosition: 9
+  armorType: 0
 --- !u!1 &1777447007
 GameObject:
   m_ObjectHideFlags: 0
@@ -42554,6 +42590,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 1, y: 5}
   itemPosition: 6
+  armorType: 0
 --- !u!1 &1807528926
 GameObject:
   m_ObjectHideFlags: 0
@@ -44675,6 +44712,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 2, y: 5}
   itemPosition: 7
+  armorType: 0
 --- !u!1 &1888117146
 GameObject:
   m_ObjectHideFlags: 0
@@ -47543,6 +47581,7 @@ MonoBehaviour:
   slotType: 1
   slotPos: {x: 4, y: 0}
   itemPosition: 1
+  armorType: 0
 --- !u!1 &1959939342
 GameObject:
   m_ObjectHideFlags: 0
@@ -47883,6 +47922,7 @@ MonoBehaviour:
   slotType: 2
   slotPos: {x: 3, y: 1}
   itemPosition: 2
+  armorType: 0
 --- !u!1 &1980288908
 GameObject:
   m_ObjectHideFlags: 0
@@ -47980,6 +48020,7 @@ MonoBehaviour:
   slotType: 6
   slotPos: {x: 1, y: 4}
   itemPosition: 1
+  armorType: 0
 --- !u!1 &1984368794
 GameObject:
   m_ObjectHideFlags: 0
@@ -48286,6 +48327,7 @@ MonoBehaviour:
   slotType: 0
   slotPos: {x: 1, y: 1}
   itemPosition: 4
+  armorType: 0
 --- !u!137 &1997374582 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6429112151711036770, guid: a6e7a310fa6faa542b43469c441eed99, type: 3}
@@ -48413,6 +48455,7 @@ MonoBehaviour:
   slotType: 0
   slotPos: {x: 1, y: 0}
   itemPosition: 1
+  armorType: 0
 --- !u!1 &2001939339
 GameObject:
   m_ObjectHideFlags: 0
@@ -48905,6 +48948,7 @@ MonoBehaviour:
   slotType: 4
   slotPos: {x: 2, y: 3}
   itemPosition: 2
+  armorType: 0
 --- !u!1 &2037933905
 GameObject:
   m_ObjectHideFlags: 0
@@ -50490,6 +50534,7 @@ MonoBehaviour:
   slotType: 4
   slotPos: {x: 1, y: 3}
   itemPosition: 1
+  armorType: 0
 --- !u!1 &2105173060
 GameObject:
   m_ObjectHideFlags: 0
@@ -52231,6 +52276,7 @@ MonoBehaviour:
   slotType: 0
   slotPos: {x: 0, y: 0}
   itemPosition: 0
+  armorType: 0
 --- !u!224 &7714666303542539759 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4989272431101619116, guid: 3ac095e05ba943e43b21fbcae39e6f6f, type: 3}

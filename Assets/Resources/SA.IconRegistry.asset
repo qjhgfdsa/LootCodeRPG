@@ -51,4 +51,14 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 90d49660f80a3b542b7e5c619d2a8143, type: 3}
   - id: empty
     sprite: {fileID: 21300000, guid: e45286c6c6d6403787491bb2584916cd, type: 3}
+  - id: samurai_chest
+    sprite: {fileID: 21300000, guid: 6400a66d348b4533b4a0466448c7279e, type: 3}
+  - id: viking_chest
+    sprite: {fileID: 21300000, guid: 1dc3797dd4eb425e92d9715fb2d3a862, type: 3}
+  - id: samurai_legs
+    sprite: {fileID: 21300000, guid: 6dce9d1c773b4feb8b34fd27083346ce, type: 3}
+  - id: samurai_helmet
+    sprite: {fileID: 21300000, guid: a925aa8a48a64c0a9bc7898c982d4b9a, type: 3}
+  - id: viking_helmet
+    sprite: {fileID: 21300000, guid: b59feec96bbb474d83fa0247aa898db4, type: 3}
   missingIcon: {fileID: 21300000, guid: dac978ca9c4fe5942bc28557a1b52f5a, type: 3}
