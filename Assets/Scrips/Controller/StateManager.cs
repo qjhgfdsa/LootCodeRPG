@@ -103,6 +103,8 @@ namespace SA
         public float kickMaxTime = 0.5f;
         public float moveAmountThreshold = 0.05f;
 
+        public bool enabledItem;
+
         public void Init()
         {
             SetupAnimator();
@@ -161,6 +163,11 @@ namespace SA
 
             if (anim == null)
                 anim = activeModel.GetComponent<Animator>();
+            
+            anim.applyRootMotion = false;
+            
+            anim.GetBoneTransform(HumanBodyBones.LeftHand).localScale = Vector3.one;
+            anim.GetBoneTransform(HumanBodyBones.RightHand).localScale = Vector3.one;
         }
         public void FixedTick(float d)
         {
@@ -181,6 +188,7 @@ namespace SA
             isBlocking = false;
             itemInput = itemInputPending;
             usingItem = anim.GetBool(StaticStrings.isInteracting);
+            enabledItem = anim.GetBool(StaticStrings.enabledItem);
             anim.SetBool(StaticStrings.spellcasting, isSpellCasting);
 
             if (!closeWeapons)
@@ -218,7 +226,7 @@ namespace SA
                 if (inventoryManager.currentConsumable != null)
                 {
                     if (inventoryManager.currentConsumable.itemModel != null)
-                        inventoryManager.currentConsumable.itemModel.SetActive(usingItem);
+                        inventoryManager.currentConsumable.itemModel.SetActive(enabledItem);
                 }
               
             }

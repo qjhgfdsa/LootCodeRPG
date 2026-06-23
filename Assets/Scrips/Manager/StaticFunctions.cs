@@ -36,11 +36,6 @@ namespace SA
             to.backstabMultiplier = from.backstabMultiplier;
             to.LeftHandMirror = from.LeftHandMirror;
             to.modelPrefab = from.modelPrefab;
-            to.l_model_pos = from.l_model_pos;
-            to.l_model_eulers = from.l_model_eulers;
-            to.r_model_pos = from.r_model_pos;
-            to.r_model_eulers = from.r_model_eulers;
-            to.model_scale = from.model_scale;
         }
 
         public static void DeepCopyActionToAction(Action to, Action from)
@@ -222,15 +217,8 @@ namespace SA
         {
             to.consumableEffect = from.consumableEffect;
             to.targetAnim = from.targetAnim;
-          //  to.iconId = from.iconId;
-          //  to.icon = from.icon;
-          //  to.itemDescription = from.itemDescription;
             to.Item_id = from.Item_id;
             to.itemPrefab = from.itemPrefab;
-            to.r_model_pos = from.r_model_pos;
-            to.r_model_eulers = from.r_model_eulers;
-            to.model_scale = from.model_scale;
-
         }
     }
 }

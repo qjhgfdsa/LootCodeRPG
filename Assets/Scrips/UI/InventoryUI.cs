@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using SA.UI.Icons;
 
 
 
@@ -10,6 +11,9 @@ namespace SA.UI
 {
     public class InventoryUI : MonoBehaviour
     {
+        const string DefaultInventoryIconProfilePath = "SA.InventoryIconProfile";
+
+        public IconDisplayProfile inventoryIconProfile;
         public EquipmentLeft eq_left;
         public CenterOverlay c_overlay;
         public WeaponInfo weaponInfo;
@@ -76,26 +80,33 @@ namespace SA.UI
                 isSwitching = !isSwitching;
                 if (isSwitching)
                 {
+                    CloseCreatedItems();
                     ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
                     LoadCurrentItems(t);
                 }
                 else
                 {
-                    ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
-
-                    switch (t)
+                    if (curInvIcon != null)
                     {
-                        case ItemType.weapon:
-                            changeWeapon();
-                            break;
-                        case ItemType.consumable:
-                            changeConsumable();
-                            break;
-                        case ItemType.equipment:
-                            changeArmor();
-                            break;
-                        default:
-                            break;
+                        if (curInvIcon.icon.isActiveAndEnabled)
+                        {
+                            ItemType t = ItemTypeFromSlotType(curEqSlot.slotType);
+
+                            switch (t)
+                            {
+                                case ItemType.weapon:
+                                    changeWeapon();
+                                    break;
+                                case ItemType.consumable:
+                                    changeConsumable();
+                                    break;
+                                case ItemType.equipment:
+                                    changeArmor();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }
                     LoadEquipment(invManager, true);
                 }
@@ -211,6 +222,9 @@ namespace SA.UI
 
             if (isLeft)
             {
+                if (curInvIcon == null)
+                    return;
+
                 targetIndex -= 3;
                 invManager.lh_weapons[targetIndex] = curInvIcon.id;
 
@@ -624,7 +638,13 @@ namespace SA.UI
 
         #endregion
         public UIState curUIState;
-
+        public void CloseCreatedItems()
+        {
+            for (int i = 0; i < iconSlotsCreated.Count; i++)
+            {
+                iconSlotsCreated[i].gameObject.SetActive(false);
+            }
+        }
         public void LoadCurrentItems(ItemType t)
         {
             //List<Item> itemList = session.GetItemAsList(t);
@@ -633,7 +653,7 @@ namespace SA.UI
             if (itemList == null)
                 return;
 
-            List<ItemInventoryInstance> candidateList = session.GetItemsIntanceList(t);
+            List<ItemInventoryInstance> candidateList = new List<ItemInventoryInstance>();
 
             if (t == ItemType.equipment)
             {
@@ -692,16 +712,17 @@ namespace SA.UI
 
                 curCreatedItems.Add(icon);
                 icon.gameObject.SetActive(true);
-                icon.icon.enabled = true;
-                icon.icon.sprite = item.icon;
+                IconPresenter.Show(icon.icon, item.icon, InventoryIconProfile);
                 icon.id = candidateList[i].uniqueId;
             }
         }
         void ChangeToSwitching()
         {
-
             if (isSwitching)
             {
+                curInvIndex = 0;
+                prevInvIndex = -1;
+
                 equipmentScreen.SetActive(false);
                 inventoryScreen.SetActive(true);
             }
@@ -712,7 +733,6 @@ namespace SA.UI
             }
 
         }
-
         void HandleUIState(InputUI inp)
         {
             switch (curUIState)
@@ -749,10 +769,10 @@ namespace SA.UI
             prevInvIndex = -1;
             isSwitching = false;
 
-            if (equipmentSlotUI.weaponSlots.Count > 0)
-                SelectEqSlot(equipmentSlotUI.weaponSlots[0]);
-            else if (equipSlots != null)
+            if (equipSlots != null && equipSlots[0, 0] != null)
                 SelectEqSlot(equipSlots[0, 0]);
+            else if (equipmentSlotUI.weaponSlots.Count > 0)
+                SelectEqSlot(equipmentSlotUI.weaponSlots[0]);
 
             if (curEqSlot != null)
             {
@@ -785,6 +805,11 @@ namespace SA.UI
             inp.Tick();
             HandleUIState(inp);
 
+            if(inp.t_input)
+            {
+                centerRight.SetActive(!centerRight.activeInHierarchy);
+            }
+
             if (isSwitching)
             {
                 if (curCreatedItems != null && curCreatedItems.Count > 0 && prevInvIndex != curInvIndex)
@@ -809,7 +834,6 @@ namespace SA.UI
             prevEqSlot = curEqSlot;
             prevInvIndex = curInvIndex;
         }
-
         public void LoadEquipment(InventoryManager inv, bool loadOnCharacter = false)
         {
             if (loadOnCharacter)
@@ -914,9 +938,10 @@ namespace SA.UI
                     LoadWeaponItem(rm, icon);
                     break;
                 case EqSlotType.equipment:
+                    UpdateItemSlotInfo(rm, icon, ItemType.equipment);
                     break;
                 case EqSlotType.consumables:
-                    LoadConsumableItem(rm, icon);
+                    UpdateItemSlotInfo(rm, icon, ItemType.consumable);
                     break;
                 case EqSlotType.rings:
                     break;
@@ -993,21 +1018,50 @@ namespace SA.UI
             c_overlay.skillDescription.text = item.skillDescription;
 
         }
-        void LoadConsumableItem(ResourcesManager rm, IconBase icon)
+     
+
+        void UpdateItemSlotInfo(ResourcesManager rm, IconBase icon, ItemType t)
         {
-            /*  string consumableId = icon.id;
-              Item item = rm.GetItem(consumableId, ItemType.consumable);
+            ItemInventoryInstance inst = null;
 
-              UpdateCenterOverlay(item);
-
-          */
+            switch (t)
+            {
+                case ItemType.consumable:
+                    inst = session.GetConItem(icon.id);
+                    break;
+                case ItemType.equipment:
+                    inst = session.GetArmorItem(icon.id);
+                    break;
+                default:
+                    break;
+            }
+          
+            string itemId = inst.itemId;
+            Item item = rm.GetItem(itemId, t);
+            eq_left.curItemName.text = item.name_item;
         }
 
         public static InventoryUI singleton;
 
+        public IconDisplayProfile InventoryIconProfile
+        {
+            get
+            {
+                EnsureIconProfile();
+                return inventoryIconProfile;
+            }
+        }
+
+        void EnsureIconProfile()
+        {
+            if (inventoryIconProfile == null)
+                inventoryIconProfile = Resources.Load<IconDisplayProfile>(DefaultInventoryIconProfilePath);
+        }
+
         public void Awake()
         {
             singleton = this;
+            EnsureIconProfile();
         }
 
         [System.Serializable]
@@ -1022,10 +1076,8 @@ namespace SA.UI
 
             public void ClearEqSlot(EquipmentSlot s, ItemType itemType)
             {
-                s.icon.icon.sprite = null; //อันนี้คือการล้างรูปภาพของสิ่งที่อยู่ใน slot
-                s.icon.icon.enabled = false; //อันนี้คือการล้างสถานะของสิ่งที่อยู่ใน slot
-                s.icon.id = -1; //อันนี้คือการล้าง id ของสิ่งที่อยู่ใน slot
-
+                IconPresenter.Clear(s.icon.icon);
+                s.icon.id = -1;
             }
             public void UpdateSlot(int uniqueId, EquipmentSlot s, ItemType itemType)
             {
@@ -1051,8 +1103,7 @@ namespace SA.UI
                     return;
 
                 Item item = ResourcesManager.singleton.GetItem(inst.itemId, itemType);
-                s.icon.icon.sprite = item.icon;
-                s.icon.icon.enabled = true;
+                IconPresenter.Show(s.icon.icon, item.icon, InventoryUI.singleton.InventoryIconProfile);
                 s.icon.id = uniqueId;
             }
             public void AddSlotOnList(EquipmentSlot eq)

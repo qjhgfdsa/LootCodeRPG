@@ -76,7 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1271311775978846033}
   m_Layer: 0
-  m_Name: Viking_Sword_Pivot1
+  m_Name: Sword pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,14 +90,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8721339794671314178}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.103053, y: 0.3979771, z: 0.71565616, w: 0.56465083}
-  m_LocalPosition: {x: -0.012, y: 0.007, z: -0.018}
-  m_LocalScale: {x: 0.3937009, y: 0.39370084, z: 0.39370087}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6384057426896568726}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -26.952, y: 42.042, z: 92.93}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6850541396296738429
 PrefabInstance:
   m_ObjectHideFlags: 0

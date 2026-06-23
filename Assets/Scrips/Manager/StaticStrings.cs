@@ -38,6 +38,7 @@ namespace SA
         public static string animSpeed = "animSpeed";
         public static string isLeftHand = "isLeft";
         public static string spellcasting = "spellcasting";
+        public static string enabledItem = "enabledItem";
 
        
         // Animator states

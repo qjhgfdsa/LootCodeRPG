@@ -51,6 +51,9 @@ namespace SA
         [HideInInspector]
         public ArmorManager armorManager;
 
+        public Vector3 leftHandPos = new Vector3(0.323f, 0.189f, 0.364f);
+        public Vector3 leftHandEuler = new Vector3(12.611f, 225.403f, -100.5f);
+
         public void Init(StateManager st)
         {
             states = st;
@@ -376,11 +379,19 @@ namespace SA
             inst.weaponModel.transform.parent = p;
 
 
-            inst.weaponModel.transform.localPosition =
-            (isLeft) ? inst.instance.l_model_pos : inst.instance.r_model_pos;
-            inst.weaponModel.transform.localEulerAngles =
-            (isLeft) ? inst.instance.l_model_eulers : inst.instance.r_model_eulers;
-            inst.weaponModel.transform.localScale = inst.instance.model_scale;
+            if (!isLeft)
+            {
+                inst.weaponModel.transform.localPosition = Vector3.zero;
+                inst.weaponModel.transform.localEulerAngles = Vector3.zero;
+            }
+            else
+            {
+                inst.weaponModel.transform.localPosition = leftHandPos;
+                inst.weaponModel.transform.localEulerAngles = leftHandEuler;
+            }
+
+            inst.weaponModel.transform.localScale = Vector3.one;
+
 
             inst.w_Hook = inst.weaponModel.GetComponentInChildren<WeaponHook>();
             inst.w_Hook.InitDamageCollider(states);
@@ -405,14 +416,9 @@ namespace SA
                 GameObject model = Instantiate(inst.instance.itemPrefab) as GameObject;
                 Transform p = states.anim.GetBoneTransform(HumanBodyBones.RightHand);
                 model.transform.parent = p;
-                model.transform.localPosition = inst.instance.r_model_pos;
-                model.transform.localEulerAngles = inst.instance.r_model_eulers;
-
-
-                Vector3 targetScale = inst.instance.model_scale;
-                if (targetScale == Vector3.zero)
-                    targetScale = Vector3.one;
-                model.transform.localScale = targetScale;
+                model.transform.localPosition = Vector3.zero;
+                model.transform.localEulerAngles = Vector3.zero;
+                model.transform.localScale = Vector3.one;
 
                 inst.itemModel = model;
                 inst.itemModel.SetActive(false);
@@ -679,11 +685,6 @@ namespace SA
         public bool LeftHandMirror;
 
         public GameObject modelPrefab;
-        public Vector3 r_model_pos;
-        public Vector3 l_model_pos;
-        public Vector3 r_model_eulers;
-        public Vector3 l_model_eulers;
-        public Vector3 model_scale;
 
         public Action GetAction(List<Action> l, ActionInput inp)
         {
@@ -740,11 +741,7 @@ namespace SA
         public string Item_id;
         public string consumableEffect;
         public string targetAnim;
-
         public GameObject itemPrefab;
-        public Vector3 r_model_pos;
-        public Vector3 r_model_eulers;
-        public Vector3 model_scale;
     }
     #region IconId
     [Serializable]

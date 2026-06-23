@@ -33,11 +33,33 @@ namespace SA.UI.Icons
                 return;
             }
 
+            Show(target, sprite, profile);
+        }
+
+        public static void Show(Image target, Sprite sprite, IconDisplayProfile profile)
+        {
+            if (target == null)
+                return;
+
+            if (profile == null)
+            {
+                Debug.LogWarning("IconPresenter: profile is null.");
+                Clear(target);
+                return;
+            }
+
+            if (sprite == null)
+            {
+                Clear(target);
+                return;
+            }
+
             EnsureMask(target);
             ApplyLayout(target, profile);
 
             target.preserveAspect = true;
             target.sprite = sprite;
+            target.enabled = true;
             target.gameObject.SetActive(true);
         }
 
@@ -47,6 +69,7 @@ namespace SA.UI.Icons
                 return;
 
             target.sprite = null;
+            target.enabled = false;
             target.gameObject.SetActive(false);
         }
 

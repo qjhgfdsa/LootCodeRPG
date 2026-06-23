@@ -64,17 +64,6 @@ namespace SA
                     continue;
 
                 Weapon w = obj.weapons_all[i];
-                if (leftHand)
-                {
-                    w.l_model_eulers = targetModel.transform.localEulerAngles;
-                    w.l_model_pos = targetModel.transform.localPosition;
-                }
-                else
-                {
-                    w.r_model_eulers = targetModel.transform.localEulerAngles;
-                    w.r_model_pos = targetModel.transform.localPosition;
-                }
-                w.model_scale = targetModel.transform.localScale;
 
                 PersistAsset(obj);
                 string hand = leftHand ? "left" : "right";
@@ -111,10 +100,7 @@ namespace SA
                     continue;
 
                 Consumable c = obj.consumables[i];
-                c.r_model_eulers = targetModel.transform.localEulerAngles;
-                c.r_model_pos = targetModel.transform.localPosition;
-                c.model_scale = targetModel.transform.localScale;
-
+          
                 PersistAsset(obj);
                 Debug.Log($"WeaponPlacer: saved consumable \"{itemName}\" (right hand) pos={targetModel.transform.localPosition} eulers={targetModel.transform.localEulerAngles} scale={targetModel.transform.localScale}");
                 return;
