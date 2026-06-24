@@ -22,6 +22,10 @@ namespace SA
         public static string KeyG = "g";                 // เลือกการจัดการคำสั่ง Gesture Menu
         public static string KeyI = "i";                 // เปิด inventory
 
+        public static string KeyH = "h";                 // รับของ
+
+        public static string KeyJump = "space";                 // กระโดด
+
         //Animation Parameters
         public static string Vertical_Axis = "vertical";
         public static string Horizontal_Axis = "horizontal";
@@ -42,6 +46,8 @@ namespace SA
 
        
         // Animator states
+        public static string Jump_start = "jump_start";
+        public static string Jump_land = "jump_land";
         public static string Rolls = "Rolls";
         public static string attack_interupt = "attack_interrupt";
         public static string parry_receive = "parry_recieved";
@@ -55,6 +61,19 @@ namespace SA
         public static string emptyRight = "Empty Right";
         public static string equipWeapon_oh = "equipWeapon_oh";
 
+        //UI interactions
+        public static string ui_ac_pick
+        {
+            get{return "Pick up item : "+ KeyH;}
+        }
+        public static string ui_ac_talk
+        {
+            get{return "Talk : "+ KeyH;}
+        }
+        public static string ui_ac_open
+        {
+            get{return "Open : "+ KeyH;}
+        }
         //Other
         public static string _l = "_l";
         public static string _r = "_r";

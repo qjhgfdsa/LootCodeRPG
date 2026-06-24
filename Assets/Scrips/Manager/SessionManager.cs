@@ -267,8 +267,41 @@ namespace SA
                     default:
                         break;
                 }
-              //  item.armorType = t;
+                //  item.armorType = t;
             }
+        }
+       public void AddItem(string id, ItemType t)
+        {
+
+            switch (t)
+            {
+                case ItemType.weapon:
+                    weapon_items.Add(id);
+                    ItemInventoryInstance it = new ItemInventoryInstance();
+                    it.itemId = id;
+                    it.uniqueId = m_w_item_index;
+                    m_w_item_index++;
+                    _w_items.Add(it);
+                    break;
+                case ItemType.consumable:
+                    consumable_items.Add(id);
+                    ItemInventoryInstance c_it = new ItemInventoryInstance();
+                    c_it.itemId = id;
+                    c_it.uniqueId = m_c_item_index;
+                    m_c_item_index++;
+                    _c_items.Add(c_it);
+                    break;
+                case ItemType.equipment:
+                    armor_items.Add(id);
+                    ItemInventoryInstance a_it = new ItemInventoryInstance();
+                    a_it.itemId = id;
+                    a_it.uniqueId = m_a_item_index;
+                    m_a_item_index++;
+                    _a_items.Add(a_it);
+                    break;
+            }
+            Item i = rm.GetItem(id, t);
+            UIManager.singleton.AddAnnounceCard(i);
         }
     }
 
@@ -278,7 +311,7 @@ namespace SA
         public int uniqueId;
         public int eq_index;
         public string itemId;
-       // public ArmorType armorType;
+        // public ArmorType armorType;
         public UI.EquipmentSlot slot;
     }
 }

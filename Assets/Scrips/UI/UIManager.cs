@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using SA.UI;
+using System.Collections.Generic;
 
 namespace SA
 {
@@ -19,10 +20,20 @@ namespace SA
         public float sizeMultiplier = 4;
         int curSouls;
         public GesturesManager gestures;
-  
+
+        public GameObject interactCard;
+        public TextMeshProUGUI ac_action_type;
+
+        int ac_index;
+        public List<AnnounceCard> an_cards;
+
+
         void Start()
         {
             gestures = GesturesManager.singleton;
+            interactCard.SetActive(false);
+            CloseCards();
+            CloseAnnounceType();
         }
 
 
@@ -63,7 +74,7 @@ namespace SA
         public void Tick(CharacterStats stats, float delta)
         {
             GameUI(stats, delta);
-    
+
         }
 
         void GameUI(CharacterStats stats, float delta)
@@ -89,13 +100,55 @@ namespace SA
         {
             health, focus, stamina
         }
+        public void OpenAnnounceType(UIActionType t)
+        {
+            switch (t)
+            {
+                case UIActionType.pick:
+                    ac_action_type.text = StaticStrings.ui_ac_pick;
+                    break;
+                case UIActionType.talk:
+                    ac_action_type.text = StaticStrings.ui_ac_talk;
+                    break;
+                case UIActionType.open:
+                    ac_action_type.text = StaticStrings.ui_ac_open;
+                    break;
+            }
+            interactCard.SetActive(true);
+        }
+        public void AddAnnounceCard(Item i)
+        {
+            an_cards[ac_index].itemName.text = i.name_item;
+            an_cards[ac_index].icon.sprite = i.icon;
+            an_cards[ac_index].gameObject.SetActive(true);
+            ac_index++;
 
+            if (ac_index > 5)
+            {
+                ac_index = 0;
+            }
+        }
+        public void CloseCards()
+        {
+            for(int i = 0; i < an_cards.Count; i++)
+            {
+                an_cards[i].gameObject.SetActive(false);
+            }
+        }
+        public void CloseAnnounceType()
+        {
+            interactCard.SetActive(false);
+        }
         public static UIManager singleton;
 
         void Awake()
         {
             singleton = this;
         }
+    }
+    public enum UIActionType
+    {
+        pick, interract, open, talk
     }
 }
 

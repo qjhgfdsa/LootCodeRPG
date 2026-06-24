@@ -52,6 +52,7 @@ namespace SA.UI
         InventoryManager invManager;
         public bool isSwitching;
         public bool isMenu;
+        bool centerOverlayIsActive;
 
         SessionManager session;
 
@@ -129,7 +130,8 @@ namespace SA.UI
             {
                 if (isSwitching)
                 {
-
+                    centerOverlayIsActive = !centerOverlayIsActive;
+                    centerOverlay.SetActive(centerOverlayIsActive);
                 }
                 else
                 {
@@ -805,7 +807,7 @@ namespace SA.UI
             inp.Tick();
             HandleUIState(inp);
 
-            if(inp.t_input)
+            if (inp.t_input)
             {
                 centerRight.SetActive(!centerRight.activeInHierarchy);
             }
@@ -1018,26 +1020,31 @@ namespace SA.UI
             c_overlay.skillDescription.text = item.skillDescription;
 
         }
-     
+
 
         void UpdateItemSlotInfo(ResourcesManager rm, IconBase icon, ItemType t)
         {
             ItemInventoryInstance inst = null;
+            if (centerOverlayIsActive == false)
+                centerOverlay.SetActive(false);
 
             switch (t)
             {
                 case ItemType.consumable:
                     inst = session.GetConItem(icon.id);
+                    centerOverlay.SetActive(true);
                     break;
                 case ItemType.equipment:
                     inst = session.GetArmorItem(icon.id);
+                    centerOverlay.SetActive(true);
                     break;
                 default:
                     break;
             }
-          
+
             string itemId = inst.itemId;
             Item item = rm.GetItem(itemId, t);
+            UpdateCenterOverlay(item);
             eq_left.curItemName.text = item.name_item;
         }
 

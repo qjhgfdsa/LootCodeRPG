@@ -18,6 +18,7 @@ namespace SA
         bool key2_input;
         bool key3_input;
         bool key4_input;
+        bool h_input;
         // public bool Key1Input { get => key1_input; set => key1_input = value; }//เดะเเก้
 
         bool f_input;
@@ -106,7 +107,33 @@ namespace SA
             states.Tick(delta);
 
             if (invUI != null && invUI.isMenu)
+            {
+                uiManager.CloseAnnounceType();
                 invUI.Tick();
+            }
+            else
+            {
+                if (states.pickManager.itemCanidate != null)
+                {
+                    uiManager.OpenAnnounceType(UIActionType.pick);
+                    if (h_input)
+                    {
+                        states.pickManager.PickCanidate();
+                        h_input = false;
+                    }
+                }
+                else
+                {
+                    uiManager.CloseAnnounceType();
+
+                    if(h_input)
+                    {
+                        uiManager.CloseCards();
+                        h_input = false;
+                    }
+
+                }
+            }
 
             ResetInputNStates();
             states.MonitorStats();
@@ -146,6 +173,9 @@ namespace SA
             key2_input = Input.GetKeyDown(KeyCode.Alpha2);
             key3_input = Input.GetKeyDown(KeyCode.Alpha3);
             key4_input = Input.GetKeyDown(KeyCode.Alpha4);
+            h_input = Input.GetKeyDown(KeyCode.H);
+
+            space_input = Input.GetKeyDown(StaticStrings.KeyJump);
 
             bool inventoryMenu = Input.GetKeyDown(StaticStrings.KeyI);
             bool gesturesMenu = Input.GetKeyDown(StaticStrings.KeyG);
@@ -279,6 +309,14 @@ namespace SA
 
             if (shift_input == false && shift_timer > 0 && shift_timer < 0.5f)
                 states.rollInput = true;
+            
+            if(states.run)
+            {
+                if(space_input)
+                {
+                    states.Jump();
+                }
+            }
 
             if (x_input)
                 states.itemInputPending = true;

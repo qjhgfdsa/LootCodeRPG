@@ -77,6 +77,8 @@ namespace SA
         public ActionManager actionManager;
         [HideInInspector]
         public InventoryManager inventoryManager;
+        [HideInInspector]
+        public PickableItemsManager pickManager;
 
 
 
@@ -140,6 +142,8 @@ namespace SA
 
             anim.SetBool(StaticStrings.OnGround, true);
 
+            pickManager = GetComponent<PickableItemsManager>();
+
             characterStats.InitCurrent();
             if (UIManager.singleton != null)
                 UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
@@ -163,9 +167,9 @@ namespace SA
 
             if (anim == null)
                 anim = activeModel.GetComponent<Animator>();
-            
+
             anim.applyRootMotion = false;
-            
+
             anim.GetBoneTransform(HumanBodyBones.LeftHand).localScale = Vector3.one;
             anim.GetBoneTransform(HumanBodyBones.RightHand).localScale = Vector3.one;
         }
@@ -214,7 +218,7 @@ namespace SA
                 {
                     mm.SetActive(!usingItem);
                 }
-                  //เเก้เอง
+                //เเก้เอง
                 if (!isTwoHanded)
                 {
                     if (inventoryManager.leftHandWeapon != null && inventoryManager.rightHandWeapon != null)
@@ -228,7 +232,7 @@ namespace SA
                     if (inventoryManager.currentConsumable.itemModel != null)
                         inventoryManager.currentConsumable.itemModel.SetActive(enabledItem);
                 }
-              
+
             }
             else
             {
@@ -882,7 +886,6 @@ namespace SA
                 blockAnim = true;
             }
         }
-
         void ParryAction(Action slot)
         {
             string targetAnim = null;
@@ -923,6 +926,7 @@ namespace SA
             {
                 airTimer = 0;
             }
+            pickManager.Tick();
         }
 
         void HandleRolls()
@@ -1004,8 +1008,37 @@ namespace SA
 
 
         }
+        public void Jump()
+        {
+
+            onEmpty = false;
+            canMove = false;
+            canAttack = false;
+            inAction = true;
+            anim.SetBool(StaticStrings.onEmpty, false);
+
+            anim.Play(StaticStrings.Jump_start);
+            isBlocking = false;
+
+            skipGroundCheck = true;
+            Vector3 targetVel = transform.forward * 7;
+            targetVel.y = 5;
+            rigid.linearVelocity = targetVel;
+        }
+        bool skipGroundCheck;
+        float skipTimer;
+        bool prevGround;
         public bool OnGround()
         {
+            if (skipGroundCheck)
+            {
+                skipTimer += delta;
+                if (skipTimer > 0.8f)
+                    skipGroundCheck = false;
+                return false;
+            }
+            skipTimer = 0;
+
             bool r = false;
 
             Vector3 origin = transform.position + (Vector3.up * toGround);
