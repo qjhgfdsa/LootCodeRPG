@@ -10,7 +10,8 @@ namespace SA
         Rigidbody rigid;
         EnemyStates eStates;
 
-
+        public bool jumping;
+        
         public float rm_Mutil;
         bool rolling;
         float roll_t;
@@ -62,6 +63,7 @@ namespace SA
                 ? worldDirection.normalized
                 : transform.forward;
         }
+    
         public void CloseRoll()
         {
             if (rolling == false)
@@ -82,7 +84,11 @@ namespace SA
 
             if (rigid == null)
                 return;
-
+            
+            if (jumping)
+            {
+                return;
+            }
 
             if (states != null)
             {

@@ -149,6 +149,7 @@ namespace SA
                 UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
 
             UIManager.singleton.InitSouls(characterStats._souls);
+            prevGround = true;
         }
         void SetupAnimator()
         {
@@ -1010,7 +1011,7 @@ namespace SA
         }
         public void Jump()
         {
-
+            a_hook.jumping = true;
             onEmpty = false;
             canMove = false;
             canAttack = false;
@@ -1033,8 +1034,9 @@ namespace SA
             if (skipGroundCheck)
             {
                 skipTimer += delta;
-                if (skipTimer > 0.8f)
+                if (skipTimer > 0.2f)
                     skipGroundCheck = false;
+                prevGround = false;
                 return false;
             }
             skipTimer = 0;
@@ -1045,15 +1047,60 @@ namespace SA
             Vector3 dir = -Vector3.up;
             float dis = toGround + 0.3f;
             RaycastHit hit;
+            Debug.DrawRay(origin, dir * dis, Color.red, 0.5f);
             if (Physics.Raycast(origin, dir, out hit, dis, ignoreLayers))
             {
                 r = true;
                 Vector3 tagetPostition = hit.point;
                 transform.position = tagetPostition;
-
             }
-
+            if (r && !prevGround)
+            {
+                Land();
+            }
+            prevGround = r;
             return r;
+        }
+        void Land()
+        {
+            onEmpty = false;
+            canMove = false;
+            canAttack = false;
+            inAction = true;
+            isBlocking = false;
+            a_hook.jumping = false;
+
+            if (moveAmount == 0)
+            {
+                anim.Play(StaticStrings.Jump_land);
+                Debug.Log("Jump landed");
+            }
+            else
+            {
+                if (moveDir == Vector3.zero)
+                    moveDir = transform.forward;
+                Quaternion targetRot = Quaternion.LookRotation(moveDir);
+                transform.rotation = targetRot;
+                a_hook.InitForRoll(moveDir);
+                a_hook.rm_Mutil = rollSpeed;
+
+                anim.SetFloat(StaticStrings.Vertical_Axis, 1);
+                anim.SetFloat(StaticStrings.Horizontal_Axis, 0);
+
+                anim.CrossFade(StaticStrings.Rolls, 0.2f);
+            }
+        }
+        public void PlayInteractAnimation()
+        {
+            onEmpty = false;
+            canMove = false;
+            canAttack = false;
+            inAction = true;
+            isBlocking = false;
+           
+            anim.SetBool(StaticStrings.onEmpty, false);
+            anim.CrossFade(StaticStrings.pick_up, 0.2f);
+
         }
         public void HandleTwoHanded()
         {
@@ -1109,7 +1156,6 @@ namespace SA
                 }
             }
         }
-
         public void IsGettingParried()
         {
 
@@ -1126,7 +1172,7 @@ namespace SA
             }
             else
             {
-                characterStats._stamina += delta;
+                characterStats._stamina += delta * 10;
             }
             if (characterStats._stamina > characterStats.fp)
                 characterStats._stamina = characterStats.fp;

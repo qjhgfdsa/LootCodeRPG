@@ -2588,6 +2588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b67058b2a36cb448dbcc34dd1d7efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.AnimatorHook
+  jumping: 0
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
@@ -6820,6 +6821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b67058b2a36cb448dbcc34dd1d7efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumping: 0
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
@@ -7071,10 +7073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a452ab02fd5acb54f839d9a34cc4fe03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.SessionManager
-  rh_Equiped:
-  - "\u0E2B\u0E2D\u0E01"
-  lh_Equiped:
-  - "\u0E14\u0E32\u0E1A"
+  rh_Equiped: []
+  lh_Equiped: []
   con_Equiped:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
   spell_Equiped:
@@ -41326,6 +41326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b67058b2a36cb448dbcc34dd1d7efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumping: 0
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
@@ -45854,6 +45855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b67058b2a36cb448dbcc34dd1d7efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumping: 0
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}
@@ -48717,6 +48719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b67058b2a36cb448dbcc34dd1d7efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumping: 0
   rm_Mutil: 0
   ikTarget: {fileID: 0}
   bodyTarget: {fileID: 0}

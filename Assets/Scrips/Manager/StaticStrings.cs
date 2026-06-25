@@ -46,7 +46,7 @@ namespace SA
 
        
         // Animator states
-        public static string Jump_start = "jump_start";
+        public static string Jump_start = "jump_launch";
         public static string Jump_land = "jump_land";
         public static string Rolls = "Rolls";
         public static string attack_interupt = "attack_interrupt";
@@ -60,6 +60,7 @@ namespace SA
         public static string emptyLeft = "Empty Left";
         public static string emptyRight = "Empty Right";
         public static string equipWeapon_oh = "equipWeapon_oh";
+        public static string pick_up = "pick_up";
 
         //UI interactions
         public static string ui_ac_pick

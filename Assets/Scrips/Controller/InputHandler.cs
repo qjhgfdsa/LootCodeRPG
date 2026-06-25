@@ -119,6 +119,7 @@ namespace SA
                     if (h_input)
                     {
                         states.pickManager.PickCanidate();
+                        states.PlayInteractAnimation();
                         h_input = false;
                     }
                 }
@@ -147,7 +148,6 @@ namespace SA
             horizontal = Input.GetAxis(StaticStrings.Horizontal);
 
             shift_input = Input.GetKey(StaticStrings.KeyShift);
-            space_input = Input.GetKeyDown(StaticStrings.KeySpace);
             t_input = Input.GetKeyDown(StaticStrings.KeyT);
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
 
@@ -173,7 +173,7 @@ namespace SA
             key2_input = Input.GetKeyDown(KeyCode.Alpha2);
             key3_input = Input.GetKeyDown(KeyCode.Alpha3);
             key4_input = Input.GetKeyDown(KeyCode.Alpha4);
-            h_input = Input.GetKeyDown(KeyCode.H);
+          
 
             space_input = Input.GetKeyDown(StaticStrings.KeyJump);
 
