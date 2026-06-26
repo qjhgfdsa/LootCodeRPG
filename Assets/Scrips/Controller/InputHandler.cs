@@ -13,7 +13,6 @@ namespace SA
         bool rolls_input;
         bool t_input;
         bool x_input;
-
         bool key1_input;
         bool key2_input;
         bool key3_input;
@@ -34,19 +33,22 @@ namespace SA
         StateManager states;
         CameraManager camManager;
         UIManager uiManager;
+        DialogueManager dialogueManager;
         SA.UI.InventoryUI invUI;
 
         bool isGesturesOpen;
 
         float delta;
-
+        public static InputHandler singleton;
         void Awake()
         {
-            states = GetComponent<StateManager>();
+            singleton = this;
         }
 
         void Start()
         {
+            states = GetComponent<StateManager>();
+
             if (UI.QuickSlot.singleton != null)
                 UI.QuickSlot.singleton.Init();
             else
@@ -54,6 +56,25 @@ namespace SA
 
             states.Init();
 
+            InitCameraManager();
+
+            camManager.Init(states);
+            uiManager = UIManager.singleton;
+            if (uiManager == null)
+                Debug.LogWarning("InputHandler: UIManager is missing from the scene — HUD will not update.");
+
+            invUI = SA.UI.InventoryUI.singleton;
+            if (invUI != null)
+                invUI.Init(states.inventoryManager);
+            else
+                Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
+
+            dialogueManager = DialogueManager.singleton;
+            if (dialogueManager == null)
+                Debug.LogWarning("InputHandler: DialogueManager is missing from the scene.");
+        }
+        void InitCameraManager()
+        {
             // รอให้ CameraManager พร้อม
             camManager = CameraManager.singleton;
 
@@ -74,17 +95,6 @@ namespace SA
                     return;
                 }
             }
-
-            camManager.Init(states);
-            uiManager = UIManager.singleton;
-            if (uiManager == null)
-                Debug.LogWarning("InputHandler: UIManager is missing from the scene — HUD will not update.");
-
-            invUI = SA.UI.InventoryUI.singleton;
-            if (invUI != null)
-                invUI.Init(states.inventoryManager);
-            else
-                Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
         }
         void FixedUpdate()
         {
@@ -96,7 +106,7 @@ namespace SA
             camManager.Tick(delta);
             states.FixedTick(delta);
         }
-
+        bool preferItem;
         void Update()
         {
             delta = Time.deltaTime;
@@ -111,37 +121,67 @@ namespace SA
                 uiManager.CloseAnnounceType();
                 invUI.Tick();
             }
-            else
+            else if (!dialogueManager.dialogueActive)
             {
-                if (states.pickManager.itemCanidate != null)
+                if (states.pickManager.itemCanidate != null || states.pickManager.interCanidate)
                 {
-                    uiManager.OpenAnnounceType(UIActionType.pick);
-                    if (h_input)
+                    if (states.pickManager.itemCanidate && states.pickManager.interCanidate)
                     {
-                        states.pickManager.PickCanidate();
-                        states.PlayInteractAnimation();
-                        h_input = false;
+                        if (preferItem) PickupItem();
+                        else Interact();
+                    }
+                    else if (states.pickManager.itemCanidate)
+                    {
+                        PickupItem();
+                    }
+                    else if (states.pickManager.interCanidate)
+                    {
+                        Interact();
                     }
                 }
                 else
                 {
                     uiManager.CloseAnnounceType();
 
-                    if(h_input)
+                    if (h_input)
                     {
                         uiManager.CloseCards();
                         h_input = false;
                     }
-
                 }
             }
-
+            dialogueManager.Tick(h_input);
             ResetInputNStates();
             states.MonitorStats();
-            if (uiManager != null)
-                uiManager.Tick(states.characterStats, delta);
-        }
 
+            uiManager.Tick(states.characterStats, delta);
+        }
+        void PickupItem()
+        {
+            uiManager.OpenAnnounceType(UIActionType.pick);
+            if (h_input)
+            {
+                Debug.Log("PickupItem");
+                Vector3 td = states.pickManager.itemCanidate.transform.position - transform.position;
+                states.SnapToRotation(td);
+
+                states.pickManager.PickCanidate();
+                states.PlayAnimation(StaticStrings.pick_up);
+                h_input = false;
+            }
+        }
+        void Interact()
+        {
+            uiManager.OpenAnnounceType(states.pickManager.interCanidate.interactionType);
+
+            if (h_input)
+            {
+                Debug.Log("Interact with " + states.pickManager.interCanidate.interactionId);
+                states.InteractLogic();
+                h_input = false;
+            }
+
+        }
         void GetInput()
         {
             vertical = Input.GetAxis(StaticStrings.Vertical);
@@ -150,7 +190,7 @@ namespace SA
             shift_input = Input.GetKey(StaticStrings.KeyShift);
             t_input = Input.GetKeyDown(StaticStrings.KeyT);
             x_input = Input.GetKeyDown(StaticStrings.KeyX);
-
+            h_input = Input.GetKeyDown(StaticStrings.KeyH);
 
             if (invUI == null || !invUI.isMenu)
             {
@@ -173,7 +213,7 @@ namespace SA
             key2_input = Input.GetKeyDown(KeyCode.Alpha2);
             key3_input = Input.GetKeyDown(KeyCode.Alpha3);
             key4_input = Input.GetKeyDown(KeyCode.Alpha4);
-          
+
 
             space_input = Input.GetKeyDown(StaticStrings.KeyJump);
 
@@ -309,10 +349,10 @@ namespace SA
 
             if (shift_input == false && shift_timer > 0 && shift_timer < 0.5f)
                 states.rollInput = true;
-            
-            if(states.run)
+
+            if (states.run)
             {
-                if(space_input)
+                if (space_input)
                 {
                     states.Jump();
                 }
@@ -327,8 +367,16 @@ namespace SA
 
             if (t_input)
             {
-                states.isTwoHanded = !states.isTwoHanded;
-                states.HandleTwoHanded();
+                if (states.pickManager.itemCanidate && states.pickManager.interCanidate)
+                {
+                    preferItem = !preferItem;
+                }
+                else
+                {
+                    states.isTwoHanded = !states.isTwoHanded;
+                    states.HandleTwoHanded();
+                }
+
             }
 
             // ========== LOCK-ON SYSTEM ==========

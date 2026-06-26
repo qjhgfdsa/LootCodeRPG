@@ -21,7 +21,6 @@ namespace SA
         public static string KeyF = "f";                 // โจมตี F
         public static string KeyG = "g";                 // เลือกการจัดการคำสั่ง Gesture Menu
         public static string KeyI = "i";                 // เปิด inventory
-
         public static string KeyH = "h";                 // รับของ
 
         public static string KeyJump = "space";                 // กระโดด
@@ -74,6 +73,10 @@ namespace SA
         public static string ui_ac_open
         {
             get{return "Open : "+ KeyH;}
+        }
+        public static string ui_ac_interract
+        {
+            get{return "Interract : "+ KeyH;}
         }
         //Other
         public static string _l = "_l";

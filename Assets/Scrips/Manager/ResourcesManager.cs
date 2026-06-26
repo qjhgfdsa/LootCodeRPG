@@ -16,6 +16,11 @@ namespace SA
         Dictionary<string, int> weaponStats_ids = new Dictionary<string, int>();
         Dictionary<string, int> consumable_ids = new Dictionary<string, int>();
         Dictionary<string, int> armor_ids = new Dictionary<string, int>();
+
+        //Other
+        Dictionary<string, int> interaction_ids = new Dictionary<string, int>();
+        Dictionary<string, int> npc_ids = new Dictionary<string, int>();
+
         public static ResourcesManager singleton;
 
         #region Load Items
@@ -27,6 +32,49 @@ namespace SA
             LoadSpellIds();
             LoadConsumableId();
             LoadArmor();
+            LoadInteractions();
+            LoadNPCs();
+        }
+        void LoadInteractions()
+        {
+            InteractionsScriptableObject obj = Resources.Load("SA.InteractionsScriptableObject") as InteractionsScriptableObject;
+            if (obj == null)
+            {
+                Debug.Log("SA.InteractionsScriptableObject หาไม่เจอ");
+                return;
+            }
+            for (int i = 0; i < obj.interactions.Length; i++)
+            {
+                if (interaction_ids.ContainsKey(obj.interactions[i].InteractionId))
+                {
+                    Debug.Log(obj.interactions[i].InteractionId + "Interaction is a duplicate");
+                }
+                else
+                {
+                    interaction_ids.Add(obj.interactions[i].InteractionId, i);
+                }
+            }
+
+        }
+        void LoadNPCs()
+        {
+            NPCScriptableObject obj = Resources.Load("SA.NPCScriptableObject") as NPCScriptableObject;
+            if (obj == null)
+            {
+                Debug.Log("SA.NPCScriptableObject หาไม่เจอ");
+                return;
+            }
+            for (int i = 0; i < obj.npc.Length; i++)
+            {
+                if (npc_ids.ContainsKey(obj.npc[i].npc_id))
+                {
+                    Debug.Log(obj.npc[i].npc_id + "NPC is a duplicate");
+                }
+                else
+                {
+                    npc_ids.Add(obj.npc[i].npc_id, i);
+                }
+            }
         }
         void LoadArmor()
         {
@@ -314,6 +362,33 @@ namespace SA
             if (index == -1)
                 return null;
             return obj.armor_containers[index];
+        }
+        public Interactions GetInteraction(string id)
+        {
+            InteractionsScriptableObject obj = Resources.Load("SA.InteractionsScriptableObject") as InteractionsScriptableObject;
+            if (obj == null)
+            {
+                Debug.Log("SA.InteractionsScriptableObject cant be loaded!");
+                return null;
+            }
+            int index = GetIndexFromString(interaction_ids, id);
+            if (index == -1)
+                return null;
+            return obj.interactions[index];
+
+        }
+        public NPCDialogue GetDialogue(string id)
+        {
+            NPCScriptableObject obj = Resources.Load("SA.NPCScriptableObject") as NPCScriptableObject;
+            if (obj == null)
+            {
+                Debug.Log("SA.NPCScriptableObject cant be loaded!");
+                return null;
+            }
+            int index = GetIndexFromString(npc_ids, id);
+            if (index == -1)
+                return null;
+            return obj.npc[index];
         }
     }
     public enum ItemType

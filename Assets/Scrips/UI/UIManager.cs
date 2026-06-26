@@ -107,6 +107,9 @@ namespace SA
                 case UIActionType.pick:
                     ac_action_type.text = StaticStrings.ui_ac_pick;
                     break;
+                case UIActionType.interract:
+                    ac_action_type.text = StaticStrings.ui_ac_interract;
+                    break;
                 case UIActionType.talk:
                     ac_action_type.text = StaticStrings.ui_ac_talk;
                     break;

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73591381eebc2e44d84d8a1148335de4, type: 3}
+  m_Name: SA.NPCScriptableObject
+  m_EditorClassIdentifier: Assembly-CSharp::SA.NPCScriptableObject
+  npc:
+  - npc_id: npc1
+    dialogues:
+    - dialogText:
+      - HIHIHIHI----
+      specialEvent: 
+      increaseIndex: 1
+    - dialogText:
+      - 555555
+      - U i haaa
+      specialEvent: 
+      increaseIndex: 1
+    - dialogText:
+      - wowowo
+      - what??
+      - what the heck
+      specialEvent: 
+      increaseIndex: 0
+    - dialogText:
+      - this is empty
+      specialEvent: 
+      increaseIndex: 0

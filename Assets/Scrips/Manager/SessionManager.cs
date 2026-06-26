@@ -5,6 +5,9 @@ namespace SA
 {
     public class SessionManager : MonoBehaviour
     {
+        [Header("NPC States")]
+        public NPCStates[] npcStates;
+
         [Header("Equiped Items")]
         public List<string> rh_Equiped = new List<string>();
         public List<string> lh_Equiped = new List<string>();
@@ -48,8 +51,8 @@ namespace SA
         ItemInventoryInstance unarmedItem = new ItemInventoryInstance();
         ItemInventoryInstance emptyItem = new ItemInventoryInstance();
 
-
-
+        Dictionary<string, int> event_ids = new Dictionary<string, int>();
+        Dictionary<string, int> npc_ids = new Dictionary<string, int>();
         public List<ItemInventoryInstance> GetItemsIntanceList(ItemType t)
         {
             switch (t)
@@ -215,6 +218,33 @@ namespace SA
             {
                 AddArmorItem(armor_items[i]);
             }
+            for (int i = 0; i < npcStates.Length; i++)
+            {
+                npc_ids.Add(npcStates[i].npc_id, i);
+            }
+        }
+        void AddEvent()
+        {
+            event_ids.Add("scale", 0);
+        }
+        public void PlayEvent(string id)
+        {
+            int index = -1;
+            event_ids.TryGetValue(id, out index);
+
+            switch (index)
+            {
+                case -1:
+                    return;
+                case 0:
+                    Transform t = InputHandler.singleton.transform;
+                    Vector3 s = Vector3.one * 0.3f;
+                    t.transform.localScale = s;
+
+                    break;
+                default:
+                    break;
+            }
         }
         void AddArmorItem(string id, ArmorType t = ArmorType.chest, bool isEquipped = false)
         {
@@ -270,7 +300,7 @@ namespace SA
                 //  item.armorType = t;
             }
         }
-       public void AddItem(string id, ItemType t)
+        public void AddItem(string id, ItemType t)
         {
 
             switch (t)
@@ -303,6 +333,21 @@ namespace SA
             Item i = rm.GetItem(id, t);
             UIManager.singleton.AddAnnounceCard(i);
         }
+        public NPCStates GetNPCState(string id)
+        {
+            int index = -1;
+            npc_ids.TryGetValue(id, out index);
+            if (index == -1)
+                return null;
+
+            return npcStates[index];
+        }
+    }
+    [System.Serializable]
+    public class NPCStates
+    {
+        public string npc_id;
+        public int dialogueIndex;
     }
 
     [System.Serializable]

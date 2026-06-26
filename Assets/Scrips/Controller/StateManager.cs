@@ -917,6 +917,7 @@ namespace SA
         {
             delta = d;
             onGround = OnGround();
+
             anim.SetBool(StaticStrings.OnGround, onGround);
 
             if (!onGround)
@@ -1063,12 +1064,16 @@ namespace SA
         }
         void Land()
         {
+            a_hook.jumping = false;
+
+            if (airTimer < 0.8f)
+                return;
+
             onEmpty = false;
             canMove = false;
             canAttack = false;
             inAction = true;
             isBlocking = false;
-            a_hook.jumping = false;
 
             if (moveAmount == 0)
             {
@@ -1090,17 +1095,56 @@ namespace SA
                 anim.CrossFade(StaticStrings.Rolls, 0.2f);
             }
         }
-        public void PlayInteractAnimation()
+        public void InteractLogic()
+        {
+            if(pickManager.interCanidate.interactionType == UIActionType.talk)
+            {
+                pickManager.interCanidate.InteractActual();
+                return;
+            }
+
+            Interactions inter = ResourcesManager.singleton.GetInteraction(pickManager.interCanidate.interactionId);
+
+            if (inter.oneShot)
+            {
+                if (pickManager.world_interact.Contains(pickManager.interCanidate))
+                {
+                    pickManager.world_interact.Remove(pickManager.interCanidate);
+                }
+            }
+            if (!string.IsNullOrEmpty(inter.specialEvent))
+            {
+                SessionManager.singleton.PlayEvent(inter.specialEvent);
+            }
+
+            Vector3 targetDir = pickManager.interCanidate.transform.position - transform.position;
+            SnapToRotation(targetDir);
+
+            pickManager.interCanidate.InteractActual();
+
+            PlayAnimation(inter.anim);
+            pickManager.interCanidate = null;
+        }
+        public void SnapToRotation(Vector3 dir)
+        {
+            dir.Normalize();
+            dir.y = 0;
+            if (dir == Vector3.zero)
+                dir = transform.forward;
+            Quaternion t = Quaternion.LookRotation(dir);
+            transform.rotation = t;
+        }
+        public void PlayAnimation(string targetAnim)
         {
             onEmpty = false;
             canMove = false;
             canAttack = false;
             inAction = true;
             isBlocking = false;
-           
-            anim.SetBool(StaticStrings.onEmpty, false);
-            anim.CrossFade(StaticStrings.pick_up, 0.2f);
 
+            anim.SetBool(StaticStrings.onEmpty, false);
+            anim.CrossFade(targetAnim, 0.2f);
+            Debug.Log("PlayAnimation: " + targetAnim);
         }
         public void HandleTwoHanded()
         {
