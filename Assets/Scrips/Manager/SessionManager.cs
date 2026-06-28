@@ -225,7 +225,7 @@ namespace SA
         }
         void AddEvent()
         {
-            event_ids.Add("scale", 0);
+            event_ids.Add("npc1_a", 0);
         }
         public void PlayEvent(string id)
         {
@@ -237,10 +237,8 @@ namespace SA
                 case -1:
                     return;
                 case 0:
-                    Transform t = InputHandler.singleton.transform;
-                    Vector3 s = Vector3.one * 0.3f;
-                    t.transform.localScale = s;
-
+                    NPCStates npc = GetNPCState("npc1");
+                    npc.dialogueIndex = 3;
                     break;
                 default:
                     break;

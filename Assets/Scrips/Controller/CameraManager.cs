@@ -24,6 +24,11 @@ namespace SA
         float turnSmoothing = .1f; // แก้จาก turnSmooting
         public float minAngle = -35;
         public float maxAngle = 35;
+
+        public float defZ;
+        float curZ;
+        public float zSpeed = 19;
+
         float smoothX;
         float smoothY;
         float smoothXVelocity;
@@ -60,12 +65,7 @@ namespace SA
                 return;
             }
             pivot = camTrans.parent;
-
-            if (pivot == null)
-            {
-                Debug.LogError("❌ Camera ไม่มี parent (pivot)! ต้องสร้าง Empty GameObject เป็น parent ของ Camera");
-                return;
-            }
+            curZ = defZ;
         }
 
         public void Tick(float d)
@@ -137,7 +137,6 @@ namespace SA
                 usedMouseAxis = false;
             }
         }
-
         void FollowTarget(float d)
         {
             if (target == null)
@@ -147,7 +146,6 @@ namespace SA
             Vector3 targetPosition = Vector3.Lerp(transform.position, target.position, speed);
             transform.position = targetPosition;
         }
-
         void HandleRotations(float d, float v, float h, float targetSpeed)
         {
             // เช็คก่อนใช้
@@ -189,6 +187,65 @@ namespace SA
             // Free camera rotation
             lookAngle += smoothX * targetSpeed;
             transform.rotation = Quaternion.Euler(0, lookAngle, 0);
+        }
+        void HandlePivotPosition()
+        {
+            float targetZ = defZ;
+            CameraCollision(defZ, ref targetZ);
+
+            curZ = Mathf.Lerp(curZ, targetZ, states.delta * zSpeed);
+        }
+        void CameraCollision(float targetZ, ref float actualZ)
+        {
+            float step = Mathf.Abs(targetZ);
+            int stepCount = 2;
+            float stepIncrement = step / stepCount;
+
+            RaycastHit hit;
+            Vector3 origin = pivot.position;
+            Vector3 direction = -pivot.forward;
+
+            if (Physics.Raycast(origin, direction, out hit, step, states.ignoreLayers))
+            {
+                float distance = Vector3.Distance(hit.point, origin);
+                actualZ = -(distance / 2);
+            }
+            else
+            {
+                for (int s = 0; s < stepCount; s++)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector3 dir = Vector3.zero;
+                        Vector3 secondOrigin = origin + (direction * s) * stepIncrement;
+
+                        switch (i)
+                        {
+                            case 0:
+                                dir = camTrans.right;
+                                break;
+                            case 1:
+                                dir = -camTrans.right;
+                                break;
+                            case 2:
+                                dir = camTrans.up;
+                                break;
+                            case 3:
+                                dir = -camTrans.up;
+                                break;
+                        }
+                        if (Physics.Raycast(secondOrigin, dir, out hit, 0.5f, states.ignoreLayers))
+                        {
+                            float distance = Vector3.Distance(secondOrigin, origin);
+                            actualZ = -(distance / 2);
+                            if (actualZ < 0.2f)
+                                actualZ = 0;
+                            return;
+                        }
+                    }
+
+                }
+            }
         }
     }
 }

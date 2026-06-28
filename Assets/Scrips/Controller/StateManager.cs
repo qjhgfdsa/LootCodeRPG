@@ -150,6 +150,8 @@ namespace SA
 
             UIManager.singleton.InitSouls(characterStats._souls);
             prevGround = true;
+
+            DialogueManager.singleton.Init(this.transform);
         }
         void SetupAnimator()
         {

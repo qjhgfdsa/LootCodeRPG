@@ -121,33 +121,40 @@ namespace SA
                 uiManager.CloseAnnounceType();
                 invUI.Tick();
             }
-            else if (!dialogueManager.dialogueActive)
+            else
             {
-                if (states.pickManager.itemCanidate != null || states.pickManager.interCanidate)
+                if (!dialogueManager.dialogueActive)
                 {
-                    if (states.pickManager.itemCanidate && states.pickManager.interCanidate)
+                    if (states.pickManager.itemCanidate != null || states.pickManager.interCanidate)
                     {
-                        if (preferItem) PickupItem();
-                        else Interact();
+                        if (states.pickManager.itemCanidate && states.pickManager.interCanidate)
+                        {
+                            if (preferItem) PickupItem();
+                            else Interact();
+                        }
+                        else if (states.pickManager.itemCanidate)
+                        {
+                            PickupItem();
+                        }
+                        else if (states.pickManager.interCanidate)
+                        {
+                            Interact();
+                        }
                     }
-                    else if (states.pickManager.itemCanidate)
+                    else
                     {
-                        PickupItem();
-                    }
-                    else if (states.pickManager.interCanidate)
-                    {
-                        Interact();
+                        uiManager.CloseAnnounceType();
+
+                        if (h_input)
+                        {
+                            uiManager.CloseCards();
+                            h_input = false;
+                        }
                     }
                 }
                 else
                 {
                     uiManager.CloseAnnounceType();
-
-                    if (h_input)
-                    {
-                        uiManager.CloseCards();
-                        h_input = false;
-                    }
                 }
             }
             dialogueManager.Tick(h_input);
@@ -479,8 +486,14 @@ namespace SA
 
         void ResetInputNStates()
         {
+            if (h_input)
+                h_input = false;
+
             if (shift_input == false)
                 shift_timer = 0;
+            
+            if(states.rollInput)
+                states.rollInput = false;
         }
     }
 }

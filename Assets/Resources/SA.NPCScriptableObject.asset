@@ -19,18 +19,26 @@ MonoBehaviour:
       - HIHIHIHI----
       specialEvent: 
       increaseIndex: 1
+      targetAnim: 
+      playAnim: 0
     - dialogText:
       - 555555
       - U i haaa
       specialEvent: 
       increaseIndex: 1
+      targetAnim: 
+      playAnim: 0
     - dialogText:
       - wowowo
       - what??
       - what the heck
       specialEvent: 
       increaseIndex: 0
+      targetAnim: 
+      playAnim: 0
     - dialogText:
-      - this is empty
+      - this is arter inter acting
       specialEvent: 
       increaseIndex: 0
+      targetAnim: praise
+      playAnim: 1

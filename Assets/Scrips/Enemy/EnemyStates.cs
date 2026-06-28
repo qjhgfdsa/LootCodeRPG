@@ -1,31 +1,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 
 namespace SA
 {
     public class EnemyStates : MonoBehaviour
     {
+        [Header("Stats")]
         public int health;
+        public float airTimer;
+        public float poiseDegrade = 2;
+
+
+        [Header("Values")]
+        public float delta;
+        public float horizontal;
+        public float vertical;
+
+
         public CharacterStats characterStats;
+        [Header("States")]
         public bool canBeParried = true;
         public bool parryIsOn = true;
-        public bool doParry = false;
+        // public bool doParry = false;
         public bool isInvicible;
         public bool dontDoAnything;
         public bool canMove;
         public bool isDead;
-        public float airTimer;
+        public bool hasDestination;
+        public Vector3 targetDestination;
+
+        public Vector3 dirToTarget;
+        public bool rotateToTarget;
+
 
         public StateManager parriedBy;
 
+        //references
         public Animator anim;
         EnemyTarget enTarget;
         AnimatorHook a_hook;
         public Rigidbody rigid;
-        public float delta;
-        public float poiseDegrade = 2;
+        public NavMeshAgent agent;
+
+        public LayerMask ignoreLayers;
 
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
@@ -33,7 +53,7 @@ namespace SA
         public delegate void SpellEffect_Loop();
         public SpellEffect_Loop spellEffect_loop;
         float timer;
-        void Start()
+        public void Init()
         {
             health = 10000;
             anim = GetComponentInChildren<Animator>();
@@ -41,6 +61,8 @@ namespace SA
             enTarget.Init(this);
 
             rigid = GetComponent<Rigidbody>();
+            agent = GetComponent<NavMeshAgent>();
+            rigid.isKinematic = true;
 
             a_hook = anim.GetComponent<AnimatorHook>();
             if (a_hook == null)
@@ -49,8 +71,8 @@ namespace SA
 
             InitRagdoll();
             parryIsOn = false;
+            ignoreLayers = ~(1 << 9);
         }
-
         void InitRagdoll()
         {
             Rigidbody[] rigs = GetComponentsInChildren<Rigidbody>();
@@ -93,10 +115,10 @@ namespace SA
             this.enabled = false;
         }
 
-        void Update()
+        public void Tick(float d)
         {
-            delta = Time.deltaTime;
-            // canMove = anim.GetBool(StaticStrings.canMove);
+            delta = d;
+            canMove = anim.GetBool(StaticStrings.onEmpty);
 
             if (spellEffect_loop != null)
                 spellEffect_loop();
@@ -106,6 +128,9 @@ namespace SA
                 dontDoAnything = !canMove;
                 return;
             }
+
+            if (rotateToTarget)
+                LookTowardTarget();
 
             if (health <= 0)
             {
@@ -133,13 +158,12 @@ namespace SA
             {
                 parryIsOn = false;
                 anim.applyRootMotion = false;
-
-                timer += Time.deltaTime;
-                if (timer > 3)
-                {
-                    DoAction();
-                    timer = 0;
-                }
+                MovementAnimations();
+            }
+            else
+            {
+                if (anim.applyRootMotion == false)
+                    anim.applyRootMotion = true;
             }
 
             characterStats.poise -= delta * poiseDegrade;
@@ -147,7 +171,43 @@ namespace SA
                 characterStats.poise = 0;
 
         }
+        public void MovementAnimations()
+        {
+            float square = agent.desiredVelocity.sqrMagnitude;
+            float v = Mathf.Clamp(square, 0, 1);
 
+            anim.SetFloat(StaticStrings.Vertical_Axis, v, 0.2f, delta);
+            /* Vector3 desired = agent.desiredVelocity;
+             Vector3 relative = transform.InverseTransformDirection(desired);
+
+             float v = relative.z;
+             float h = relative.x;
+
+             v = Mathf.Clamp(v, -1, 1);
+             h = Mathf.Clamp(h, -1, 1);
+
+             anim.SetFloat(StaticStrings.Vertical_Axis, v, 0.2f, delta);
+             anim.SetFloat(StaticStrings.Horizontal_Axis, h, 0.2f, delta);*/
+        }
+        void LookTowardTarget()
+        {
+            Vector3 dir = dirToTarget;
+            dir.y = 0;
+            if (dir == Vector3.zero)
+                dir = transform.forward;
+            Quaternion t = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, t, delta * 5);
+        }
+        public void SetDestination(Vector3 d)
+        {
+            if (!hasDestination)
+            {
+                hasDestination = true;
+                agent.isStopped = false;
+                agent.SetDestination(d);
+                targetDestination = d;
+            }
+        }
         void DoAction()
         {
             anim.applyRootMotion = true;
@@ -158,6 +218,7 @@ namespace SA
         }
         public void DoDamage(Action a)
         {
+            return;
             if (isInvicible)
                 return;
 
@@ -182,12 +243,13 @@ namespace SA
 
             isInvicible = true;
             anim.applyRootMotion = true;
-            anim.SetBool(StaticStrings.canMove, false);
+            // anim.SetBool(StaticStrings.canMove, false);
             Debug.Log("Enemy Health: " + health);
 
         }
         public void DoDamage_()
         {
+            return;
             if (isInvicible)
                 return;
 
@@ -239,7 +301,7 @@ namespace SA
         {
             if (fireParticle == null)
                 return;
-                
+
             if (_t < 3)
             {
                 _t += Time.deltaTime;

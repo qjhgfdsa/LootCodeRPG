@@ -21,3 +21,7 @@ MonoBehaviour:
     anim: point down
     oneShot: 1
     specialEvent: 
+  - InteractionId: npc1
+    anim: point down
+    oneShot: 1
+    specialEvent: npc1_a

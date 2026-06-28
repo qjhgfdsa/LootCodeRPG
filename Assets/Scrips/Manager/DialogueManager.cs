@@ -13,6 +13,12 @@ namespace SA
         public bool dialogueActive;
         bool updateDialogue;
         int lineIndex;
+        public Transform playerObject;
+
+        public void Init(Transform p_o)
+        {
+            playerObject = p_o;
+        }
 
         public void InitDialogue(Transform o, string id)
         {
@@ -24,22 +30,36 @@ namespace SA
             updateDialogue = false;
             lineIndex = 0;
         }
-        public void Tick(bool a_input)
+        public void Tick(bool h_input)
         {
             if (!dialogueActive)
                 return;
 
+            if (origin == null)
+                return;
+
+            float d = Vector3.Distance(playerObject.transform.position, origin.transform.position);
+            if (d > 6)
+            {
+                CloseDialogue();
+            }
+
+
             if (!updateDialogue)
             {
                 updateDialogue = true;
-                if (npc_state.dialogueIndex > npc_d.dialogues.Length - 1)
-                    CloseDialogue();
-
                 dialogueText.text = npc_d.dialogues[npc_state.dialogueIndex].dialogText[lineIndex];
+
+                if (npc_d.dialogues[npc_state.dialogueIndex].playAnim)
+                {
+                    Animator anim = origin.GetComponentInChildren<Animator>();
+                    anim.Play(npc_d.dialogues[npc_state.dialogueIndex].targetAnim);
+                }
             }
 
-            if (a_input)
+            if (h_input)
             {
+                h_input = false;
                 lineIndex++;
                 updateDialogue = false;
 
@@ -49,7 +69,7 @@ namespace SA
                     {
                         npc_state.dialogueIndex++;
 
-                        if(npc_state.dialogueIndex > npc_d.dialogues.Length - 1)
+                        if (npc_state.dialogueIndex > npc_d.dialogues.Length - 1)
                         {
                             npc_state.dialogueIndex = npc_d.dialogues.Length - 1;
                         }
@@ -61,11 +81,13 @@ namespace SA
         void CloseDialogue()
         {
             dialogueActive = false;
+            textObj.SetActive(false);
         }
         public static DialogueManager singleton;
         void Awake()
         {
             singleton = this;
+            textObj.SetActive(false);
         }
     }
 

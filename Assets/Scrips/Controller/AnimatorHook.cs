@@ -11,7 +11,7 @@ namespace SA
         EnemyStates eStates;
 
         public bool jumping;
-        
+
         public float rm_Mutil;
         bool rolling;
         float roll_t;
@@ -63,7 +63,7 @@ namespace SA
                 ? worldDirection.normalized
                 : transform.forward;
         }
-    
+
         public void CloseRoll()
         {
             if (rolling == false)
@@ -84,7 +84,7 @@ namespace SA
 
             if (rigid == null)
                 return;
-            
+
             if (jumping)
             {
                 return;
@@ -96,7 +96,6 @@ namespace SA
                     return;
 
                 delta = states.delta;
-
             }
 
             if (eStates != null)
@@ -142,6 +141,21 @@ namespace SA
 
             Vector3 delta2 = anim.deltaPosition;
             Vector3 v = (delta2 * rm_Mutil) / delta;
+
+            if (states)
+            {
+                if (!states.onGround)
+                    v.y = rigid.linearVelocity.y;
+            }
+            if(eStates)
+            {
+                eStates.agent.velocity = v;
+            }
+            else
+            {
+                rigid.linearVelocity = v;
+            }
+
             v += Physics.gravity;
 
             if (!rigid.isKinematic && float.IsFinite(v.x) && float.IsFinite(v.y) && float.IsFinite(v.z))
@@ -196,12 +210,20 @@ namespace SA
             {
                 states.canRotate = true;
             }
+            if (eStates)
+            {
+                eStates.rotateToTarget = true;
+            }
         }
         public void CloseCanRotate()
         {
             if (states)
             {
                 states.canRotate = false;
+            }
+            if (eStates)
+            {
+                eStates.rotateToTarget = false;
             }
         }
         public void OpenDamageColliders()
@@ -290,7 +312,7 @@ namespace SA
         {
             if (states)
             {
-                if(states.inventoryManager.currentConsumable)
+                if (states.inventoryManager.currentConsumable)
                 {
                     states.inventoryManager.currentConsumable.itemCount--;
                     ItemEffectManager.singleton.UseItemEffect(states.inventoryManager.currentConsumable.instance.consumableEffect, states);

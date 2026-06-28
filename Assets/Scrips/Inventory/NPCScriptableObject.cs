@@ -18,6 +18,7 @@ namespace SA
         public string[] dialogText;
         public string specialEvent;
         public bool increaseIndex;
-
+        public string targetAnim;
+        public bool playAnim;
     }
 }
