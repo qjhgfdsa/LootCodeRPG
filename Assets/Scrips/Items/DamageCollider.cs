@@ -6,19 +6,45 @@ namespace SA
     public class DamageCollider : MonoBehaviour
     {
         StateManager states;
-        public void Init(StateManager st)
+        EnemyStates eStates;
+        public void InitPlayer(StateManager st)
         {
             states = st;
+            gameObject.layer = 9;
+            gameObject.SetActive(false);
+        }
+        public void InitEnemy(EnemyStates es)
+        {
+            eStates = es;
+            gameObject.layer = 9;
+            gameObject.SetActive(false);
+
         }
         void OnTriggerEnter(Collider other)
         {
-            EnemyStates eStates = other.transform.GetComponentInParent<EnemyStates>();
+            if (states != null)
+            {
+                if (states.currentAction == null)
+                    return;
 
-            if (eStates == null)
+                EnemyStates es = other.transform.GetComponentInParent<EnemyStates>();
+                if (es == null || es.isDead)
+                    return;
+
+                RuntimeWeapon rw = states.inventoryManager.GetRuntimeWeapon(states.currentAction.mirror);
+                if (rw == null || rw.weaponStats == null)
+                    return;
+
+                es.DoDamage(states.currentAction, rw.instance, rw.weaponStats);
                 return;
+            }
 
-
-            eStates.DoDamage(states.currentAction);
+            if (eStates != null)
+            {
+                StateManager st = other.transform.GetComponentInParent<StateManager>();
+                if (st != null)
+                    st.DoDamage(eStates.GetCurAttack());
+            }
         }
     }
 }

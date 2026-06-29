@@ -82,6 +82,7 @@ namespace SA
             // เรียกฟังก์ชันหลัก
             FollowTarget(d);
             HandleRotations(d, v, h, mouseSpeed);
+            HandlePivotPosition();
         }
 
         void HandleLockOnTarget(float h)
@@ -194,6 +195,9 @@ namespace SA
             CameraCollision(defZ, ref targetZ);
 
             curZ = Mathf.Lerp(curZ, targetZ, states.delta * zSpeed);
+            Vector3 tp = Vector3.zero;
+            tp.z = curZ;
+            camTrans.localPosition = tp;
         }
         void CameraCollision(float targetZ, ref float actualZ)
         {
@@ -212,7 +216,7 @@ namespace SA
             }
             else
             {
-                for (int s = 0; s < stepCount; s++)
+                for (int s = 0; s < stepCount+1; s++)
                 {
                     for (int i = 0; i < 4; i++)
                     {

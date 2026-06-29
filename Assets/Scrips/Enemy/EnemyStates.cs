@@ -19,8 +19,20 @@ namespace SA
         public float horizontal;
         public float vertical;
 
-
         public CharacterStats characterStats;
+
+        AIAttacks curAttack;
+        public void SetCurAttack(AIAttacks a)
+        {
+            curAttack = a;
+        }
+        public AIAttacks GetCurAttack()
+        {
+            return curAttack;
+        }
+        public GameObject[] defaultDamageCollider;
+
+
         [Header("States")]
         public bool canBeParried = true;
         public bool parryIsOn = true;
@@ -44,18 +56,25 @@ namespace SA
         AnimatorHook a_hook;
         public Rigidbody rigid;
         public NavMeshAgent agent;
+        public bool AgentReady => agent != null && agent.enabled && agent.isOnNavMesh;
 
         public LayerMask ignoreLayers;
 
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
 
+        const int ControllerLayer = 8;
+        const int RagdollLayer = 10;
+        const int GroundLayer = 0;
+        static bool layerCollisionConfigured;
+        static StateManager cachedPlayer;
+
         public delegate void SpellEffect_Loop();
         public SpellEffect_Loop spellEffect_loop;
         float timer;
         public void Init()
         {
-            health = 10000;
+            health = 100;
             anim = GetComponentInChildren<Animator>();
             enTarget = GetComponent<EnemyTarget>();
             enTarget.Init(this);
@@ -71,48 +90,141 @@ namespace SA
 
             InitRagdoll();
             parryIsOn = false;
-            ignoreLayers = ~(1 << 9);
+            ignoreLayers = ~(1 << 9); 
+
+            EnemyManager.singleton.enemyTargets.Add(transform.GetComponent<EnemyTarget>());
         }
         void InitRagdoll()
         {
+            if (!layerCollisionConfigured)
+            {
+                Physics.IgnoreLayerCollision(ControllerLayer, RagdollLayer, true);
+                Physics.IgnoreLayerCollision(9, RagdollLayer, true);
+                layerCollisionConfigured = true;
+            }
+
             Rigidbody[] rigs = GetComponentsInChildren<Rigidbody>();
             for (int i = 0; i < rigs.Length; i++)
             {
                 if (rigs[i] == rigid)
-                {
                     continue;
-                }
+
+                rigs[i].gameObject.layer = RagdollLayer;
                 ragdollRigids.Add(rigs[i]);
                 rigs[i].isKinematic = true;
+                rigs[i].linearDamping = 2f;
+                rigs[i].angularDamping = 2f;
 
-                Collider col = rigs[i].gameObject.GetComponent<Collider>();
+                Collider col = rigs[i].GetComponent<Collider>();
+                if (col == null) continue;
                 col.isTrigger = true;
                 ragdollColliders.Add(col);
             }
-
         }
 
         public void EnableRagdoll()
         {
+            AIHandler ai = GetComponent<AIHandler>();
+            Transform playerRoot = ai != null ? ai.target : null;
+            if (ai != null) ai.enabled = false;
+
+            if (AgentReady)
+            {
+                agent.isStopped = true;
+                agent.enabled = false;
+            }
+
+            if (anim != null)
+            {
+                anim.enabled = false;
+                if (a_hook != null)
+                    a_hook.enabled = false;
+            }
+
+            CloseAllDamageColliders();
+            RemoveFromLockOnTargets();
+
+            Physics.SyncTransforms();
+
+            for (int i = 0; i < ragdollColliders.Count; i++)
+            {
+                for (int j = i + 1; j < ragdollColliders.Count; j++)
+                    Physics.IgnoreCollision(ragdollColliders[i], ragdollColliders[j], true);
+            }
+
+            IgnorePlayerCollisions(playerRoot);
 
             for (int i = 0; i < ragdollRigids.Count; i++)
             {
-                ragdollRigids[i].isKinematic = false;
-                ragdollColliders[i].isTrigger = false;
+                Rigidbody rb = ragdollRigids[i];
+                rb.gameObject.layer = RagdollLayer;
+                rb.isKinematic = false;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+
+                Collider col = rb.GetComponent<Collider>();
+                if (col != null)
+                    col.isTrigger = false;
             }
 
-            Collider controllerCollider = rigid.gameObject.GetComponent<Collider>();
-            controllerCollider.enabled = false;
-            rigid.isKinematic = true;
+            Collider controllerCollider = rigid != null ? rigid.GetComponent<Collider>() : null;
+            if (controllerCollider != null)
+                controllerCollider.enabled = false;
+            if (rigid != null)
+                rigid.isKinematic = true;
 
-            StartCoroutine(CloseAnimator());
+            enabled = false;
         }
 
-        IEnumerator CloseAnimator()
+        void CloseAllDamageColliders()
         {
-            yield return new WaitForSeconds(0.1f);
-            anim.enabled = false;
-            this.enabled = false;
+            if (defaultDamageCollider != null)
+                ObjectListStatus(defaultDamageCollider, false);
+
+            DamageCollider[] dcs = GetComponentsInChildren<DamageCollider>(true);
+            for (int i = 0; i < dcs.Length; i++)
+            {
+                Collider col = dcs[i].GetComponent<Collider>();
+                if (col != null)
+                    col.enabled = false;
+            }
+        }
+
+        void RemoveFromLockOnTargets()
+        {
+            EnemyTarget target = GetComponent<EnemyTarget>();
+            if (target != null && EnemyManager.singleton != null)
+                EnemyManager.singleton.enemyTargets.Remove(target);
+        }
+
+        void IgnorePlayerCollisions(Transform playerRoot)
+        {
+            if (playerRoot == null)
+            {
+                if (cachedPlayer == null)
+                    cachedPlayer = FindAnyObjectByType<StateManager>();
+                if (cachedPlayer != null)
+                    playerRoot = cachedPlayer.transform;
+            }
+
+            if (playerRoot == null)
+                return;
+
+            Collider[] playerCols = playerRoot.GetComponentsInChildren<Collider>(true);
+            for (int i = 0; i < ragdollColliders.Count; i++)
+            {
+                for (int p = 0; p < playerCols.Length; p++)
+                {
+                    if (playerCols[p] != null && ragdollColliders[i] != null)
+                        Physics.IgnoreCollision(ragdollColliders[i], playerCols[p], true);
+                }
+            }
+        }
+
+        IEnumerator DestroyAfterDeath(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(this.gameObject);
         }
 
         public void Tick(float d)
@@ -137,9 +249,23 @@ namespace SA
                 if (!isDead)
                 {
                     isDead = true;
-                    EnableRagdoll();
+                    if (ragdollRigids.Count != 0)
+                    {
+                        EnableRagdoll();
+                    }
+                    else
+                    {
+                        // fallback: no ragdoll bones — play death anim then destroy
+                        if (AgentReady)
+                        {
+                            agent.isStopped = true;
+                            agent.enabled = false;
+                        }
+                        anim.Play("Armature|Death", 1); // Override layer
+                        StartCoroutine(DestroyAfterDeath(3f));
+                    }
                 }
-
+                return;
             }
 
             if (isInvicible)
@@ -173,6 +299,18 @@ namespace SA
         }
         public void MovementAnimations()
         {
+            if (!AgentReady)
+            {
+                anim.SetFloat(StaticStrings.Vertical_Axis, 0, 0.2f, delta);
+                return;
+            }
+
+            if (agent.isStopped || !agent.hasPath)
+            {
+                anim.SetFloat(StaticStrings.Vertical_Axis, 0, 0.2f, delta);
+                return;
+            }
+
             float square = agent.desiredVelocity.sqrMagnitude;
             float v = Mathf.Clamp(square, 0, 1);
 
@@ -189,6 +327,14 @@ namespace SA
              anim.SetFloat(StaticStrings.Vertical_Axis, v, 0.2f, delta);
              anim.SetFloat(StaticStrings.Horizontal_Axis, h, 0.2f, delta);*/
         }
+        bool HasAnimState(string stateName)
+        {
+            int hash = Animator.StringToHash(stateName);
+            for (int i = 0; i < anim.layerCount; i++)
+                if (anim.HasState(i, hash)) return true;
+            return false;
+        }
+
         void LookTowardTarget()
         {
             Vector3 dir = dirToTarget;
@@ -200,13 +346,13 @@ namespace SA
         }
         public void SetDestination(Vector3 d)
         {
-            if (!hasDestination)
-            {
-                hasDestination = true;
-                agent.isStopped = false;
-                agent.SetDestination(d);
-                targetDestination = d;
-            }
+            if (hasDestination || !AgentReady)
+                return;
+
+            hasDestination = true;
+            agent.isStopped = false;
+            agent.SetDestination(d);
+            targetDestination = d;
         }
         void DoAction()
         {
@@ -216,40 +362,39 @@ namespace SA
             anim.SetBool(StaticStrings.canMove, false);
 
         }
-        public void DoDamage(Action a)
+        public void DoDamage(Action a, Weapon w,WeaponStats ws)
         {
-            return;
-            if (isInvicible)
+            if (isDead || isInvicible)
                 return;
 
-            int damage = StatsCalculations.CalculateBaseDamage(null, characterStats); //ยังไม่ได้ใช้ weaponStats
+         int damage = StatsCalculations.CalculateBaseDamage(ws, characterStats); //ยังไม่ได้ใช้ weaponStats
 
             characterStats.poise += damage;
-            health -= damage;
+         health -= damage;
+
 
             if (canMove || characterStats.poise > 100)
             {
                 if (a.overrideDamageAnim)
-                    anim.Play(a.damageAnim);
+                {
+                    if (HasAnimState(a.damageAnim))
+                        anim.Play(a.damageAnim);
+                }
                 else
                 {
                     int ran = Random.Range(0, 100);
                     string tA = (ran > 50) ? StaticStrings.damage1 : StaticStrings.damage2;
-                    anim.Play(tA);
+                    if (HasAnimState(tA))
+                        anim.Play(tA);
                 }
             }
 
-            //  Debug.Log(" Damage is " + damage + " Poise is " + characterStats.poise);
-
             isInvicible = true;
             anim.applyRootMotion = true;
-            // anim.SetBool(StaticStrings.canMove, false);
             Debug.Log("Enemy Health: " + health);
-
         }
         public void DoDamage_()
         {
-            return;
             if (isInvicible)
                 return;
 
@@ -257,7 +402,7 @@ namespace SA
         }
         public void CheckForParry(Transform target, StateManager states)
         {
-            if (canBeParried == false || parryIsOn == false || isInvicible)
+            if (isDead || canBeParried == false || parryIsOn == false || isInvicible)
                 return;
 
             Vector3 dir = transform.position - target.position;
@@ -311,6 +456,41 @@ namespace SA
             {
                 _t = 0;
                 spellEffect_loop = null;
+            }
+        }
+        public void OpenDamageCollider()
+        {
+            if (curAttack == null)
+                return;
+
+            if (curAttack.isDefaultDamageCollider || curAttack.damageCollider.Length == 0)
+            {
+                ObjectListStatus(defaultDamageCollider, true);
+            }
+            else
+            {
+                ObjectListStatus(curAttack.damageCollider, true);
+            }
+        }
+        public void CloseDamageCollider()
+        {
+            if (curAttack == null)
+                return;
+
+            if (curAttack.isDefaultDamageCollider || curAttack.damageCollider.Length == 0)
+            {
+                ObjectListStatus(defaultDamageCollider, false);
+            }
+            else
+            {
+                ObjectListStatus(curAttack.damageCollider, false);
+            }
+        }
+        void ObjectListStatus(GameObject[] l, bool status)
+        {
+            for (int i = 0; i < l.Length; i++)
+            {
+                l[i].SetActive(status);
             }
         }
     }

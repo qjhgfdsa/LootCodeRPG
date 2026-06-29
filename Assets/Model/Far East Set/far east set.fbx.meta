@@ -47,6 +47,7 @@ ModelImporter:
     - Bip01/Pelvis/Spine/Spine_1/Spine_2/Right_Clavicle
     - Bip01/Pelvis/Spine/Spine_1/Spine_2/Right_Clavicle/Right_Upper_Arm/Right_Forearm/RightHand
     - Bip01/Pelvis/Spine/Spine_1/Spine_2/Left_Clavicle/Left_Upper_Arm/Left_ForeArm/LeftHand
+    - Bip01/Pelvis/Spine/Spine_1/Spine_2
     extraUserProperties: []
     clipAnimations: []
     isReadable: 0

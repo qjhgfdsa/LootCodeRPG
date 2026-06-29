@@ -86,9 +86,7 @@ namespace SA
                 return;
 
             if (jumping)
-            {
                 return;
-            }
 
             if (states != null)
             {
@@ -100,7 +98,7 @@ namespace SA
 
             if (eStates != null)
             {
-                if (eStates.canMove)
+                if (eStates.isDead || eStates.canMove)
                     return;
 
                 delta = eStates.delta;
@@ -147,11 +145,11 @@ namespace SA
                 if (!states.onGround)
                     v.y = rigid.linearVelocity.y;
             }
-            if(eStates)
+            if (eStates && eStates.AgentReady)
             {
                 eStates.agent.velocity = v;
             }
-            else
+            else if (!rigid.isKinematic)
             {
                 rigid.linearVelocity = v;
             }
@@ -203,6 +201,27 @@ namespace SA
             {
                 states.canMove = true;
             }
+            if (eStates)
+            {
+                eStates.anim.SetBool(StaticStrings.onEmpty, true);
+            }
+        }
+        public void CloseCanMove()
+        {
+            if (states)
+            {
+                states.canMove = false;
+            }
+            if (eStates)
+            {
+                eStates.anim.SetBool(StaticStrings.onEmpty, false);
+                if (eStates.AgentReady)
+                {
+                    eStates.agent.isStopped = true;
+                    eStates.agent.velocity = Vector3.zero;
+                }
+                eStates.anim.SetFloat(StaticStrings.Vertical_Axis, 0);
+            }
         }
         public void OpenCanRotate()
         {
@@ -232,6 +251,10 @@ namespace SA
             {
                 states.inventoryManager.OpenAllDamageColliders();
             }
+            if (eStates)
+            {
+                eStates.OpenDamageCollider();
+            }
             OpenParryFlag();
 
         }
@@ -240,6 +263,10 @@ namespace SA
             if (states)
             {
                 states.inventoryManager.CloseAllDamageColliders();
+            }
+            if (eStates)
+            {
+                eStates.CloseDamageCollider();
             }
             CloseParryFlag();
         }

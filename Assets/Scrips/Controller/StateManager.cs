@@ -1,8 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 
 
 namespace SA
@@ -57,6 +54,7 @@ namespace SA
         public bool parryIsOn;
         public bool onEmpty;
         public bool closeWeapons;
+        public bool isInvicible;
 
 
 
@@ -86,6 +84,8 @@ namespace SA
         public float delta;
         [HideInInspector]
         public LayerMask ignoreLayers;
+        [HideInInspector]
+        public LayerMask ignoreForGroundCheck;
 
         [HideInInspector]
         public Action currentAction;
@@ -106,6 +106,17 @@ namespace SA
         public float moveAmountThreshold = 0.05f;
 
         public bool enabledItem;
+
+        const int ControllerLayer = 8;
+        const int GroundLayer = 0;
+
+        static void SetLayerOnChildren(GameObject root, int layer)
+        {
+            root.layer = layer;
+            Transform t = root.transform;
+            for (int i = 0; i < t.childCount; i++)
+                SetLayerOnChildren(t.GetChild(i).gameObject, layer);
+        }
 
         public void Init()
         {
@@ -138,7 +149,9 @@ namespace SA
             actionManager.Init(this);
 
             gameObject.layer = 8;
-            ignoreLayers = ~(1 << 9);
+            SetLayerOnChildren(gameObject, 8);
+            ignoreLayers = ~((1 << 8) | (1 << 9) | (1 << 10));
+            ignoreForGroundCheck = 1 << GroundLayer;
 
             anim.SetBool(StaticStrings.OnGround, true);
 
@@ -191,6 +204,9 @@ namespace SA
                 Debug.LogError("❌ anim หรือ a_hook ยัง NULL!");
                 return;
             }
+
+            onGround = OnGround();
+            anim.SetBool(StaticStrings.OnGround, onGround);
 
             isBlocking = false;
             itemInput = itemInputPending;
@@ -247,31 +263,26 @@ namespace SA
 
             if (isBlocking == false && isSpellCasting == false)
             {
-                enableIK = false;
+                enableIK = false;  //a_hook.useIk = true; สำหรับปรับการใช้ IK
             }
 
-            //a_hook.useIk = true; สำหรับปรับการใช้ IK
+
 
             if (inAction)
             {
                 anim.applyRootMotion = true;
-
                 actionDelay += delta;
-                if (actionDelay > 0.6f)
                 {
-                    inAction = false;
-                    actionDelay = 0;
-                }
-                else
-                {
-                    return;
+                    if (actionDelay > 0.3f)
+                    {
+                        inAction = false;
+                        actionDelay = 0;
+                    }
                 }
             }
-
             onEmpty = anim.GetBool(StaticStrings.onEmpty);
             //anim.applyRootMotion = !onEmpty;
             //canMove = anim.GetBool(StaticStrings.canMove)
-
             if (onEmpty)
             {
                 canAttack = true;
@@ -283,7 +294,7 @@ namespace SA
                 HandleRotation();
             }
 
-            if (!onEmpty && !canMove && !canAttack)//aniamtion is playing
+            if (!onEmpty && !canMove && !canAttack && onGround)//animation is playing
                 return;
 
             closeWeapons = false;
@@ -329,41 +340,43 @@ namespace SA
                 targetSpeed = runSpeed;
 
             if (onGround && canMove)
+            {
                 rigid.linearVelocity = moveDir * (targetSpeed * moveAmount);
 
-            if (run)
-                lockOn = false;
+                if (run)
+                    lockOn = false;
 
-            HandleRotation();
+                HandleRotation();
 
-            anim.SetBool(StaticStrings.lockon, lockOn);
+                anim.SetBool(StaticStrings.lockon, lockOn);
 
-            if (!lockOn)
-            {
-                HandleMovementAnimations();
-            }
-            else
-            {
-                if (lockOnTransform != null)
-                    HandleLockOnAnimations(moveDir);
-                else
-                    // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
+                if (!lockOn)
+                {
                     HandleMovementAnimations();
+                }
+                else
+                {
+                    if (lockOnTransform != null)
+                        HandleLockOnAnimations(moveDir);
+                    else
+                        // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
+                        HandleMovementAnimations();
+                }
+
+                a_hook.useIk = enableIK;
+                // anim.SetBool(StaticStrings.blocking, isBlocking);
+                anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
+
+                HanddleBlocking();
+
+                if (isSpellCasting)
+                {
+                    HandleSpellCasting();
+                    return;
+                }
+                a_hook.CloseRoll();
+                HandleRolls();
             }
-
-            a_hook.useIk = enableIK;
-            // anim.SetBool(StaticStrings.blocking, isBlocking);
-            anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
-
-            HanddleBlocking();
-
-            if (isSpellCasting)
-            {
-                HandleSpellCasting();
-                return;
-            }
-            a_hook.CloseRoll();
-            HandleRolls();
         }
         public bool IsInput()
         {
@@ -759,11 +772,16 @@ namespace SA
             if (Physics.Raycast(origin, rayDir, out hit, 3, ~ignoreLayers))
             {
                 parryTarget = hit.transform.GetComponentInParent<EnemyStates>();
+                if (parryTarget != null && parryTarget.isDead)
+                    parryTarget = null;
             }
 
             Debug.DrawRay(origin, rayDir * 3, Color.red, 0.5f);
 
             if (parryTarget == null)
+                return false;
+
+            if (parryTarget.isDead)
                 return false;
 
             if (parryTarget.canBeParried == false)
@@ -834,9 +852,14 @@ namespace SA
             if (Physics.Raycast(origin, rayDir, out hit, 1, ~ignoreLayers))
             {
                 backstab = hit.transform.GetComponentInParent<EnemyStates>();
+                if (backstab != null && backstab.isDead)
+                    backstab = null;
             }
 
             if (backstab == null)
+                return false;
+
+            if (backstab.isDead)
                 return false;
 
             Vector3 dir = transform.position - backstab.transform.position;
@@ -915,12 +938,10 @@ namespace SA
             anim.SetBool(StaticStrings.mirror, slot.mirror);
             anim.CrossFade(targetAnim, 0.2f);
         }
+        float i_timer;
         public void Tick(float d)
         {
             delta = d;
-            onGround = OnGround();
-
-            anim.SetBool(StaticStrings.OnGround, onGround);
 
             if (!onGround)
             {
@@ -929,6 +950,15 @@ namespace SA
             else
             {
                 airTimer = 0;
+            }
+            if (isInvicible)
+            {
+                i_timer += delta;
+                if (i_timer > 0.5f)
+                {
+                    i_timer = 0;
+                    isInvicible = false;
+                }
             }
             pickManager.Tick();
         }
@@ -1025,6 +1055,8 @@ namespace SA
             isBlocking = false;
 
             skipGroundCheck = true;
+            skipTimer = 0;
+            actionDelay = 0;
             Vector3 targetVel = transform.forward * 7;
             targetVel.y = 5;
             rigid.linearVelocity = targetVel;
@@ -1046,16 +1078,40 @@ namespace SA
 
             bool r = false;
 
-            Vector3 origin = transform.position + (Vector3.up * toGround);
+            const float groundRayHeight = 2.5f;
+            const float groundRayDistance = 3f;
+            Vector3 origin = rigid.position + (Vector3.up * groundRayHeight);
             Vector3 dir = -Vector3.up;
-            float dis = toGround + 0.3f;
-            RaycastHit hit;
-            Debug.DrawRay(origin, dir * dis, Color.red, 0.5f);
-            if (Physics.Raycast(origin, dir, out hit, dis, ignoreLayers))
+            Debug.DrawRay(origin, dir * groundRayDistance, Color.red, 0.5f);
+
+            RaycastHit[] hits = Physics.RaycastAll(origin, dir, groundRayDistance, ignoreForGroundCheck, QueryTriggerInteraction.Ignore);
+            float closest = float.MaxValue;
+            RaycastHit groundHit = default;
+
+            for (int i = 0; i < hits.Length; i++)
             {
-                r = true;
-                Vector3 tagetPostition = hit.point;
-                transform.position = tagetPostition;
+                if (hits[i].collider == null)
+                    continue;
+                if (hits[i].collider.gameObject.layer != GroundLayer)
+                    continue;
+
+                EnemyStates es = hits[i].collider.GetComponentInParent<EnemyStates>();
+                if (es != null && es.isDead)
+                    continue;
+
+                if (hits[i].distance < closest)
+                {
+                    closest = hits[i].distance;
+                    groundHit = hits[i];
+                    r = true;
+                }
+            }
+
+            if (r)
+            {
+                rigid.position = groundHit.point;
+                Vector3 v = rigid.linearVelocity;
+                rigid.linearVelocity = new Vector3(v.x, 0f, v.z);
             }
             if (r && !prevGround)
             {
@@ -1069,7 +1125,15 @@ namespace SA
             a_hook.jumping = false;
 
             if (airTimer < 0.8f)
+            {
+                inAction = false;
+                actionDelay = 0;
+                onEmpty = true;
+                canMove = true;
+                canAttack = true;
+                anim.SetBool(StaticStrings.onEmpty, true);
                 return;
+            }
 
             onEmpty = false;
             canMove = false;
@@ -1099,7 +1163,7 @@ namespace SA
         }
         public void InteractLogic()
         {
-            if(pickManager.interCanidate.interactionType == UIActionType.talk)
+            if (pickManager.interCanidate.interactionType == UIActionType.talk)
             {
                 pickManager.interCanidate.InteractActual();
                 return;
@@ -1243,6 +1307,35 @@ namespace SA
         public void StopAffectinBlocking()
         {
             isBlocking = false;
+        }
+        public void DoDamage(AIAttacks a)
+        {
+            if (isInvicible)
+                return;
+
+            int damage = 30;
+
+            characterStats._health -= damage;
+
+            if (a.hasReactAnim)
+            {
+                anim.Play(a.reactAnim);
+            }
+            else
+            {
+                int ran = UnityEngine.Random.Range(0, 100);
+                string tA = (ran > 50) ? StaticStrings.damage1 : StaticStrings.damage2;
+                anim.Play(tA);
+            }
+
+            anim.SetBool(StaticStrings.onEmpty, false);
+            canRotate = false;
+            canAttack = false;
+            canMove = false;
+            onEmpty = false;
+            inAction = true;
+            isInvicible = true;
+            anim.applyRootMotion = true;
         }
     }
 }

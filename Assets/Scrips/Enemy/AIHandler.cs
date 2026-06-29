@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 namespace SA
 {
@@ -7,8 +8,10 @@ namespace SA
     {
         public AIAttacks[] ai_Attacks;
         public EnemyStates states;
+
         public StateManager en_states;
         public Transform target;
+
         public float sight;
         public float fov_angle;
 
@@ -27,6 +30,8 @@ namespace SA
         float delta;
         Vector3 dirToTarget;
 
+        public delegate void FirstSight();
+        public FirstSight firstSight;
         float distanceFromTarget()
         {
             if (target == null)
@@ -34,6 +39,7 @@ namespace SA
 
             return Vector3.Distance(target.position, transform.position);
         }
+        public int initAI;
         float angleToTarget()
         {
             float a = 180;
@@ -52,6 +58,39 @@ namespace SA
                 states = GetComponent<EnemyStates>();
 
             states.Init();
+            InitDamageCollider();
+
+            switch (initAI)
+            {
+                case 0:
+                    break;
+                case 1:
+                   firstSight = FirstInSight;
+                    break;
+                case 2:
+                    break;
+            }
+
+         
+
+        }
+        void InitDamageCollider()
+        {
+            for (int i = 0; i < ai_Attacks.Length; i++)
+            {
+                for (int c = 0; c < ai_Attacks[i].damageCollider.Length; c++)
+                {
+                    DamageCollider dc = ai_Attacks[i].damageCollider[c].GetComponent<DamageCollider>();
+                    dc.InitEnemy(states);
+                }
+            }
+            for (int i = 0; i < states.defaultDamageCollider.Length; i++)
+            {
+                {
+                    DamageCollider dc = states.defaultDamageCollider[i].GetComponent<DamageCollider>();
+                    dc.InitEnemy(states);
+                }
+            }
         }
         public AIState aiState;
         public enum AIState
@@ -60,6 +99,8 @@ namespace SA
         }
         void Update()
         {
+            if (states.isDead) return;
+
             delta = Time.deltaTime;
             dis = distanceFromTarget();
             angle = angleToTarget();
@@ -83,9 +124,10 @@ namespace SA
                     if (states.canMove)
                     {
                         aiState = AIState.inSight;
-                        states.agent.isStopped = false;
+                        if (states.AgentReady)
+                            states.agent.isStopped = false;
                         states.rotateToTarget = true;
-                       // states.agent.enabled = true;
+                        // states.agent.enabled = true;
                     }
                     break;
                 default:
@@ -124,7 +166,7 @@ namespace SA
             if (d2 > 2 || dis > sight * .5)
                 GoToTarget();
 
-            if (dis < 2)
+            if (dis < 2 && states.AgentReady)
                 states.agent.isStopped = true;
 
             if (_attack > 0)
@@ -134,16 +176,24 @@ namespace SA
             }
             _attack = attackCount;
 
-            AIAttacks attack = WillAttack();
+            AIAttacks a = WillAttack();
+            states.SetCurAttack(a);
 
-            if (attack != null)
+            if (a != null)
             {
                 aiState = AIState.attacking;
-                states.anim.Play(attack.targetAnim);
+                states.hasDestination = false;
+                if (states.AgentReady)
+                {
+                    states.agent.ResetPath();
+                    states.agent.isStopped = true;
+                    states.agent.velocity = Vector3.zero;
+                }
+                states.anim.SetFloat(StaticStrings.Vertical_Axis, 0);
                 states.anim.SetBool(StaticStrings.onEmpty, false);
                 states.canMove = false;
-                attack._cool = attack.cooldown;
-                states.agent.isStopped = true;
+                states.anim.Play(a.targetAnim);
+                a._cool = a.cooldown;
                 states.rotateToTarget = false;
                 return;
             }
@@ -162,7 +212,7 @@ namespace SA
                 }
             }
         }
-      
+
         public AIAttacks WillAttack()
         {
             int w = 0;
@@ -221,9 +271,18 @@ namespace SA
                     states.rotateToTarget = true;
                     aiState = AIState.inSight;
                     states.SetDestination(target.position);
+
+                    if (firstSight != null)
+                        firstSight();
                 }
             }
-
+        }
+        void FirstInSight()
+        {
+            states.anim.Play("Armature|Death");
+            states.canMove = false;
+            states.anim.SetBool(StaticStrings.onEmpty, false);
+            states.dontDoAnything = true;
         }
         void HandleFarSight()
         {
@@ -257,5 +316,10 @@ namespace SA
         public float cooldown = 2;
         public float _cool;
         public string targetAnim;
+        public bool hasReactAnim;
+        public string reactAnim;
+
+        public bool isDefaultDamageCollider;
+        public GameObject[] damageCollider;
     }
 }

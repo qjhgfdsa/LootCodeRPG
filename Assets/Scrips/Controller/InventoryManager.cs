@@ -490,6 +490,13 @@ namespace SA
             else
                 return rightHandWeapon.instance;
         }
+        public RuntimeWeapon GetRuntimeWeapon(bool isLeft)
+        {
+            if (isLeft)
+                return leftHandWeapon;
+            else
+                return rightHandWeapon;
+        }
         public void OpenAllDamageColliders()
         {
             if (rightHandWeapon != null && rightHandWeapon.w_Hook != null)

@@ -26,7 +26,7 @@ namespace SA
         {
              for (int i = 0; i < damageColliders.Length; i++)
             {
-                damageColliders[i].GetComponent<DamageCollider>().Init(states);
+                damageColliders[i].GetComponent<DamageCollider>().InitPlayer(states);
             }
 
         }

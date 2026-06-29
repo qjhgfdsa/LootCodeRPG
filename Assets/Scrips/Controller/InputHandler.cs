@@ -491,9 +491,6 @@ namespace SA
 
             if (shift_input == false)
                 shift_timer = 0;
-            
-            if(states.rollInput)
-                states.rollInput = false;
         }
     }
 }
