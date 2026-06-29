@@ -6163,8 +6163,9 @@ MonoBehaviour:
   - npc_id: npc1
     dialogueIndex: 0
   rh_Equiped:
-  - "\u0E2B\u0E2D\u0E01"
-  lh_Equiped: []
+  - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
+  lh_Equiped:
+  - "\u0E14\u0E32\u0E1A\u0E22\u0E31\u0E01\u0E29\u0E4C"
   con_Equiped:
   - "\u0E22\u0E32\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E21\u0E32\u0E19\u0E32"
   spell_Equiped:
@@ -12463,8 +12464,8 @@ MonoBehaviour:
   breathCollider: {fileID: 795328681}
   blockCollider: {fileID: 559149952}
   armorManager: {fileID: 0}
-  leftHandPos: {x: 0.074, y: 0.111, z: 0.065}
-  leftHandEuler: {x: 12.611, y: -134.597, z: -100.5}
+  leftHandPos: {x: -0.035, y: 0.013, z: -0.026}
+  leftHandEuler: {x: 1.365, y: 241.261, z: 45.354}
 --- !u!114 &459074586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32923,7 +32924,7 @@ Transform:
   m_GameObject: {fileID: 1307800804}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: -166.8}
+  m_LocalPosition: {x: 0, y: -0.8, z: -166.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

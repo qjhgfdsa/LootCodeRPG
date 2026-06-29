@@ -165,6 +165,7 @@ namespace SA
             prevGround = true;
 
             DialogueManager.singleton.Init(this.transform);
+            onEmpty = true;
         }
         void SetupAnimator()
         {
@@ -214,6 +215,150 @@ namespace SA
             enabledItem = anim.GetBool(StaticStrings.enabledItem);
             anim.SetBool(StaticStrings.spellcasting, isSpellCasting);
 
+
+            onEmpty = anim.GetBool(StaticStrings.onEmpty);
+            //anim.applyRootMotion = !onEmpty;
+            //canMove = anim.GetBool(StaticStrings.canMove)
+
+            if (canRotate)
+            {
+                HandleRotation();
+            }
+
+            if (!onEmpty && !canMove && !canAttack && onGround)//animation is playing
+                return;
+
+            closeWeapons = false;
+
+
+            itemInput = false;
+
+            anim.applyRootMotion = false;
+
+            // ตรงนี้ใน FixedTick() ก่อนเรียก a_hook
+            if (a_hook == null)
+            {
+                Debug.LogError("❌ a_hook is NULL!");
+                return;
+            }
+            rigid.linearDamping = (moveAmount > 0 || onGround == false) ? 0 : 4;
+            float targetSpeed = moveSpeed;
+            if (usingItem || isSpellCasting)
+            {
+                run = false;
+                moveAmount = Mathf.Clamp(moveAmount, 0, 0.45f);
+            }
+
+            if (run)
+                targetSpeed = runSpeed;
+
+            if (onGround && canMove)
+            {
+                rigid.linearVelocity = moveDir * (targetSpeed * moveAmount);
+
+                if (run)
+                    lockOn = false;
+
+                HandleRotation();
+
+            }
+        }
+        public void Tick(float d)
+        {
+            delta = d;
+            onGround = OnGround();
+            anim.SetBool(StaticStrings.OnGround, onGround);
+
+            HandleAirTime();
+            HandleInvincibleTime();
+            HandleWeaponChange();
+            HandleEnableIK();
+            HandleInActionTime();
+            pickManager.Tick();
+
+            if (onEmpty)
+            {
+                canAttack = true;
+                canMove = true;
+                actionManager.actionIndex = 0;
+            }
+
+            if (!onEmpty && !canMove && !canAttack && onGround)//animation is playing
+                return;
+
+
+            if (canMove && !onEmpty)
+            {
+                if (moveAmount > 0.3f)
+                {
+                    anim.CrossFade("Empty Override", 0.1f);
+                    onEmpty = true;
+                }
+            }
+
+            MoitorKick();
+
+            if (canAttack)
+                DetectAction();
+
+            if (canMove || itemInput)
+                DetectItemAction();
+            
+            
+                anim.SetBool(StaticStrings.lockon, lockOn);
+
+                if (!lockOn)
+                {
+                    HandleMovementAnimations();
+                }
+                else
+                {
+                    if (lockOnTransform != null)
+                        HandleLockOnAnimations(moveDir);
+                    else
+                        // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
+                        HandleMovementAnimations();
+                }
+
+                a_hook.useIk = enableIK;
+                // anim.SetBool(StaticStrings.blocking, isBlocking);
+                anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
+
+                HandleBlocking();
+
+                if (isSpellCasting)
+                {
+                    HandleSpellCasting();
+                    return;
+                }
+                a_hook.CloseRoll();
+                HandleRolls();
+        }
+        void HandleInActionTime()
+        {
+            if (inAction)
+            {
+                anim.applyRootMotion = true;
+
+                actionDelay += delta;
+                {
+                    if (actionDelay > 0.3f)
+                    {
+                        inAction = false;
+                        actionDelay = 0;
+                    }
+                }
+            }
+        }
+        void HandleEnableIK()
+        {
+            if (isBlocking == false && isSpellCasting == false)
+            {
+                enableIK = false;  //a_hook.useIk = true; สำหรับปรับการใช้ IK
+            }
+        }
+        void HandleWeaponChange()
+        {
             if (!closeWeapons)
             {
                 GameObject mm = null;
@@ -260,123 +405,30 @@ namespace SA
                 if (inventoryManager.leftHandWeapon != null)
                     inventoryManager.leftHandWeapon.weaponModel.SetActive(false);
             }
-
-            if (isBlocking == false && isSpellCasting == false)
+        }
+        void HandleInvincibleTime()
+        {
+            if (isInvicible)
             {
-                enableIK = false;  //a_hook.useIk = true; สำหรับปรับการใช้ IK
-            }
-
-
-
-            if (inAction)
-            {
-                anim.applyRootMotion = true;
-                actionDelay += delta;
+                i_timer += delta;
+                if (i_timer > 0.5f)
                 {
-                    if (actionDelay > 0.3f)
-                    {
-                        inAction = false;
-                        actionDelay = 0;
-                    }
+                    i_timer = 0;
+                    isInvicible = false;
                 }
             }
-            onEmpty = anim.GetBool(StaticStrings.onEmpty);
-            //anim.applyRootMotion = !onEmpty;
-            //canMove = anim.GetBool(StaticStrings.canMove)
-            if (onEmpty)
+        }
+        void HandleAirTime()
+        {
+            if (!onGround)
             {
-                canAttack = true;
-                canMove = true;
-                actionManager.actionIndex = 0;
+                airTimer += delta;
             }
-            if (canRotate)
+            else
             {
-                HandleRotation();
+                airTimer = 0;
             }
 
-            if (!onEmpty && !canMove && !canAttack && onGround)//animation is playing
-                return;
-
-            closeWeapons = false;
-
-            if (canMove && !onEmpty)
-            {
-                if (moveAmount > 0.3f)
-                {
-                    anim.CrossFade("Empty Override", 0.1f);
-                    onEmpty = true;
-                }
-            }
-
-            MoitorKick();
-
-            if (canAttack)
-            {
-                DetectAction();
-            }
-
-            if (canMove || itemInput)
-                DetectItemAction();
-
-            itemInput = false;
-
-            anim.applyRootMotion = false;
-
-            // ตรงนี้ใน FixedTick() ก่อนเรียก a_hook
-            if (a_hook == null)
-            {
-                Debug.LogError("❌ a_hook is NULL!");
-                return;
-            }
-            rigid.linearDamping = (moveAmount > 0 || onGround == false) ? 0 : 4;
-            float targetSpeed = moveSpeed;
-            if (usingItem || isSpellCasting)
-            {
-                run = false;
-                moveAmount = Mathf.Clamp(moveAmount, 0, 0.45f);
-            }
-
-            if (run)
-                targetSpeed = runSpeed;
-
-            if (onGround && canMove)
-            {
-                rigid.linearVelocity = moveDir * (targetSpeed * moveAmount);
-
-                if (run)
-                    lockOn = false;
-
-                HandleRotation();
-
-                anim.SetBool(StaticStrings.lockon, lockOn);
-
-                if (!lockOn)
-                {
-                    HandleMovementAnimations();
-                }
-                else
-                {
-                    if (lockOnTransform != null)
-                        HandleLockOnAnimations(moveDir);
-                    else
-                        // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
-                        HandleMovementAnimations();
-                }
-
-                a_hook.useIk = enableIK;
-                // anim.SetBool(StaticStrings.blocking, isBlocking);
-                anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
-
-                HanddleBlocking();
-
-                if (isSpellCasting)
-                {
-                    HandleSpellCasting();
-                    return;
-                }
-                a_hook.CloseRoll();
-                HandleRolls();
-            }
         }
         public bool IsInput()
         {
@@ -636,7 +688,7 @@ namespace SA
             inventoryManager.CreateSpellParticle(inventoryManager.currentSpell, spellIsMirrored, (s_inst.spellType == SpellType.looping));
             anim.SetBool(StaticStrings.spellcasting, true);
             anim.SetBool(StaticStrings.mirror, spellIsMirrored);//เพิ่มเพื่อทำให้ตรงกับการทำงานของฟังก์ชั่น HandleSpellCasting() ทดลองเปลี่ยนค่าเป็น spellIsMirrored
-            anim.CrossFade(targetAnim, 0.2f);
+            PlayAnimation(targetAnim);
 
             cur_staminaCost = s_slot.staminaCost;
             cur_focusCost = s_slot.focusCost;
@@ -646,17 +698,7 @@ namespace SA
             if (spellCast_start != null)
                 spellCast_start();
         }
-        public void PlayAnimation(string targetAnim, bool isMirrored)
-        {
-            canAttack = false;
-            onEmpty = false;
-            canMove = false;
-            inAction = true;
-            canKick = false;
-            canRotate = false;
-            anim.SetBool(StaticStrings.mirror, isMirrored);
-            anim.CrossFade(targetAnim, 0.2f);
-        }
+
         float cur_focusCost;
         float cur_staminaCost;
         float spellCastingTime;
@@ -717,22 +759,21 @@ namespace SA
 
                 string targetAnim = spellTargetAnim;
                 anim.SetBool(StaticStrings.mirror, spellIsMirrored);
-                anim.CrossFade(targetAnim, 0.2f);
+                PlayAnimation(targetAnim);
             }
 
         }
         bool blockAnim;
         string block_idle_anim;
-        void HanddleBlocking()
+        void HandleBlocking()
         {
             if (isBlocking == false)
             {
                 if (blockAnim)
                 {
-                    anim.CrossFade(block_idle_anim, 0.1f);
+                    PlayAnimation(block_idle_anim);
                     blockAnim = false;
                 }
-
             }
             else
             {
@@ -831,7 +872,7 @@ namespace SA
                 canAttack = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
-                anim.CrossFade(StaticStrings.parry_attack, 0.2f);
+                PlayAnimation(StaticStrings.parry_attack);
                 lockOnTarget = null;
                 return true;
             }
@@ -908,7 +949,7 @@ namespace SA
 
                 string targetAnim = slot.fristStep.targetAnim;
                 targetAnim += (isLeftHand) ? "_l" : "_r";
-                anim.CrossFade(targetAnim, 0.1f);
+                PlayAnimation(targetAnim);
                 blockAnim = true;
             }
         }
@@ -936,32 +977,10 @@ namespace SA
             canAttack = false;
             inAction = true;
             anim.SetBool(StaticStrings.mirror, slot.mirror);
-            anim.CrossFade(targetAnim, 0.2f);
+            PlayAnimation(targetAnim);
         }
         float i_timer;
-        public void Tick(float d)
-        {
-            delta = d;
 
-            if (!onGround)
-            {
-                airTimer += delta;
-            }
-            else
-            {
-                airTimer = 0;
-            }
-            if (isInvicible)
-            {
-                i_timer += delta;
-                if (i_timer > 0.5f)
-                {
-                    i_timer = 0;
-                    isInvicible = false;
-                }
-            }
-            pickManager.Tick();
-        }
 
         void HandleRolls()
         {
@@ -1013,14 +1032,7 @@ namespace SA
             anim.SetFloat(StaticStrings.Vertical_Axis, v);
             anim.SetFloat(StaticStrings.Horizontal_Axis, h);
 
-            onEmpty = false;
-            canMove = false;
-            canAttack = false;
-            inAction = true;
-            anim.SetBool(StaticStrings.onEmpty, false);
-            anim.applyRootMotion = true;
-
-            anim.CrossFade(StaticStrings.Rolls, 0.2f);
+            PlayAnimation(StaticStrings.Rolls);
             isBlocking = false;
         }
 
@@ -1029,7 +1041,6 @@ namespace SA
             anim.SetFloat(StaticStrings.Vertical_Axis, moveAmount, 0.4f, delta);
             anim.SetBool(StaticStrings.run, run);
         }
-
         void HandleLockOnAnimations(Vector3 moveDir)
         {
             Vector3 relativeDir = transform.InverseTransformDirection(moveDir);
@@ -1038,9 +1049,6 @@ namespace SA
 
             anim.SetFloat(StaticStrings.Vertical_Axis, v, 0.2f, delta);
             anim.SetFloat(StaticStrings.Horizontal_Axis, h, 0.2f, delta);
-
-
-
         }
         public void Jump()
         {
@@ -1158,6 +1166,7 @@ namespace SA
                 anim.SetFloat(StaticStrings.Vertical_Axis, 1);
                 anim.SetFloat(StaticStrings.Horizontal_Axis, 0);
 
+                // PlayAnimation(StaticStrings.Rolls);
                 anim.CrossFade(StaticStrings.Rolls, 0.2f);
             }
         }
@@ -1211,6 +1220,19 @@ namespace SA
             anim.SetBool(StaticStrings.onEmpty, false);
             anim.CrossFade(targetAnim, 0.2f);
             Debug.Log("PlayAnimation: " + targetAnim);
+        }
+        public void PlayAnimation(string targetAnim, bool isMirrored)
+        {
+            canAttack = false;
+            onEmpty = false;
+            canMove = false;
+            inAction = true;
+            canKick = false;
+            canRotate = false;
+
+            anim.SetBool(StaticStrings.onEmpty, false);
+            anim.SetBool(StaticStrings.mirror, isMirrored);
+            anim.CrossFade(targetAnim, 0.2f);
         }
         public void HandleTwoHanded()
         {

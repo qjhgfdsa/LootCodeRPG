@@ -209,7 +209,7 @@ namespace SA
             Vector3 origin = pivot.position;
             Vector3 direction = -pivot.forward;
 
-            if (Physics.Raycast(origin, direction, out hit, step, states.ignoreLayers))
+            if (Physics.Raycast(origin, direction, out hit, step, states.ignoreForGroundCheck))
             {
                 float distance = Vector3.Distance(hit.point, origin);
                 actualZ = -(distance / 2);
@@ -238,7 +238,7 @@ namespace SA
                                 dir = -camTrans.up;
                                 break;
                         }
-                        if (Physics.Raycast(secondOrigin, dir, out hit, 0.5f, states.ignoreLayers))
+                        if (Physics.Raycast(secondOrigin, dir, out hit, 0.5f, states.ignoreForGroundCheck))
                         {
                             float distance = Vector3.Distance(secondOrigin, origin);
                             actualZ = -(distance / 2);
