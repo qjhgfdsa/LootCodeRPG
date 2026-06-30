@@ -81,11 +81,8 @@ namespace SA
             }
             else
             {
-                if (gestureGrid.activeInHierarchy)
-                {
-                    gestureGrid.SetActive(false);
-                    gestureSelector.gameObject.SetActive(false);
-                }
+                gestureGrid.SetActive(false);
+                gestureSelector.gameObject.SetActive(false);
 
                 if (gestureSelector != null && selectorHomeParent != null)
                     gestureSelector.SetParent(selectorHomeParent, false);
@@ -106,6 +103,7 @@ namespace SA
 
             }
             gestureIconTemplate.SetActive(false);
+            gestureGrid.SetActive(false);
             gestureSelector.gameObject.SetActive(false);
             index = 1;
             SelectGesture(false);

@@ -310,36 +310,36 @@ namespace SA
 
             if (canMove || itemInputPending)
                 DetectItemAction();
-            
-            
-                anim.SetBool(StaticStrings.lockon, lockOn);
 
-                if (!lockOn)
-                {
-                    HandleMovementAnimations();
-                }
+
+            anim.SetBool(StaticStrings.lockon, lockOn);
+
+            if (!lockOn)
+            {
+                HandleMovementAnimations();
+            }
+            else
+            {
+                if (lockOnTransform != null)
+                    HandleLockOnAnimations(moveDir);
                 else
-                {
-                    if (lockOnTransform != null)
-                        HandleLockOnAnimations(moveDir);
-                    else
-                        // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
-                        HandleMovementAnimations();
-                }
+                    // ถ้าไม่มี lockOnTransform ให้ใช้ animation ปกติ
+                    HandleMovementAnimations();
+            }
 
-                a_hook.useIk = enableIK;
-                // anim.SetBool(StaticStrings.blocking, isBlocking);
-                anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
+            a_hook.useIk = enableIK;
+            // anim.SetBool(StaticStrings.blocking, isBlocking);
+            anim.SetBool(StaticStrings.isLeftHand, isLeftHand);
 
-                HandleBlocking();
+            HandleBlocking();
 
-                if (isSpellCasting)
-                {
-                    HandleSpellCasting();
-                    return;
-                }
-                a_hook.CloseRoll();
-                HandleRolls();
+            if (isSpellCasting)
+            {
+                HandleSpellCasting();
+                return;
+            }
+            a_hook.CloseRoll();
+            HandleRolls();
         }
         void HandleInActionTime()
         {
@@ -1078,90 +1078,44 @@ namespace SA
             anim.Play(StaticStrings.Jump_start);
             isBlocking = false;
 
-            skipGroundCheck = true;
-            skipTimer = 0;
-            actionDelay = 0;
             Vector3 targetVel = transform.forward * 7;
             targetVel.y = 5;
             rigid.linearVelocity = targetVel;
         }
-        bool skipGroundCheck;
-        float skipTimer;
+
         bool prevGround;
         public bool OnGround()
         {
-            if (skipGroundCheck)
-            {
-                skipTimer += delta;
-                if (skipTimer > 0.15f && rigid.linearVelocity.y <= 0f)
-                    skipGroundCheck = false;
-                prevGround = false;
-                return false;
-            }
-            skipTimer = 0;
-
-            CapsuleCollider cap = GetComponent<CapsuleCollider>();
-            float pivotToBottom = cap != null ? cap.center.y - cap.height * 0.5f : 0f;
-
-            const float groundRayHeight = 2.5f;
-            const float groundSlack = 0.05f;
-            float groundRayDistance = groundRayHeight + pivotToBottom + groundSlack;
-            Vector3 origin = rigid.position + (Vector3.up * groundRayHeight);
-            Vector3 dir = -Vector3.up;
-            Debug.DrawRay(origin, dir * groundRayDistance, Color.red, 0.5f);
-
-            RaycastHit[] hits = Physics.RaycastAll(origin, dir, groundRayDistance, ignoreForGroundCheck, QueryTriggerInteraction.Ignore);
-            float closest = float.MaxValue;
-            RaycastHit groundHit = default;
-            bool hitGround = false;
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                if (hits[i].collider == null)
-                    continue;
-                if (hits[i].collider.gameObject.layer != GroundLayer)
-                    continue;
-
-                EnemyStates es = hits[i].collider.GetComponentInParent<EnemyStates>();
-                if (es != null && es.isDead)
-                    continue;
-
-                if (hits[i].distance < closest)
-                {
-                    closest = hits[i].distance;
-                    groundHit = hits[i];
-                    hitGround = true;
-                }
-            }
-
-            if (!hitGround)
+            // ขณะกระโดดขึ้น (velocity.y > 0) ไม่ตรวจพื้น ป้องกัน snap กลับทันที
+            if (a_hook.jumping && rigid.linearVelocity.y > 0f)
             {
                 prevGround = false;
                 return false;
             }
 
-            float distToGround = closest - groundRayHeight;
-            if (distToGround > groundSlack)
+            const float skinWidth = 0.04f;
+            Vector3 origin = rigid.position + Vector3.up * skinWidth;
+            float dis = toGround + skinWidth;
+            Debug.DrawRay(origin, Vector3.down * dis, Color.red, 0.1f);
+
+            if (!Physics.Raycast(origin, Vector3.down, out RaycastHit hit, dis,
+                ignoreForGroundCheck, QueryTriggerInteraction.Ignore))
             {
                 prevGround = false;
                 return false;
             }
 
-            if (!prevGround && rigid.linearVelocity.y > 0.05f)
-            {
-                prevGround = false;
-                return false;
-            }
-
+            // snap position ผ่าน Rigidbody เพื่อไม่รบกวน physics velocity
             Vector3 pos = rigid.position;
-            pos.y = groundHit.point.y - pivotToBottom;
+            pos.y = hit.point.y;
             rigid.MovePosition(pos);
+
+            // reset velocity.y ไม่ให้ rigidbody ดันตัวละครใต้พื้น
+            Vector3 v = rigid.linearVelocity;
+            rigid.linearVelocity = new Vector3(v.x, 0f, v.z);
 
             if (!prevGround)
                 Land();
-
-            Vector3 v = rigid.linearVelocity;
-            rigid.linearVelocity = new Vector3(v.x, 0f, v.z);
 
             prevGround = true;
             return true;
