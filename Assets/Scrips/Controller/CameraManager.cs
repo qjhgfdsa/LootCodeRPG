@@ -14,9 +14,8 @@ namespace SA
         public EnemyTarget lockonTarget;
         public Transform lockonTransform;
 
-        [HideInInspector]
+     
         public Transform pivot;
-        [HideInInspector]
         public Transform camTrans;
 
         StateManager states;
@@ -58,13 +57,13 @@ namespace SA
             states = st;
             target = st.transform;
 
-            camTrans = Camera.main.transform;
+          /*  camTrans = Camera.main.transform;
             if (camTrans == null)
             {
                 Debug.LogError("❌ Camera.main ไม่เจอ!");
                 return;
             }
-            pivot = camTrans.parent;
+            pivot = camTrans.parent;*/
             curZ = defZ;
         }
 

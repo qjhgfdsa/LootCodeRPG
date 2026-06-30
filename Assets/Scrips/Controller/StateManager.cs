@@ -208,6 +208,7 @@ namespace SA
 
             onGround = OnGround();
             anim.SetBool(StaticStrings.OnGround, onGround);
+            rigid.useGravity = !onGround;
 
             isBlocking = false;
             itemInput = itemInputPending;
@@ -262,12 +263,18 @@ namespace SA
                 HandleRotation();
 
             }
+            else if (!onGround && a_hook.jumping && moveAmount > 0.01f)
+            {
+                Vector3 v = rigid.linearVelocity;
+                Vector3 airMove = moveDir * (targetSpeed * moveAmount);
+                v.x = airMove.x;
+                v.z = airMove.z;
+                rigid.linearVelocity = v;
+            }
         }
         public void Tick(float d)
         {
             delta = d;
-            onGround = OnGround();
-            anim.SetBool(StaticStrings.OnGround, onGround);
 
             HandleAirTime();
             HandleInvincibleTime();
@@ -301,7 +308,7 @@ namespace SA
             if (canAttack)
                 DetectAction();
 
-            if (canMove || itemInput)
+            if (canMove || itemInputPending)
                 DetectItemAction();
             
             
@@ -423,6 +430,15 @@ namespace SA
             if (!onGround)
             {
                 airTimer += delta;
+                if (a_hook.jumping && airTimer > 3f)
+                {
+                    a_hook.jumping = false;
+                    onEmpty = true;
+                    canMove = true;
+                    canAttack = true;
+                    inAction = false;
+                    anim.SetBool(StaticStrings.onEmpty, true);
+                }
             }
             else
             {
@@ -462,7 +478,7 @@ namespace SA
             if (!onEmpty || usingItem || isBlocking || isSpellCasting)
                 return;
 
-            if (!itemInput)
+            if (!itemInputPending)
                 return;
 
             if (inventoryManager.currentConsumable == null)
@@ -1077,17 +1093,19 @@ namespace SA
             if (skipGroundCheck)
             {
                 skipTimer += delta;
-                if (skipTimer > 0.2f)
+                if (skipTimer > 0.15f && rigid.linearVelocity.y <= 0f)
                     skipGroundCheck = false;
                 prevGround = false;
                 return false;
             }
             skipTimer = 0;
 
-            bool r = false;
+            CapsuleCollider cap = GetComponent<CapsuleCollider>();
+            float pivotToBottom = cap != null ? cap.center.y - cap.height * 0.5f : 0f;
 
             const float groundRayHeight = 2.5f;
-            const float groundRayDistance = 3f;
+            const float groundSlack = 0.05f;
+            float groundRayDistance = groundRayHeight + pivotToBottom + groundSlack;
             Vector3 origin = rigid.position + (Vector3.up * groundRayHeight);
             Vector3 dir = -Vector3.up;
             Debug.DrawRay(origin, dir * groundRayDistance, Color.red, 0.5f);
@@ -1095,6 +1113,7 @@ namespace SA
             RaycastHit[] hits = Physics.RaycastAll(origin, dir, groundRayDistance, ignoreForGroundCheck, QueryTriggerInteraction.Ignore);
             float closest = float.MaxValue;
             RaycastHit groundHit = default;
+            bool hitGround = false;
 
             for (int i = 0; i < hits.Length; i++)
             {
@@ -1111,22 +1130,41 @@ namespace SA
                 {
                     closest = hits[i].distance;
                     groundHit = hits[i];
-                    r = true;
+                    hitGround = true;
                 }
             }
 
-            if (r)
+            if (!hitGround)
             {
-                rigid.position = groundHit.point;
-                Vector3 v = rigid.linearVelocity;
-                rigid.linearVelocity = new Vector3(v.x, 0f, v.z);
+                prevGround = false;
+                return false;
             }
-            if (r && !prevGround)
+
+            float distToGround = closest - groundRayHeight;
+            if (distToGround > groundSlack)
             {
+                prevGround = false;
+                return false;
+            }
+
+            if (!prevGround && rigid.linearVelocity.y > 0.05f)
+            {
+                prevGround = false;
+                return false;
+            }
+
+            Vector3 pos = rigid.position;
+            pos.y = groundHit.point.y - pivotToBottom;
+            rigid.MovePosition(pos);
+
+            if (!prevGround)
                 Land();
-            }
-            prevGround = r;
-            return r;
+
+            Vector3 v = rigid.linearVelocity;
+            rigid.linearVelocity = new Vector3(v.x, 0f, v.z);
+
+            prevGround = true;
+            return true;
         }
         void Land()
         {

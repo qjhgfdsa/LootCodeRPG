@@ -27,6 +27,9 @@ namespace SA
         int ac_index;
         public List<AnnounceCard> an_cards;
 
+        public GameObject gameUI;
+        public GameObject mainMenu;
+
 
         void Start()
         {

@@ -53,6 +53,25 @@ namespace SA
 
         Dictionary<string, int> event_ids = new Dictionary<string, int>();
         Dictionary<string, int> npc_ids = new Dictionary<string, int>();
+
+        public GameObject controllerPrefab;
+        public GameObject cameraHolderPrefab;
+
+        GameObject controllerInstance;
+        GameObject cameraHolderInstance;
+
+        public void InitGame()
+        {
+            Transform sp = LevelManager.singleton.spawnPosition;
+            controllerInstance = Instantiate(controllerPrefab, sp.position, sp.rotation) as GameObject;
+            cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
+
+            PickableItemsManager pic = controllerInstance.GetComponent<PickableItemsManager>();
+            pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
+            
+            UIManager.singleton.gameUI.SetActive(true);
+        }
+
         public List<ItemInventoryInstance> GetItemsIntanceList(ItemType t)
         {
             switch (t)
