@@ -64,7 +64,6 @@ namespace SA
             LoadLists();
             armorManager.Init();
 
-
             ClearReferences();
             LoadInventory();
 
@@ -523,11 +522,13 @@ namespace SA
         }
         public void CloseParryCollider()
         {
-            parryCollider.SetActive(false);
+            if (parryCollider)
+                parryCollider.SetActive(false);
         }
         public void OpenParryCollider()
         {
-            parryCollider.SetActive(true);
+            if (parryCollider)
+                parryCollider.SetActive(true);
         }
         public void ChangeToNextWeapon(bool isLeft)
         {

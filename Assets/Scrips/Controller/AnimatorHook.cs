@@ -1,3 +1,4 @@
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 namespace SA
@@ -144,14 +145,19 @@ namespace SA
             {
                 if (!states.onGround)
                     v.y = rigid.linearVelocity.y;
+
+                //if(states.isLocal)
+                //    rigid.linearVelocity = v2; //ควรอยู่ใน rolling หรือ jump หรือ roll หรืออื่นๆ
             }
+
             if (eStates && eStates.AgentReady)
             {
                 eStates.agent.velocity = v;
             }
             else if (!rigid.isKinematic)
             {
-                rigid.linearVelocity = v;
+                if (states.isLocal)
+                    rigid.linearVelocity = v;
             }
 
             v += Physics.gravity;
@@ -249,7 +255,9 @@ namespace SA
         {
             if (states)
             {
+                states.damageIsOn = true;
                 states.inventoryManager.OpenAllDamageColliders();
+
             }
             if (eStates)
             {
@@ -262,7 +270,9 @@ namespace SA
         {
             if (states)
             {
+                states.damageIsOn = false;
                 states.inventoryManager.CloseAllDamageColliders();
+
             }
             if (eStates)
             {
@@ -274,12 +284,14 @@ namespace SA
         {
             if (states == null)
                 return;
+
             states.inventoryManager.OpenParryCollider();
         }
         public void CloseParryCollider()
         {
             if (states == null)
                 return;
+
             states.inventoryManager.CloseParryCollider();
         }
         public void OpenParryFlag()

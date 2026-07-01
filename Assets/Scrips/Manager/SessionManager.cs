@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SA
 {
-    public class SessionManager : MonoBehaviour
+    public class SessionManager : Photon.MonoBehaviour 
     {
         [Header("NPC States")]
         public NPCStates[] npcStates;
@@ -63,11 +63,14 @@ namespace SA
         public void InitGame()
         {
             Transform sp = LevelManager.singleton.spawnPosition;
-            controllerInstance = Instantiate(controllerPrefab, sp.position, sp.rotation) as GameObject;
-            cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
+             cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
 
-            PickableItemsManager pic = controllerInstance.GetComponent<PickableItemsManager>();
-            pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
+
+            controllerInstance = PhotonNetwork.Instantiate("PlayerControl", sp.position, sp.rotation, 0, null) as GameObject;
+
+       
+           PickableItemsManager pic = controllerInstance.GetComponent<PickableItemsManager>();
+           pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
             
             UIManager.singleton.gameUI.SetActive(true);
         }

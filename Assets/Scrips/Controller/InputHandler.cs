@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace SA
 {
-    public class InputHandler : MonoBehaviour
+    public class InputHandler : Photon.MonoBehaviour
     {
         float vertical;
         float horizontal;
@@ -48,30 +48,40 @@ namespace SA
         void Start()
         {
             states = GetComponent<StateManager>();
+            InitCameraManager();
 
-            if (UI.QuickSlot.singleton != null)
-                UI.QuickSlot.singleton.Init();
+            if (!photonView.isMine && PhotonNetwork.connected)
+            {
+                states.isLocal = false;
+            }
             else
-                Debug.LogWarning("InputHandler: QuickSlot is missing from the scene — hotbar UI will not update.");
+            {
+                states.isLocal = true;
+            }
 
             states.Init();
 
-            InitCameraManager();
+            if (states.isLocal)
+            {
 
-            camManager.Init(states);
-            uiManager = UIManager.singleton;
-            if (uiManager == null)
-                Debug.LogWarning("InputHandler: UIManager is missing from the scene — HUD will not update.");
 
-            invUI = SA.UI.InventoryUI.singleton;
-            if (invUI != null)
-                invUI.Init(states.inventoryManager);
-            else
-                Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
+                if (UI.QuickSlot.singleton != null)
+                    UI.QuickSlot.singleton.Init();
+                else
+                    Debug.LogWarning("InputHandler: QuickSlot is missing from the scene — hotbar UI will not update.");
 
-            dialogueManager = DialogueManager.singleton;
-            if (dialogueManager == null)
-                Debug.LogWarning("InputHandler: DialogueManager is missing from the scene.");
+                camManager.Init(states);
+                uiManager = UIManager.singleton;
+
+                invUI = SA.UI.InventoryUI.singleton;
+                if (invUI != null)
+                    invUI.Init(states.inventoryManager);
+                else
+                    Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
+
+                dialogueManager = DialogueManager.singleton;
+            }
+
         }
         void InitCameraManager()
         {
@@ -98,6 +108,9 @@ namespace SA
         }
         void FixedUpdate()
         {
+            if (!states.isLocal)
+                return;
+
             if (camManager == null)
                 return;
 
@@ -109,6 +122,9 @@ namespace SA
         bool preferItem;
         void Update()
         {
+            if (!states.isLocal)
+                return;
+
             delta = Time.deltaTime;
 
             GetInput();

@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1328743639}
   - component: {fileID: 1328743638}
+  - component: {fileID: 1328743640}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -182,6 +183,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1328743640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328743637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06466c03d263624786afa88b52928b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhotonStatsGui
+  statsWindowOn: 1
+  statsOn: 1
+  healthStatsVisible: 0
+  trafficStatsOn: 0
+  buttonsOn: 0
+  statsRect:
+    serializedVersion: 2
+    x: 0
+    y: 100
+    width: 400
+    height: 400
+  WindowId: 100
 --- !u!1 &1683692648
 GameObject:
   m_ObjectHideFlags: 0

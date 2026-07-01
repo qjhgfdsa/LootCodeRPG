@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace SA
 {
-    public class StateManager : MonoBehaviour
+    public class StateManager : Photon.MonoBehaviour
     {
+        public bool isLocal;
+
         [Header("Model")]
         public GameObject activeModel;
 
@@ -56,14 +58,11 @@ namespace SA
         public bool closeWeapons;
         public bool isInvicible;
 
-
-
         [Header("Other")]
         public EnemyTarget lockOnTarget;
         public Transform lockOnTransform;
         public AnimationCurve roll_curve;
         //public EnemyStates parryTarget;
-
 
         [HideInInspector]
         public Animator anim;
@@ -77,8 +76,6 @@ namespace SA
         public InventoryManager inventoryManager;
         [HideInInspector]
         public PickableItemsManager pickManager;
-
-
 
         [HideInInspector]
         public float delta;
@@ -137,16 +134,22 @@ namespace SA
             inventoryManager = GetComponent<InventoryManager>();
             actionManager = GetComponent<ActionManager>();
 
-
             // ===== สำคัญ: ต้อง Init a_hook ก่อน inventoryManager =====
             a_hook = activeModel.GetComponent<AnimatorHook>();
             if (a_hook == null)
                 a_hook = activeModel.AddComponent<AnimatorHook>();
             a_hook.Init(this, null);
 
-            // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
-            inventoryManager.Init(this);
-            actionManager.Init(this);
+            if (isLocal)
+            {
+                inventoryManager.Init(this);
+                actionManager.Init(this);
+                // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
+            }
+            else
+            {
+                rigid.isKinematic = true;
+            }
 
             gameObject.layer = 8;
             SetLayerOnChildren(gameObject, 8);
@@ -157,15 +160,18 @@ namespace SA
 
             pickManager = GetComponent<PickableItemsManager>();
 
-            characterStats.InitCurrent();
-            if (UIManager.singleton != null)
-                UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
+            if (isLocal)
+            {
+                characterStats.InitCurrent();
+                if (UIManager.singleton != null)
+                    UIManager.singleton.AffectAll(characterStats.hp, characterStats.fp, characterStats.stamina);
 
-            UIManager.singleton.InitSouls(characterStats._souls);
-            prevGround = true;
+                UIManager.singleton.InitSouls(characterStats._souls);
+                prevGround = true;
 
-            DialogueManager.singleton.Init(this.transform);
-            onEmpty = true;
+                DialogueManager.singleton.Init(this.transform);
+                onEmpty = true;
+            }
         }
         void SetupAnimator()
         {
@@ -1212,6 +1218,8 @@ namespace SA
             anim.SetBool(StaticStrings.onEmpty, false);
             anim.CrossFade(targetAnim, 0.2f);
             Debug.Log("PlayAnimation: " + targetAnim);
+            sendAnim = true;
+            sendTargetAnim = targetAnim;
         }
         public void PlayAnimation(string targetAnim, bool isMirrored)
         {
@@ -1225,6 +1233,8 @@ namespace SA
             anim.SetBool(StaticStrings.onEmpty, false);
             anim.SetBool(StaticStrings.mirror, isMirrored);
             anim.CrossFade(targetAnim, 0.2f);
+            sendAnim = true;
+            sendTargetAnim = targetAnim;
         }
         public void HandleTwoHanded()
         {
@@ -1350,6 +1360,39 @@ namespace SA
             inAction = true;
             isInvicible = true;
             anim.applyRootMotion = true;
+        }
+
+        bool sendAnim;
+        string sendTargetAnim;
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.isWriting)
+            {
+                // Owner: send animator axis values
+                stream.SendNext(anim.GetFloat(StaticStrings.Vertical_Axis));
+                stream.SendNext(anim.GetFloat(StaticStrings.Horizontal_Axis));
+                if (sendAnim)
+                {
+                    stream.SendNext(sendTargetAnim);
+                    sendAnim = false;
+                }
+            }
+            else
+            {
+                // Remote: receive and apply
+                float vertical = (float)stream.ReceiveNext();
+                float horizontal = (float)stream.ReceiveNext();
+
+                anim.SetFloat(StaticStrings.Vertical_Axis, vertical);
+                anim.SetFloat(StaticStrings.Horizontal_Axis, horizontal);
+
+                bool playAnim = (bool)stream.ReceiveNext();
+                if (playAnim)
+                {
+                    string tAnim = (string)stream.ReceiveNext();
+                    anim.Play(tAnim);
+                }
+            }
         }
     }
 }

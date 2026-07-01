@@ -15,63 +15,31 @@ namespace SA
     public class MySceneManager : MonoBehaviour
 
     {
-
         public GameScene[] gameScenes;
-
         public GameObject menuCamera;
 
         Dictionary<string, int> lvls_dict = new Dictionary<string, int>();
 
-
-
         public string referencesScene = "references";
-
         public string startScene = "s1";
 
-
-
         const string LogTag = "[MySceneManager]";
-
-
-
         void Start()
-
         {
-
             for (int i = 0; i < gameScenes.Length; i++)
-
             {
-
                 if (!lvls_dict.ContainsKey(gameScenes[i].primaryScene))
-
                     lvls_dict.Add(gameScenes[i].primaryScene, i);
-
             }
-
-
-
             Debug.Log($"{LogTag} Registered scenes: {string.Join(", ", lvls_dict.Keys)}");
-
             StartCoroutine(LoadSceneAsyncRoutine(referencesScene, LoadSceneMode.Additive));
-
         }
-
-
-
         int StringToIndex(string id)
-
         {
-
             int index = -1;
-
             lvls_dict.TryGetValue(id, out index);
-
             return index;
-
         }
-
-
-
         public void PressStartGame()
 
         {
@@ -87,16 +55,10 @@ namespace SA
         IEnumerator StartGameRoutine()
 
         {
-
             UIManager.singleton.mainMenu.SetActive(false);
 
-
-
             yield return new WaitForSeconds(0.5f);
-
             menuCamera.SetActive(false);
-
-
 
             GameScene gs = GetGameScene(startScene);
 
@@ -104,10 +66,7 @@ namespace SA
 
                 yield break;
 
-
-
             yield return LoadGameSceneRoutine(gs, preloadForward: true, preloadBackward: true);
-
             yield return new WaitForSeconds(0.5f);
 
             // gestureGrid เปิดอยู่ใน scene — ปิดก่อนเปิด gameUI ไม่งั้น UI Gestures จะกระพริบ 1 frame
@@ -117,12 +76,8 @@ namespace SA
             SessionManager.singleton.InitGame();
 
         }
-
-
         IEnumerator LoadGameSceneRoutine(GameScene gs, bool preloadForward, bool preloadBackward)
-
         {
-
             if (gs.isLoaded)
 
             {
@@ -133,21 +88,13 @@ namespace SA
 
             }
 
-
-
             if (!string.IsNullOrEmpty(gs.lightData))
-
                 yield return LoadSceneAsyncRoutine(gs.lightData, LoadSceneMode.Additive);
-
-
-
             yield return LoadSceneAsyncRoutine(gs.primaryScene, LoadSceneMode.Additive);
 
             gs.isLoaded = true;
 
             Debug.Log($"{LogTag} GameScene ready: '{gs.primaryScene}'");
-
-
 
             if (preloadForward && !string.IsNullOrEmpty(gs.forward))
 
@@ -161,24 +108,16 @@ namespace SA
 
             }
 
-
-
             if (preloadBackward && !string.IsNullOrEmpty(gs.backward))
 
             {
-
                 GameScene backward = GetGameScene(gs.backward);
 
                 if (backward != null && !backward.isLoaded)
 
                     yield return LoadGameSceneRoutine(backward, preloadForward: false, preloadBackward: false);
-
             }
-
         }
-
-
-
         IEnumerator LoadSceneAsyncRoutine(string sceneName, LoadSceneMode mode)
 
         {
