@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SA
 {
-    public class SessionManager : Photon.MonoBehaviour 
+    public class SessionManager : Photon.MonoBehaviour
     {
         [Header("NPC States")]
         public NPCStates[] npcStates;
@@ -63,15 +63,39 @@ namespace SA
         public void InitGame()
         {
             Transform sp = LevelManager.singleton.spawnPosition;
-             cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
+            Debug.Log("Player Spawned");
 
+            object[] objs = new object[6];
+            objs[0] = a_chestPiece;
+            objs[1] = a_handsPiece;
+            objs[2] = a_headPiece;
+            objs[3] = a_legsPiece;
 
-            controllerInstance = PhotonNetwork.Instantiate("PlayerControl", sp.position, sp.rotation, 0, null) as GameObject;
+            if (_eq_rh.Count > 0)
+            {
+                objs[4] = _eq_rh[0];
+            }
+            else
+            {
+                objs[4] = "";
+            }
 
-       
-           PickableItemsManager pic = controllerInstance.GetComponent<PickableItemsManager>();
-           pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
-            
+            if (_eq_lh.Count > 0)
+            {
+                objs[5] = _eq_lh[0];
+            }
+            else
+            {
+                objs[5] = "";
+            }
+
+            cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
+
+            controllerInstance = PhotonNetwork.Instantiate("PlayerControl", sp.position, sp.rotation, 0, objs) as GameObject;
+
+            PickableItemsManager pic = controllerInstance.GetComponent<PickableItemsManager>();
+            pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
+
             UIManager.singleton.gameUI.SetActive(true);
         }
 

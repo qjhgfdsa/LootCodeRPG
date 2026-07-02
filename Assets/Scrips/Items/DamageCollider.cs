@@ -29,13 +29,24 @@ namespace SA
 
                 EnemyStates es = other.transform.GetComponentInParent<EnemyStates>();
                 if (es == null || es.isDead)
+                {
+                    RuntimeWeapon rw = states.inventoryManager.GetRuntimeWeapon(states.currentAction.mirror);
+                    if (rw == null || rw.weaponStats == null)
+                        es.DoDamage(states.currentAction, rw.instance, rw.weaponStats);
                     return;
+                }
 
-                RuntimeWeapon rw = states.inventoryManager.GetRuntimeWeapon(states.currentAction.mirror);
-                if (rw == null || rw.weaponStats == null)
-                    return;
 
-                es.DoDamage(states.currentAction, rw.instance, rw.weaponStats);
+                StateManager st = other.transform.GetComponentInParent<StateManager>();
+                if (st != null)
+                {
+                    if (st != states)
+                    {
+                        st.DoDamage(states.currentAction,
+                        states.inventoryManager.GetCurrentWeapon(states.currentAction.mirror));
+                    }
+                        
+                }
                 return;
             }
 

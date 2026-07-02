@@ -13,7 +13,14 @@ namespace SA
             float minDist = float.MaxValue;
             for (int i = 0; i < enemyTargets.Count; i++)
             {
-                float tDist = Vector3.Distance(from, enemyTargets[i].GetTarget().position);
+                Transform t = enemyTargets[i].GetTarget();
+                if (t == null)
+                {
+                    t = enemyTargets[i].transform;
+                    enemyTargets[i].targets[0] = t;
+                }
+
+                float tDist = Vector3.Distance(from, t.position);
                 if (tDist < minDist)
                 {
                     minDist = tDist;
@@ -30,4 +37,4 @@ namespace SA
         }
     }
 
-}     
+}

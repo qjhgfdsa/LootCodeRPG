@@ -18,6 +18,9 @@ namespace SA
         public List<string> spell_items;
         public List<int> consumable_items;
 
+        public string m_rh_weapons;
+        public string m_lh_weapons;
+
         public int r_index;
         public int l_index;
         public int s_index;
@@ -62,7 +65,7 @@ namespace SA
             armorManager = GetComponent<ArmorManager>();
 
             LoadLists();
-            armorManager.Init();
+            armorManager.Init(states);
 
             ClearReferences();
             LoadInventory();
@@ -76,6 +79,7 @@ namespace SA
 
         void LoadLists()
         {
+
             rh_weapons.Clear();
             lh_weapons.Clear();
             consumable_items.Clear();
@@ -92,6 +96,9 @@ namespace SA
             {
                 consumable_items.Add(-1);
             }
+
+            if (states.isLocal == false)
+                return;
 
             SessionManager s = SessionManager.singleton;
 
@@ -169,12 +176,22 @@ namespace SA
         }
         public void LoadInventory(bool updateActions = false)
         {
+            if (!states.isLocal)
+            {
+                ClearReferences();
+            }
+            else
+            {
+                states.sendEquipment = true;
+                states.sendWeapons = true;
+            }
+
             SessionManager s = SessionManager.singleton;
             unarmedRuntime = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(unarmedId), false);
 
             if (unarmedRuntime == null)
             {
-                Debug.LogError($"InventoryManager: Could not load unarmed weapon id '{unarmedId}'. itemName in WeaponScriptableObject must match exactly (case-sensitive).");
+                Debug.LogError("InventoryManager: Could not load unarmed weapon");
                 return;
             }
             unarmedRuntime.isUnarmed = true;
@@ -186,33 +203,67 @@ namespace SA
 
             }
 
-            for (int i = 0; i < rh_weapons.Count; i++)
+            if (states.isLocal)
             {
-                if (rh_weapons[i] == -1) //-1 คือ มือเปล่า
+                for (int i = 0; i < rh_weapons.Count; i++)
                 {
-                    r_r_weapons[i] = unarmedRuntime;
+                    if (rh_weapons[i] == -1) //-1 คือ มือเปล่า
+                    {
+                        r_r_weapons[i] = unarmedRuntime;
+                    }
+                    else
+                    {
+                        ItemInventoryInstance it = s.GetWeaponItem(rh_weapons[i]);
+                        RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(it.itemId));
+                        r_r_weapons[i] = rw;
+                    }
+                }
+            }
+            else
+            {
+                if (string.Equals(m_rh_weapons, "มือเปล่า") || string.IsNullOrEmpty(m_rh_weapons))
+                {
+                    r_r_weapons[0] = unarmedRuntime;
                 }
                 else
                 {
-                    ItemInventoryInstance it = s.GetWeaponItem(rh_weapons[i]);
-                    RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(it.itemId));
-                    r_r_weapons[i] = rw;
+                    RuntimeWeapon rw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(m_rh_weapons));
+                    r_r_weapons[0] = rw;
                 }
             }
 
-            for (int i = 0; i < lh_weapons.Count; i++)
-            {
-                if (lh_weapons[i] == -1) //-1 คือ มือเปล่า
-                {
-                    r_l_weapons[i] = unarmedRuntime;
-                }
-                else
-                {
-                    ItemInventoryInstance it = s.GetWeaponItem(lh_weapons[i]);
-                    RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(it.itemId), true);
-                    r_l_weapons[i] = lw;
-                }
 
+            if (states.isLocal)
+            {
+                for (int i = 0; i < lh_weapons.Count; i++)
+                {
+                    if (states.isLocal)
+                    {
+
+                        if (lh_weapons[i] == -1) //-1 คือ มือเปล่า
+                        {
+                            r_l_weapons[i] = unarmedRuntime;
+                        }
+                        else
+                        {
+                            ItemInventoryInstance it = s.GetWeaponItem(lh_weapons[i]);
+                            RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(it.itemId), true);
+                            r_l_weapons[i] = lw;
+                        }
+                    }
+                    else
+                    {
+                        if (string.Equals(m_lh_weapons, "มือเปล่า") || string.IsNullOrEmpty(m_lh_weapons))
+                        {
+                            r_l_weapons[0] = unarmedRuntime;
+                        }
+                        else
+                        {
+                            RuntimeWeapon lw = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(m_lh_weapons), true);
+                            r_l_weapons[0] = lw;
+                        }
+                    }
+                }
             }
 
             for (int i = 0; i < spell_items.Count; i++)
@@ -254,13 +305,13 @@ namespace SA
 
             MakeIndexesList();
             EquipInventory();
-            armorManager.Init();
+            armorManager.Init(states);
 
             if (updateActions)
             {
-                states.actionManager.UpdateActionsOneHanded();
+                if (states.isLocal)
+                    states.actionManager.UpdateActionsOneHanded();
             }
-
         }
         public void EquipInventory()
         {
@@ -434,6 +485,7 @@ namespace SA
                     leftHandWeapon.weaponModel.SetActive(false);
                 }
                 leftHandWeapon = w;
+                m_lh_weapons = leftHandWeapon.instance.Item_id;
             }
             else
             {
@@ -442,6 +494,7 @@ namespace SA
                     rightHandWeapon.weaponModel.SetActive(false);
                 }
                 rightHandWeapon = w;
+                m_rh_weapons = rightHandWeapon.instance.Item_id;
             }
             String targetIdle = w.instance.oh_idle;
             targetIdle += isLeft ? "_l" : "_r";
@@ -449,24 +502,14 @@ namespace SA
             states.anim.Play(StaticStrings.changeWeapon);
             states.anim.Play(targetIdle);
 
-            Item item = ResourcesManager.singleton.GetItem(w.instance.Item_id, ItemType.weapon);
-            uiSlot.UpdateSlot((isLeft) ? UI.QSlotType.lh : UI.QSlotType.rh, item.GetIconId());
+            if (states.isLocal)
+            {
+                Item item = ResourcesManager.singleton.GetItem(w.instance.Item_id, ItemType.weapon);
+                uiSlot.UpdateSlot((isLeft) ? UI.QSlotType.lh : UI.QSlotType.rh, item.GetIconId());
+            }
 
-            w.weaponModel.SetActive(true);
-
-            //   if (isLeft)
-            //  RefreshHasLeftHandWeapon();
-
-            /*  if (UI.QuickSlot.singleton != null)
-              {
-                  UI.QuickSlot.singleton.UpdateSlot(
-                      (isLeft) ?
-                      UI.QSlotType.lh : UI.QSlotType.rh, IconId.FromItemName(w.instance.Item_id));//ค่อยมาเปลี่ยน
-              }
-              else
-                  Debug.LogWarning("InventoryManager: QuickSlot.singleton is null — add a QuickSlot to the scene.");
-
-              w.weaponModel.SetActive(true);*/
+            if (w.weaponModel)
+                w.weaponModel.SetActive(true);
         }
         public void EquipSpell(RuntimeSpellItems spell)
         {
@@ -532,6 +575,7 @@ namespace SA
         }
         public void ChangeToNextWeapon(bool isLeft)
         {
+            states.sendWeapons = true;
             states.isTwoHanded = false;
             states.HandleTwoHanded();
 
@@ -751,6 +795,14 @@ namespace SA
         public string targetAnim;
         public GameObject itemPrefab;
     }
+    public class ArmorSnapshot
+    {
+        public string m_chestId;
+        public string m_legsId;
+        public string m_headId;
+        public string m_handsId;
+    }
+
     #region IconId
     [Serializable]
     public readonly struct IconId : IEquatable<IconId>

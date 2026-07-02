@@ -54,7 +54,6 @@ namespace SA
                     }
                     if (rm.Length > 0)
                         hasRoom = true;
-
                 }
 
             }
@@ -76,8 +75,13 @@ namespace SA
         public void Button_JoinRoom(RoomInfo r)
         {
             M_UIManager.singleton.CloseUI();
-            M_UIManager.singleton.UpdeatLogger("Joining room...");
+            M_UIManager.singleton.UpdeatLogger("Joining room");
             PhotonNetwork.JoinRoom(r.Name);
+        }
+        public override void OnJoinedLobby()
+        {
+            UIManager.singleton.mainMenu.SetActive(false);
+            UIManager.singleton.multiplayerUI.SetActive(true);
         }
         public override void OnCreatedRoom()
         {
@@ -88,10 +92,10 @@ namespace SA
         IEnumerator CreateRoomProcess()
         {
             yield return new WaitForSeconds(1);
+            
             if (PhotonNetwork.isMasterClient)
                 LoadLevel();
         }
-
         public override void OnJoinedRoom()
         {
             M_UIManager.singleton.UpdeatLogger("Joined room", true);
@@ -101,7 +105,6 @@ namespace SA
             Debug.Log("Join room failed: " + codeAndMsg[1]);
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 10 }, null);
         }
-
         public override void OnConnectedToMaster()
         {
             // PhotonNetwork.JoinRandomRoom();
@@ -118,7 +121,8 @@ namespace SA
             }
             else
             {
-                PhotonNetwork.LoadLevel("menu");
+                UIManager.singleton.mainMenu.SetActive(true);
+                PhotonNetwork.LoadLevel("main");
                 isLoaded = true;
             }
         }

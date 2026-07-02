@@ -39,14 +39,16 @@ namespace SA
         bool isGesturesOpen;
 
         float delta;
+        bool isInit;
         public static InputHandler singleton;
         void Awake()
         {
             singleton = this;
         }
 
-        void Start()
+        public void Init()
         {
+
             states = GetComponent<StateManager>();
             InitCameraManager();
 
@@ -63,25 +65,15 @@ namespace SA
 
             if (states.isLocal)
             {
-
-
-                if (UI.QuickSlot.singleton != null)
-                    UI.QuickSlot.singleton.Init();
-                else
-                    Debug.LogWarning("InputHandler: QuickSlot is missing from the scene — hotbar UI will not update.");
-
-                camManager.Init(states);
-                uiManager = UIManager.singleton;
-
-                invUI = SA.UI.InventoryUI.singleton;
-                if (invUI != null)
-                    invUI.Init(states.inventoryManager);
-                else
-                    Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
-
-                dialogueManager = DialogueManager.singleton;
+                StartCoroutine(InitLocal());
             }
-
+            else
+            {
+                isInit = true;
+            }
+        }
+        void Start()
+        {
         }
         void InitCameraManager()
         {
@@ -106,8 +98,33 @@ namespace SA
                 }
             }
         }
+        IEnumerator InitLocal()
+        {
+            yield return new WaitForSeconds(0.1f);
+            /* if (UI.QuickSlot.singleton != null)
+                 UI.QuickSlot.singleton.Init();
+             else
+                 Debug.LogWarning("InputHandler: QuickSlot is missing from the scene — hotbar UI will not update.");*/
+
+            camManager.Init(states);
+            uiManager = UIManager.singleton;
+
+            invUI = SA.UI.InventoryUI.singleton;
+            if (invUI != null)
+                invUI.Init(states.inventoryManager);
+            else
+                Debug.LogWarning("InputHandler: InventoryUI is missing from the scene.");
+
+            dialogueManager = DialogueManager.singleton;
+
+            uiManager.OpenGameUI();
+            isInit = true;
+        }
         void FixedUpdate()
         {
+            if (!isInit)
+                return;
+
             if (!states.isLocal)
                 return;
 
@@ -122,9 +139,14 @@ namespace SA
         bool preferItem;
         void Update()
         {
-            if (!states.isLocal)
+            if (!isInit)
                 return;
 
+            if (!states.isLocal)
+            {
+                states.NetworkTick();
+                return;
+            }
             delta = Time.deltaTime;
 
             GetInput();

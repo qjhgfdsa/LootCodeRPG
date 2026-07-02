@@ -29,6 +29,9 @@ namespace SA
 
         public GameObject gameUI;
         public GameObject mainMenu;
+        public GameObject loading;
+        public GameObject backPanel;
+        public GameObject multiplayerUI;
 
 
         void Start()
@@ -37,6 +40,14 @@ namespace SA
             interactCard.SetActive(false);
             CloseCards();
             CloseAnnounceType();
+        }
+        public void OpenGameUI()
+        {
+            mainMenu.SetActive(false);
+            loading.SetActive(false);
+            backPanel.SetActive(false);
+            multiplayerUI.SetActive(false);
+            gameUI.SetActive(true);
         }
 
 

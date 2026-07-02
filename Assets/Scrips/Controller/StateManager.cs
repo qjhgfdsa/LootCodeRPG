@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -142,8 +143,8 @@ namespace SA
 
             if (isLocal)
             {
-                inventoryManager.Init(this);
                 actionManager.Init(this);
+                inventoryManager.Init(this);
                 // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
             }
             else
@@ -1254,7 +1255,8 @@ namespace SA
 
             if (isTwoHanded)
             {
-                anim.CrossFade(w.th_idle, 0.2f);
+                PlaySecondaryAnim(w.th_idle);
+                // anim.CrossFade(w.th_idle, 0.2f);
                 actionManager.UpdateActionsTwoHanded();
 
                 if (isRight)
@@ -1273,10 +1275,12 @@ namespace SA
 
                 string targetAnim = w.oh_idle;
                 targetAnim += (isRight) ? StaticStrings._r : StaticStrings._l;
-                //anim.CrossFade(targetAnim,0.2f);
-                anim.Play(StaticStrings.equipWeapon_oh);
-                actionManager.UpdateActionsOneHanded();
 
+                PlaySecondaryAnim(targetAnim);
+                //anim.CrossFade(targetAnim,0.2f);
+                PlaySecondaryAnim(StaticStrings.equipWeapon_oh);
+                // anim.Play(StaticStrings.equipWeapon_oh);
+                actionManager.UpdateActionsOneHanded();
 
                 if (isRight)
                 {
@@ -1361,38 +1365,200 @@ namespace SA
             isInvicible = true;
             anim.applyRootMotion = true;
         }
+        public void DoDamage(Action a, Weapon curWeapon)
+        {
+            if (isInvicible)
+                return;
 
+            int damage = 30;
+
+            characterStats.poise += damage;
+            characterStats.hp -= damage;
+
+            if (canMove)
+            {
+                if (a.overrideDamageAnim)
+                {
+                    PlayAnimation(a.damageAnim);
+                    anim.Play(a.damageAnim);
+                }
+                else
+                {
+                    int ran = UnityEngine.Random.Range(0, 100);
+                    string tA = (ran > 50) ? StaticStrings.damage1 : StaticStrings.damage2;
+                    PlayAnimation(tA);
+                }
+            }
+
+            isInvicible = true;
+            anim.applyRootMotion = true;
+        }
+        public void PlaySecondaryAnim(string secAnim)
+        {
+            anim.CrossFade(secAnim, 0.2f);
+            secAnims.Add(secAnim);
+            sendSecAnim = true;
+        }
+
+
+        //Multiplayer
+        bool sendSecAnim;
+        List<string> secAnims = new List<string>();
         bool sendAnim;
         string sendTargetAnim;
+        public bool sendEquipment;
+        public bool sendWeapons;
+        public void NetworkTick()
+        {
+            anim.SetFloat("vertical", vertical, 0.2f, Time.deltaTime);
+            anim.SetFloat("horizontal", horizontal, 0.2f, Time.deltaTime);
+        }
+
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
+            if (anim == null) return;
+
             if (stream.isWriting)
             {
                 // Owner: send animator axis values
                 stream.SendNext(anim.GetFloat(StaticStrings.Vertical_Axis));
                 stream.SendNext(anim.GetFloat(StaticStrings.Horizontal_Axis));
+                stream.SendNext(anim.GetBool(StaticStrings.lockon));
                 if (sendAnim)
                 {
+                    bool isMirrored = anim.GetBool(StaticStrings.mirror);
+                    stream.SendNext(isMirrored);
+
                     stream.SendNext(sendTargetAnim);
                     sendAnim = false;
                 }
+
+                stream.SendNext(sendEquipment);
+                if (sendEquipment)
+                {
+                    ArmorSnapshot sanp = inventoryManager.armorManager.GetSnapshot();
+                    stream.SendNext(sanp.m_chestId);
+                    stream.SendNext(sanp.m_legsId);
+                    stream.SendNext(sanp.m_handsId);
+                    stream.SendNext(sanp.m_headId);
+                    sendEquipment = false;
+                }
+                stream.SendNext(sendWeapons);
+                if (sendWeapons)
+                {
+                    stream.SendNext(inventoryManager.m_rh_weapons);
+                    stream.SendNext(inventoryManager.m_lh_weapons);
+                    sendWeapons = false;
+                }
+
+                stream.SendNext(sendSecAnim);
+                if (sendSecAnim)
+                {
+                    stream.SendNext(secAnims.Count);
+                    for (int i = 0; i < secAnims.Count; i++)
+                    {
+                        stream.SendNext(secAnims[i]);
+                    }
+                    secAnims.Clear();
+                    sendSecAnim = false;
+                }
+                stream.SendNext(isTwoHanded);
             }
             else
             {
                 // Remote: receive and apply
-                float vertical = (float)stream.ReceiveNext();
-                float horizontal = (float)stream.ReceiveNext();
+                float v = (float)stream.ReceiveNext();
+                float h = (float)stream.ReceiveNext();
+                bool lockon = (bool)stream.ReceiveNext();
 
-                anim.SetFloat(StaticStrings.Vertical_Axis, vertical);
-                anim.SetFloat(StaticStrings.Horizontal_Axis, horizontal);
+                vertical = v;
+                horizontal = h;
+                anim.SetBool(StaticStrings.lockon, lockon);
 
                 bool playAnim = (bool)stream.ReceiveNext();
                 if (playAnim)
                 {
+                    bool isMirrored = (bool)stream.ReceiveNext();
+                    anim.SetBool(StaticStrings.mirror, isMirrored);
+
                     string tAnim = (string)stream.ReceiveNext();
                     anim.Play(tAnim);
                 }
+
+                bool equipment = (bool)stream.ReceiveNext();
+                if (equipment)
+                {
+                    ArmorSnapshot arm = new ArmorSnapshot();
+                    arm.m_chestId = (string)stream.ReceiveNext();
+                    arm.m_legsId = (string)stream.ReceiveNext();
+                    arm.m_handsId = (string)stream.ReceiveNext();
+                    arm.m_headId = (string)stream.ReceiveNext();
+                    inventoryManager.armorManager.LoadSnapshot(arm);
+                    inventoryManager.armorManager.EquipAllMultiplayer();
+
+                }
+                bool weapons = (bool)stream.ReceiveNext();
+                if (weapons)
+                {
+                    inventoryManager.m_rh_weapons = (string)stream.ReceiveNext();
+                    inventoryManager.m_lh_weapons = (string)stream.ReceiveNext();
+                    inventoryManager.LoadInventory();
+                }
+                bool secAnim = (bool)stream.ReceiveNext();
+                if (secAnim)
+                {
+                    int count = (int)stream.ReceiveNext();
+                    for (int i = 0; i < count; i++)
+                    {
+                        string a = (string)stream.ReceiveNext();
+                        anim.CrossFade(a, 0.2f);
+                    }
+                }
+                bool isTwoHand = (bool)stream.ReceiveNext();
+                isTwoHanded = isTwoHand;
+                if (isTwoHand)
+                {
+                    if (inventoryManager.leftHandWeapon.weaponModel)
+                        inventoryManager.leftHandWeapon.weaponModel.SetActive(false);
+                }
+                else
+                {
+                    if (inventoryManager.leftHandWeapon.weaponModel)
+                        inventoryManager.leftHandWeapon.weaponModel.SetActive(true);
+                }
             }
+        }
+        void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            object[] objs = photonView.instantiationData;
+
+            ArmorManager arm = GetComponent<ArmorManager>();
+            arm.m_chestId = (string)objs[0];
+            arm.m_handsId = (string)objs[1];
+            arm.m_headId = (string)objs[2];
+            arm.m_legsId = (string)objs[3];
+
+            InventoryManager inv = GetComponent<InventoryManager>();
+            inv.m_rh_weapons = (string)objs[4];
+            inv.m_lh_weapons = (string)objs[5];
+
+            InputHandler inp = GetComponent<InputHandler>();
+            inp.Init();
+
+            if (photonView.isMine)
+                return;
+                
+            EnemyTarget eTarget = GetComponent<EnemyTarget>();
+            if (eTarget == null)
+                eTarget = gameObject.AddComponent<EnemyTarget>();
+            if (anim != null)
+            {
+                Transform chest = anim.GetBoneTransform(HumanBodyBones.Chest);
+                if (chest != null && !eTarget.targets.Contains(chest))
+                    eTarget.targets.Add(chest);
+            }
+            if (EnemyManager.singleton != null && !EnemyManager.singleton.enemyTargets.Contains(eTarget))
+                EnemyManager.singleton.enemyTargets.Add(eTarget);
         }
     }
 }

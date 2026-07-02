@@ -31,8 +31,9 @@ namespace SA
                 if (!lvls_dict.ContainsKey(gameScenes[i].primaryScene))
                     lvls_dict.Add(gameScenes[i].primaryScene, i);
             }
-            Debug.Log($"{LogTag} Registered scenes: {string.Join(", ", lvls_dict.Keys)}");
-            StartCoroutine(LoadSceneAsyncRoutine(referencesScene, LoadSceneMode.Additive));
+
+            UIManager.singleton.mainMenu.SetActive(false);
+            //StartCoroutine(LoadSceneAsyncRoutine(referencesScene, LoadSceneMode.Additive));
         }
         int StringToIndex(string id)
         {
@@ -43,15 +44,9 @@ namespace SA
         public void PressStartGame()
 
         {
-
             Debug.Log($"{LogTag} PressStartGame -> startScene='{startScene}'");
-
             StartCoroutine(StartGameRoutine());
-
         }
-
-
-
         IEnumerator StartGameRoutine()
 
         {

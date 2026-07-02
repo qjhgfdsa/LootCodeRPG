@@ -4,6 +4,11 @@ namespace SA
 {
     public class ArmorManager : MonoBehaviour
     {
+        public string m_chestId;
+        public string m_legsId;
+        public string m_headId;
+        public string m_handsId;
+
         public int chestId;
         public int legsId;
         public int handsId;
@@ -19,9 +24,15 @@ namespace SA
         public SkinnedMeshRenderer a_handsPiece;
         public SkinnedMeshRenderer a_headPiece;
 
-        public void Init()
+        StateManager states;
+        public void Init(StateManager st)
         {
-            EquipAll();
+            states = st;
+
+            if (states.isLocal)
+                EquipAll();
+            else
+                EquipAllMultiplayer();
         }
         void EquipAll()
         {
@@ -40,6 +51,21 @@ namespace SA
             ItemInventoryInstance item = SessionManager.singleton.GetArmorItem(id);
             ArmorContainer a = ResourcesManager.singleton.GetArmor(item.itemId);
             EquipArmor(a);
+        }
+       public void EquipAllMultiplayer()
+        {
+            LoadArmorMultiplayer(m_chestId, ArmorType.chest);
+            LoadArmorMultiplayer(m_headId, ArmorType.head);
+            LoadArmorMultiplayer(m_handsId, ArmorType.hands);
+            LoadArmorMultiplayer(m_legsId, ArmorType.legs);
+        }
+        void LoadArmorMultiplayer(string id, ArmorType a)
+        {
+            if (string.Equals("empty", id) || string.IsNullOrEmpty(id))
+            {
+                UnequipArmor(a);
+                return;
+            }
 
         }
 
@@ -49,7 +75,7 @@ namespace SA
             {
                 case ArmorType.chest:
                     chestPiece.enabled = true;
-                   a_chestPiece.gameObject.SetActive(false);
+                    a_chestPiece.gameObject.SetActive(false);
                     break;
                 case ArmorType.legs:
                     legsPiece.enabled = true;
@@ -99,6 +125,29 @@ namespace SA
 
             bodyRen.enabled = a.BaseBodyEnabled;
             ren.gameObject.SetActive(true);
+        }
+        public ArmorSnapshot GetSnapshot()
+        {
+            ArmorSnapshot a = new ArmorSnapshot();
+            a.m_chestId = GetArmorIdFromInt(chestId);   
+            a.m_legsId = GetArmorIdFromInt(legsId);
+            a.m_handsId = GetArmorIdFromInt(handsId);
+            a.m_headId = GetArmorIdFromInt(headId);
+            return a;
+        }
+        public void LoadSnapshot(ArmorSnapshot snap)
+        {
+            m_chestId = snap.m_chestId;
+            m_legsId = snap.m_legsId;
+            m_handsId = snap.m_handsId;
+            m_headId = snap.m_headId;
+        }
+        string GetArmorIdFromInt(int id)
+        {
+            if(id == -1)
+                return "empty";
+            ItemInventoryInstance item = SessionManager.singleton.GetArmorItem(id);
+            return item.itemId;
         }
     }
 
