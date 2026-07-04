@@ -144,13 +144,14 @@ namespace SA
             if (isLocal)
             {
                 actionManager.Init(this);
-                inventoryManager.Init(this);
-                // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
             }
             else
             {
                 rigid.isKinematic = true;
             }
+
+            inventoryManager.Init(this);
+            // ตอนนี้ a_hook พร้อมแล้ว ถึงค่อย Init inventoryManager
 
             gameObject.layer = 8;
             SetLayerOnChildren(gameObject, 8);
@@ -1424,6 +1425,7 @@ namespace SA
                 stream.SendNext(anim.GetFloat(StaticStrings.Vertical_Axis));
                 stream.SendNext(anim.GetFloat(StaticStrings.Horizontal_Axis));
                 stream.SendNext(anim.GetBool(StaticStrings.lockon));
+                stream.SendNext(sendAnim);
                 if (sendAnim)
                 {
                     bool isMirrored = anim.GetBool(StaticStrings.mirror);
@@ -1493,16 +1495,24 @@ namespace SA
                     arm.m_legsId = (string)stream.ReceiveNext();
                     arm.m_handsId = (string)stream.ReceiveNext();
                     arm.m_headId = (string)stream.ReceiveNext();
-                    inventoryManager.armorManager.LoadSnapshot(arm);
-                    inventoryManager.armorManager.EquipAllMultiplayer();
+                    if (inventoryManager != null && inventoryManager.armorManager != null)
+                    {
+                        inventoryManager.armorManager.LoadSnapshot(arm);
+                        inventoryManager.armorManager.EquipAllMultiplayer();
+                    }
 
                 }
                 bool weapons = (bool)stream.ReceiveNext();
                 if (weapons)
                 {
-                    inventoryManager.m_rh_weapons = (string)stream.ReceiveNext();
-                    inventoryManager.m_lh_weapons = (string)stream.ReceiveNext();
-                    inventoryManager.LoadInventory();
+                    string rightWeaponId = (string)stream.ReceiveNext();
+                    string leftWeaponId = (string)stream.ReceiveNext();
+                    if (inventoryManager != null)
+                    {
+                        inventoryManager.m_rh_weapons = rightWeaponId;
+                        inventoryManager.m_lh_weapons = leftWeaponId;
+                        inventoryManager.LoadInventory();
+                    }
                 }
                 bool secAnim = (bool)stream.ReceiveNext();
                 if (secAnim)
@@ -1516,19 +1526,16 @@ namespace SA
                 }
                 bool isTwoHand = (bool)stream.ReceiveNext();
                 isTwoHanded = isTwoHand;
-                if (isTwoHand)
+                if (inventoryManager != null && inventoryManager.leftHandWeapon != null && inventoryManager.leftHandWeapon.weaponModel != null)
                 {
-                    if (inventoryManager.leftHandWeapon.weaponModel)
+                    if (isTwoHand)
                         inventoryManager.leftHandWeapon.weaponModel.SetActive(false);
-                }
-                else
-                {
-                    if (inventoryManager.leftHandWeapon.weaponModel)
+                    else
                         inventoryManager.leftHandWeapon.weaponModel.SetActive(true);
                 }
             }
         }
-        void OnPhotonInstantiate(PhotonMessageInfo info)
+     /*   void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] objs = photonView.instantiationData;
 
@@ -1559,6 +1566,6 @@ namespace SA
             }
             if (EnemyManager.singleton != null && !EnemyManager.singleton.enemyTargets.Contains(eTarget))
                 EnemyManager.singleton.enemyTargets.Add(eTarget);
-        }
+        }*/
     }
 }

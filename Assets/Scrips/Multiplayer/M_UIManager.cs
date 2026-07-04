@@ -54,7 +54,7 @@ namespace SA
 
         IEnumerator CloseLogger()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             logger.SetActive(false);
 
         }

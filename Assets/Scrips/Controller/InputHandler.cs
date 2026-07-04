@@ -50,16 +50,16 @@ namespace SA
         {
 
             states = GetComponent<StateManager>();
-            InitCameraManager();
+             InitCameraManager();
 
-            if (!photonView.isMine && PhotonNetwork.connected)
+         /*   if (!photonView.isMine && PhotonNetwork.connected)
             {
                 states.isLocal = false;
             }
             else
             {
                 states.isLocal = true;
-            }
+            }*/
 
             states.Init();
 

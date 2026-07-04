@@ -57,7 +57,7 @@ namespace SA
         public GameObject controllerPrefab;
         public GameObject cameraHolderPrefab;
 
-        GameObject controllerInstance;
+        GameObject PlayerProfile;
         GameObject cameraHolderInstance;
 
         public void InitGame()
@@ -90,13 +90,16 @@ namespace SA
             }
 
             cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
+            // PlayerProfile = PhotonNetwork.Instantiate("multiplayerProfile",Vector3.zero, Quaternion.identity, 0, objs) as GameObject;
+            GameObject prefab = Resources.Load("multiplayerProfile") as GameObject;
+            PlayerProfile = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
+            M_Profile mprofile = PlayerProfile.GetComponent<M_Profile>();
+            mprofile.Init(objs);
 
-            controllerInstance = PhotonNetwork.Instantiate("PlayerControl", sp.position, sp.rotation, 0, objs) as GameObject;
+            // PickableItemsManager pic = PlayerProfile.GetComponent<PickableItemsManager>();
+            // pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
 
-            PickableItemsManager pic = controllerInstance.GetComponent<PickableItemsManager>();
-            pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
-
-            UIManager.singleton.gameUI.SetActive(true);
+            //   UIManager.singleton.gameUI.SetActive(true);
         }
 
         public List<ItemInventoryInstance> GetItemsIntanceList(ItemType t)

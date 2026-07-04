@@ -25,6 +25,9 @@ namespace SA
         public SkinnedMeshRenderer a_headPiece;
 
         StateManager states;
+
+        public Material ghost;
+
         public void Init(StateManager st)
         {
             states = st;
@@ -52,7 +55,7 @@ namespace SA
             ArmorContainer a = ResourcesManager.singleton.GetArmor(item.itemId);
             EquipArmor(a);
         }
-       public void EquipAllMultiplayer()
+        public void EquipAllMultiplayer()
         {
             LoadArmorMultiplayer(m_chestId, ArmorType.chest);
             LoadArmorMultiplayer(m_headId, ArmorType.head);
@@ -129,7 +132,7 @@ namespace SA
         public ArmorSnapshot GetSnapshot()
         {
             ArmorSnapshot a = new ArmorSnapshot();
-            a.m_chestId = GetArmorIdFromInt(chestId);   
+            a.m_chestId = GetArmorIdFromInt(chestId);
             a.m_legsId = GetArmorIdFromInt(legsId);
             a.m_handsId = GetArmorIdFromInt(handsId);
             a.m_headId = GetArmorIdFromInt(headId);
@@ -144,10 +147,23 @@ namespace SA
         }
         string GetArmorIdFromInt(int id)
         {
-            if(id == -1)
+            if (id == -1)
                 return "empty";
             ItemInventoryInstance item = SessionManager.singleton.GetArmorItem(id);
             return item.itemId;
+        }
+        public void ChangeAllToGhotst()
+        {
+            chestPiece.material = ghost;
+            legsPiece.material = ghost;
+            handsPiece.material = ghost;
+            headPiece.material = ghost;
+
+            a_chestPiece.material = ghost;
+            a_legsPiece.material = ghost;
+            a_handsPiece.material = ghost;
+            a_headPiece.material = ghost;
+
         }
     }
 

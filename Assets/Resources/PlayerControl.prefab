@@ -335,6 +335,8 @@ MonoBehaviour:
   kickMaxTime: 0.8
   moveAmountThreshold: 0.05
   enabledItem: 0
+  sendEquipment: 0
+  sendWeapons: 0
 --- !u!114 &494645758844830338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +356,8 @@ MonoBehaviour:
   spell_items:
   - "\u0E23\u0E30\u0E40\u0E1A\u0E34\u0E14\u0E44\u0E1F"
   consumable_items: 00000000
+  m_rh_weapons: 
+  m_lh_weapons: 
   r_index: 0
   l_index: 0
   s_index: 0
@@ -474,6 +478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b15568f35a334a4a87f487e940d8097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SA.ArmorManager
+  m_chestId: 
+  m_legsId: 
+  m_headId: 
+  m_handsId: 
   chestId: 0
   legsId: 0
   handsId: 0
@@ -486,6 +494,7 @@ MonoBehaviour:
   a_legsPiece: {fileID: 6452790151087199622}
   a_handsPiece: {fileID: 2754202557394314561}
   a_headPiece: {fileID: 2552693333788963472}
+  ghost: {fileID: 2100000, guid: 658b3d01361e2044d882f0965075d63a, type: 2}
 --- !u!114 &4847769186536776046
 MonoBehaviour:
   m_ObjectHideFlags: 0

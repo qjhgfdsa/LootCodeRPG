@@ -1,13 +1,8 @@
 using UnityEngine;
 
-
-
 namespace SA
-
 {
-
     public class OnTriggerLoadScene : MonoBehaviour
-
     {
         public string loadLevel;
         public string unloadLevel;
@@ -16,21 +11,19 @@ namespace SA
 
         public void OnTriggerEnter(Collider other)
         {
+            Launchers.singleton.ChangeRoomValue(0);
+
             InputHandler inp = other.GetComponent<InputHandler>();
             if (inp == null)
 
                 inp = other.GetComponentInParent<InputHandler>();
 
-
-
             if (inp == null)
 
             {
-
                 Debug.Log($"{LogTag} Trigger '{name}' ignored — no InputHandler on '{other.name}' (tag={other.tag}).");
 
                 return;
-
             }
 
 
