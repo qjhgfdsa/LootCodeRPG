@@ -2,20 +2,22 @@ using UnityEngine;
 
 namespace SA
 {
-    public class M_Profile : Photon.PunBehaviour
+    public class M_Profile : Photon.MonoBehaviour
     {
         object[] objs;
 
         public int sendRate = 1;
         int _sendRate;
+
         public bool isLocal;
-        GameObject controller;
-
         public m_State m_state;
+        public GameObject controller;
+        StateManager states;
 
-        public void Init(object[] objs)
+        public void Init(object[] objs, bool _isLocal)
         {
-            isLocal = photonView.isMine;
+            isLocal = _isLocal;
+            this.objs = objs;
 
             if (isLocal)
             {
@@ -26,13 +28,13 @@ namespace SA
             else
             {
                 CreateController();
-                 m_state = m_State.phantoms;
+                m_state = m_State.phantoms;
             }
 
         }
         public void CreateController()
         {
-            GameObject controller = Instantiate(Resources.Load("PlayerControl"), Vector3.zero, Quaternion.identity) as GameObject;
+            controller = Instantiate(Resources.Load("PlayerControl"), Vector3.zero, Quaternion.identity) as GameObject;
 
             ArmorManager arm = controller.GetComponent<ArmorManager>();
             arm.m_chestId = (string)objs[0];
@@ -44,19 +46,18 @@ namespace SA
             inv.m_rh_weapons = (string)objs[4];
             inv.m_lh_weapons = (string)objs[5];
 
-            StateManager state = controller.GetComponent<StateManager>();
-            state.isLocal = isLocal;
+            states = controller.GetComponent<StateManager>();
+            states.isLocal = isLocal;
 
             InputHandler inp = controller.GetComponent<InputHandler>();
             inp.Init();
 
-            state.rigid.isKinematic = true;
 
             if (!isLocal)
                 arm.ChangeAllToGhotst();
         }
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+      /*  public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             _sendRate++;
             if (_sendRate < sendRate)
@@ -73,11 +74,12 @@ namespace SA
                 m_state = (m_State)stream.ReceiveNext();
             }
 
-        }
+        }*/
         void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             objs = photonView.instantiationData;
-            Init(objs);
+            isLocal = photonView.isMine;
+            Init(objs, isLocal);
         }
     }
     public enum m_State

@@ -23,6 +23,9 @@ namespace SA
         public string referencesScene = "references";
         public string startScene = "s1";
 
+        public delegate void OnLoadLevelCallback();
+        public OnLoadLevelCallback onLoadLevelCallback;
+
         const string LogTag = "[MySceneManager]";
         void Start()
         {
@@ -302,6 +305,8 @@ namespace SA
         {
 
             singleton = this;
+            if (menuCamera == null && Camera.main != null)
+                menuCamera = Camera.main.gameObject;
 
         }
 

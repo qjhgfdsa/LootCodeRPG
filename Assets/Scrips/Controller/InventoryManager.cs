@@ -49,7 +49,7 @@ namespace SA
 
         StateManager states;
         UI.QuickSlot uiSlot;
-        GameObject referenceParent;
+       public GameObject referenceParent;
 
         [HideInInspector]
         public ArmorManager armorManager;

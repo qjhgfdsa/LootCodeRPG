@@ -65,6 +65,7 @@ namespace SA
             Transform sp = LevelManager.singleton.spawnPosition;
             Debug.Log("Player Spawned");
 
+
             object[] objs = new object[6];
             objs[0] = a_chestPiece;
             objs[1] = a_handsPiece;
@@ -89,19 +90,52 @@ namespace SA
                 objs[5] = "";
             }
 
-            cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
             // PlayerProfile = PhotonNetwork.Instantiate("multiplayerProfile",Vector3.zero, Quaternion.identity, 0, objs) as GameObject;
+            cameraHolderInstance = Instantiate(cameraHolderPrefab, sp.position, sp.rotation) as GameObject;
+
             GameObject prefab = Resources.Load("multiplayerProfile") as GameObject;
+
             PlayerProfile = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
             M_Profile mprofile = PlayerProfile.GetComponent<M_Profile>();
-            mprofile.Init(objs);
+            mprofile.Init(objs, true);
+
+            M_Launcher.singleton.JoinRoom("startRoom", mprofile.controller.GetComponent<StateManager>());
+
+            cameraHolderInstance.transform.position = mprofile.controller.transform.position;
 
             // PickableItemsManager pic = PlayerProfile.GetComponent<PickableItemsManager>();
             // pic.world_interact.AddRange(LevelManager.singleton.worldInteractions);
 
             //   UIManager.singleton.gameUI.SetActive(true);
         }
+        public void MultiplayerFootprint()
+        {
 
+            object[] objs = new object[6];
+            objs[0] = a_chestPiece;
+            objs[1] = a_handsPiece;
+            objs[2] = a_headPiece;
+            objs[3] = a_legsPiece;
+
+            if (_eq_rh.Count > 0)
+            {
+                objs[4] = _eq_rh[0];
+            }
+            else
+            {
+                objs[4] = "";
+            }
+
+            if (_eq_lh.Count > 0)
+            {
+                objs[5] = _eq_lh[0];
+            }
+            else
+            {
+                objs[5] = "";
+            }
+            PhotonNetwork.Instantiate("MultiplayerFootprint", Vector3.zero, Quaternion.identity, 0, objs);
+        }
         public List<ItemInventoryInstance> GetItemsIntanceList(ItemType t)
         {
             switch (t)

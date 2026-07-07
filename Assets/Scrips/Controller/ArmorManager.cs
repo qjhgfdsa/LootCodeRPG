@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 namespace SA
 {
     public class ArmorManager : MonoBehaviour
     {
+        public bool isGhost;
         public string m_chestId;
         public string m_legsId;
         public string m_headId;
@@ -154,16 +156,21 @@ namespace SA
         }
         public void ChangeAllToGhotst()
         {
-            chestPiece.material = ghost;
-            legsPiece.material = ghost;
-            handsPiece.material = ghost;
-            headPiece.material = ghost;
+            if (isGhost)
+                return;
+            
+            StartCoroutine(DelayGhostOneFrame());
+        }
+        IEnumerator DelayGhostOneFrame()
+        {
+            yield return new WaitForSeconds(1);
 
-            a_chestPiece.material = ghost;
-            a_legsPiece.material = ghost;
-            a_handsPiece.material = ghost;
-            a_headPiece.material = ghost;
-
+            Renderer[] rens = GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < rens.Length; i++)
+            {
+                rens[i].material = ghost;
+            }
+            isGhost = true;
         }
     }
 

@@ -255,6 +255,9 @@ namespace SA
         {
             if (states)
             {
+                if (states.inventoryManager.armorManager.isGhost)
+                    return;
+
                 states.damageIsOn = true;
                 states.inventoryManager.OpenAllDamageColliders();
 
@@ -270,6 +273,9 @@ namespace SA
         {
             if (states)
             {
+                if (states.inventoryManager.armorManager.isGhost)
+                    return;
+
                 states.damageIsOn = false;
                 states.inventoryManager.CloseAllDamageColliders();
 
@@ -285,6 +291,10 @@ namespace SA
             if (states == null)
                 return;
 
+            if (states.inventoryManager.armorManager.isGhost)
+                return;
+
+
             states.inventoryManager.OpenParryCollider();
         }
         public void CloseParryCollider()
@@ -298,6 +308,9 @@ namespace SA
         {
             if (states)
             {
+                if (states.inventoryManager.armorManager.isGhost)
+                    return;
+
                 states.parryIsOn = true;
 
             }
@@ -331,6 +344,9 @@ namespace SA
         {
             if (states)
             {
+                if (states.inventoryManager.armorManager.isGhost)
+                    return;
+
                 states.ThrowProjectile();
             }
 

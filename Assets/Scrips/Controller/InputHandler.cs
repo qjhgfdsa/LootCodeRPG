@@ -50,7 +50,8 @@ namespace SA
         {
 
             states = GetComponent<StateManager>();
-             InitCameraManager();
+            states.isInRoom = true;
+            InitCameraManager();
 
          /*   if (!photonView.isMine && PhotonNetwork.connected)
             {
